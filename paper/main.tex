@@ -76,7 +76,7 @@
 % =============================================================================
 \begin{abstract}
 % Numbers: macros from tables/numbers.tex (first pass of every agent, data/paper_v8.json). Claude models are at
-% default effort until the effort-high runs finish; Inkling 2 Mini is still running.
+% default effort until the effort-high runs finish.
 Large language models (LLMs) are improving quickly and now solve increasingly complex tasks.
 Much of this progress, however, is concentrated in domains that models are explicitly trained
 for and tested on, such as mathematics and programming in Python and other widely used
@@ -446,27 +446,28 @@ from the released version.
 
 We evaluate \wspnum{agents} agents (\cref{tab:leaderboard}). Six have closed weights: GPT-6.1 Sol, GPT-6.1 Terra
 and GPT-6 Luna, run through the Codex command-line interface at high reasoning effort, and Claude Opus 5.5, Claude
-Sonnet 5.5 and Claude Haiku 5.5, run through the Claude Code command-line interface at its default effort. Four have
+Sonnet 5.5 and Claude Haiku 5.5, run through the Claude Code command-line interface at its default effort. Five have
 open weights and run on our own GPUs, served with vLLM: Qwen3.8-27B, once with thinking and once without,
-DeepSeek-V4-Flash with thinking at high effort, and MiniMax-M2.7, which always thinks. In every case, the
-interface's own tools and web access are switched off, so the agent acts only through the harness
-(\cref{sec:environment}). \TODO{Add the Claude models at effort high and Inkling 2 Mini (both running), and Claude
-Fable 5.1 and 5.2 (partial).}
+DeepSeek-V4-Flash and Inkling 2 Mini with thinking at high effort, and MiniMax-M2.7, which always thinks. In every
+case, the interface's own tools and web access are switched off, so the agent acts only through the harness
+(\cref{sec:environment}). \TODO{Add the Claude models at effort high (running), and Claude Fable 5.1 and 5.2
+(partial).}
 
 Each agent attempts every cell once, and we report this first pass throughout. Four agents also ran a second pass,
 which we use only to measure how much results vary between runs (\cref{sec:analysis}). A run that the provider's
 safety filter refuses scores 0; this happened twice, both for GPT-6 Luna. The cost of a task is the list price of the
 tokens its run used: as reported by Claude Code for Claude models, and computed from token counts at each provider's
-list prices for the other agents. Time is wall-clock time, which for the open-weights agents depends on our serving
-hardware.
+list prices for the other agents. Inkling 2 Mini has no published price, so it has no cost. Time is wall-clock time,
+which for the open-weights agents depends on our serving hardware.
 
 \subsection{Main Results}\label{sec:main-results}
 
 \begin{table}[t]
   \caption{Results of every agent on its first pass. \emph{Index}: mean score over the \wspnum{cells} cells, with
   its 95\% bootstrap confidence interval. \emph{Read}, \emph{Edit} and \emph{Skill}: the index within each family.
-  \emph{Cells $\geq$50}: share of cells scored 50 or more. Cost is the list price of one run and time its
-  wall-clock duration; the stripe before each name is the lab's colour, as in the figures.}
+  \emph{Cells $\geq$50}: share of cells scored 50 or more. Cost is the list price of one run (Inkling 2 Mini has no
+  published price) and time its wall-clock duration; the stripe before each name is the lab's colour, as in the
+  figures.}
   \label{tab:leaderboard}
   \begin{aacardbox}
     \aacardheader{aapurple}{Leaderboard}{First pass of every agent on the \wspnum{cells} cells of release v8
@@ -484,7 +485,7 @@ hardware.
   \wspnum{cells} scored cells, with 95\% bootstrap confidence intervals; 0 is the baseline and 100 a perfect
   solution on every cell. Bottom: the index within each task family. Bars take the colour of the agent's lab.
   Claude models run at the default effort of Claude Code and GPT models at high effort. \TODO{Update with the
-  effort-high Claude runs and Inkling 2 Mini.}}
+  effort-high Claude runs.}}
   \label{fig:main}
 \end{figure}
 
@@ -493,7 +494,8 @@ hardware.
 \res{terra}{index}. A wide gap separates these three agents from the rest, none of which scores above
 \res{sonnet}{index}: Claude Sonnet 5.5 scores \res{sonnet}{index}, Claude Haiku 5.5 \res{haiku}{index} and GPT-6
 Luna \res{luna}{index}. The open-weights agents trail the frontier ones. The best of them, Qwen3.8-27B with thinking,
-scores \res{qwenthink}{index}, and the other three score between \res{qwen}{index} and \res{minimax}{index}.
+scores \res{qwenthink}{index}, and the other \wspnum{openrestword} score between \wspnum{openrestlow} and
+\wspnum{openresthigh}.
 Thinking nearly doubles the index of Qwen3.8-27B, from \res{qwen}{index} to \res{qwenthink}{index}, but makes each
 task about nine times slower (\res{qwen}{minutes} against \res{qwenthink}{minutes} minutes).
 
@@ -525,7 +527,7 @@ pairs, late layers or word categories (W4x). Sol, Terra and Claude Haiku 5.5 rem
 the model's math accuracy (W1: \cls{sol}{W1}, \cls{terra}{W1} and \cls{haiku}{W1}), whereas Claude Opus 5.5 does
 not (\cls{opus}{W1}). The W1, W2 and W3 classes hold one task each, so each of these scores rests on a single run.
 
-All four open-weights agents score 0 on data mixtures (O2) and trigger phrases (S6), and at most
+All \wspnum{openword} open-weights agents score 0 on data mixtures (O2) and trigger phrases (S6), and at most
 \wspnum{openeditmax} on any edit class.
 
 \subsection{Analysis}\label{sec:analysis}
@@ -556,7 +558,8 @@ brings \res{sol}{skillfifty} skill tasks to 50 or more and Claude Opus 5.5 \res{
   \caption{Index against the list-price cost of one run (left) and its wall-clock time (right), both on log scales.
   The dotted line joins the agents that no other agent beats on both axes; the shaded quadrants split each axis at
   the agents' median, and the green one holds agents both better and cheaper (or faster) than the median. The times
-  of open-weights agents depend on our serving hardware.}
+  of open-weights agents depend on our serving hardware; Inkling 2 Mini has no published price and appears in the
+  time plot only.}
   \label{fig:cost}
 \end{figure}
 
@@ -564,8 +567,8 @@ brings \res{sol}{skillfifty} skill tasks to 50 or more and Claude Opus 5.5 \res{
 GPT-6.1 Terra reaches \res{terra}{index} at \$\res{terra}{cost} per task, and Sol \res{sol}{index} at
 \$\res{sol}{cost}. Claude Opus 5.5 is the only one of the three leading agents off the Pareto front: Sol scores
 higher at about a third of its cost (\$\res{opus}{cost} per task). The open-weights agents that think are the
-slowest, at \res{minimax}{minutes} to \res{qwenthink}{minutes} minutes per task on our hardware, without a matching
-gain in index.
+slowest, at \res{inkling}{minutes} (Inkling 2 Mini) to \res{qwenthink}{minutes} minutes per task on our hardware,
+without a matching gain in index.
 
 
 \paragraph{Variation between runs.} \Cref{fig:passes} in \cref{app:results} compares the two passes of the four agents that ran twice.

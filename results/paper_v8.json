@@ -1,6 +1,6 @@
 {
  "version": "v8",
- "built": "2026-11-23 17:12 UTC",
+ "built": "2026-11-23 21:39 UTC",
  "core_cells": 168,
  "items": 152,
  "groups": {
@@ -803,175 +803,175 @@
    "level": "weights",
    "class": "O2",
    "group": "read",
-   "baseline": 0.3623488888888889
+   "baseline": 0.36555818181818184
   },
   {
    "item": "O2_mix_2",
    "level": "weights",
    "class": "O2",
    "group": "read",
-   "baseline": 0.32705555555555554
+   "baseline": 0.33486363636363636
   },
   {
    "item": "O2_mix_3",
    "level": "weights",
    "class": "O2",
    "group": "read",
-   "baseline": 0.34001333333333333
+   "baseline": 0.3472836363636364
   },
   {
    "item": "O2_mix_4",
    "level": "weights",
    "class": "O2",
    "group": "read",
-   "baseline": 0.5770833333333333
+   "baseline": 0.6094318181818182
   },
   {
    "item": "O2_mix_5",
    "level": "weights",
    "class": "O2",
    "group": "read",
-   "baseline": 0.6236111111111111
+   "baseline": 0.6247727272727273
   },
   {
    "item": "O2_mix_6",
    "level": "weights",
    "class": "O2",
    "group": "read",
-   "baseline": 0.36156222222222223
+   "baseline": 0.36491454545454544
   },
   {
    "item": "O3_epochs_1",
    "level": "weights",
    "class": "O3",
    "group": "read",
-   "baseline": 0.28295925925925924
+   "baseline": 0.2917848484848485
   },
   {
    "item": "O3_epochs_10",
    "level": "weights",
    "class": "O3",
    "group": "read",
-   "baseline": 0.2822259259222222
+   "baseline": 0.2781848484818182
   },
   {
    "item": "O3_epochs_3",
    "level": "weights",
    "class": "O3",
    "group": "read",
-   "baseline": 0.42185185185185187
+   "baseline": 0.4063606060606061
   },
   {
    "item": "P1_merge_ramp_0",
    "level": "weights",
    "class": "P1",
    "group": "read",
-   "baseline": 0.16111111111111112
+   "baseline": 0.17000000000000004
   },
   {
    "item": "P1_merge_ramp_1",
    "level": "weights",
    "class": "P1",
    "group": "read",
-   "baseline": 0.3488888888888889
+   "baseline": 0.32545454545454544
   },
   {
    "item": "P1_merge_ramp_2",
    "level": "weights",
    "class": "P1",
    "group": "read",
-   "baseline": 0.5566666666666668
+   "baseline": 0.5663636363636364
   },
   {
    "item": "P2_transplant_0",
    "level": "weights",
    "class": "P2",
    "group": "read",
-   "baseline": 0.05555555555555555
+   "baseline": 0.045454545454545456
   },
   {
    "item": "P2_transplant_1",
    "level": "weights",
    "class": "P2",
    "group": "read",
-   "baseline": 0.03439153439153439
+   "baseline": 0.02813852813852814
   },
   {
    "item": "P2_transplant_2",
    "level": "weights",
    "class": "P2",
    "group": "read",
-   "baseline": 0.16666666666666666
+   "baseline": 0.13636363636363635
   },
   {
    "item": "P3_edit_0",
    "level": "weights",
    "class": "P3",
    "group": "read",
-   "baseline": 0.15152592593333333
+   "baseline": 0.15412727273333335
   },
   {
    "item": "P3_edit_1",
    "level": "weights",
    "class": "P3",
    "group": "read",
-   "baseline": 0.1642388888851852
+   "baseline": 0.16528636363333332
   },
   {
    "item": "P3_edit_2",
    "level": "weights",
    "class": "P3",
    "group": "read",
-   "baseline": 0.16451851851851854
+   "baseline": 0.16460606060606062
   },
   {
    "item": "P3_edit_3",
    "level": "weights",
    "class": "P3",
    "group": "read",
-   "baseline": 0.17147959259074075
+   "baseline": 0.1709075454530303
   },
   {
    "item": "P3_edit_4",
    "level": "weights",
    "class": "P3",
    "group": "read",
-   "baseline": 0.16429259259259257
+   "baseline": 0.16457271212121213
   },
   {
    "item": "P3_edit_5",
    "level": "weights",
    "class": "P3",
    "group": "read",
-   "baseline": 0.16448896296296298
+   "baseline": 0.16473642424242424
   },
   {
    "item": "P3o_open_0",
    "level": "weights",
    "class": "P3o",
    "group": "read",
-   "baseline": 0.0
+   "baseline": 0.018181818181818184
   },
   {
    "item": "P3o_open_1",
    "level": "weights",
    "class": "P3o",
    "group": "read",
-   "baseline": 0.15555555555555556
+   "baseline": 0.14545454545454548
   },
   {
    "item": "P3o_open_2",
    "level": "weights",
    "class": "P3o",
    "group": "read",
-   "baseline": 0.13333333333333336
+   "baseline": 0.17272727272727273
   },
   {
    "item": "P3o_open_3",
    "level": "weights",
    "class": "P3o",
    "group": "read",
-   "baseline": 0.14444444444444446
+   "baseline": 0.18181818181818182
   },
   {
    "item": "S2_pair_a",
@@ -1076,28 +1076,28 @@
    "level": "full",
    "class": "S6",
    "group": "read",
-   "baseline": 0.037037037037037035
+   "baseline": 0.0303030303030303
   },
   {
    "item": "S6_trigger_e",
    "level": "weights",
    "class": "S6",
    "group": "read",
-   "baseline": 0.037037037037037035
+   "baseline": 0.0303030303030303
   },
   {
    "item": "S6_trigger_f",
    "level": "full",
    "class": "S6",
    "group": "read",
-   "baseline": 0.018518518518518517
+   "baseline": 0.01515151515151515
   },
   {
    "item": "S6_trigger_f",
    "level": "weights",
    "class": "S6",
    "group": "read",
-   "baseline": 0.018518518518518517
+   "baseline": 0.01515151515151515
   },
   {
    "item": "W1_backdoor_removal",
@@ -1296,19 +1296,19 @@
    "complete": true,
    "coverage": 168,
    "errors": 0,
-   "index": 51.07823300919017,
+   "index": 51.05078779210539,
    "ci": [
-    45.18703052451255,
-    57.069981949435416
+    45.152408427673436,
+    57.00045370191642
    ],
-   "pass_rate": 51.78571428571429,
+   "pass_rate": 51.19047619047619,
    "solved": 26,
    "sub": {
     "read": {
-     "index": 74.22768577308194,
+     "index": 74.12045794819257,
      "ci": [
-      63.094594674305206,
-      84.32503182541258
+      63.00823385613826,
+      84.21857007007823
      ],
      "coverage": 43
     },
@@ -1331,15 +1331,15 @@
    },
    "per_class": {
     "K": 35.84663866687499,
-    "O2": 63.38699355251877,
-    "O3": 31.8282164703424,
-    "P1": 76.53880423546038,
+    "O2": 62.84093828683437,
+    "O3": 31.872136279013546,
+    "P1": 76.28970509170554,
     "P2": 100.0,
-    "P3": 83.77491934867564,
-    "P3o": 62.5,
+    "P3": 83.76935508861828,
+    "P3o": 62.26851851851852,
     "S2": 49.25,
     "S3": 97.0,
-    "S6": 84.87179487179488,
+    "S6": 84.89583333333333,
     "W1": 97.91666666666666,
     "W2": 44.871794871794876,
     "W3": 15.384615384615397,
@@ -1348,7 +1348,7 @@
     "W5": 56.79930188890511
    },
    "mean_of_passes": {
-    "index": 51.07823300919017,
+    "index": 51.05078779210539,
     "passes": 1
    },
    "cost_per_task": 0.6086221034482758,
@@ -1733,19 +1733,19 @@
      null
     ],
     "O2_mix_1|weights": [
-     80.0236841463287,
+     79.92263492891388,
      null
     ],
     "O2_mix_2|weights": [
-     73.98000898208537,
+     73.67455854575276,
      null
     ],
     "O2_mix_3|weights": [
-     68.70379957170852,
+     68.35520579731138,
      null
     ],
     "O2_mix_4|weights": [
-     70.37222463054188,
+     67.91832877509457,
      null
     ],
     "O2_mix_5|weights": [
@@ -1753,15 +1753,15 @@
      null
     ],
     "O2_mix_6|weights": [
-     87.24224398444814,
+     87.17490167393366,
      null
     ],
     "O3_epochs_1|weights": [
-     74.89682388004194,
+     74.58399476276254,
      null
     ],
     "O3_epochs_10|weights": [
-     20.587825530985263,
+     21.03241407427809,
      null
     ],
     "O3_epochs_3|weights": [
@@ -1769,15 +1769,15 @@
      null
     ],
     "P1_merge_ramp_0|weights": [
-     89.27152317880795,
+     89.1566265060241,
      null
     ],
     "P1_merge_ramp_1|weights": [
-     87.71331058020476,
+     88.14016172506737,
      null
     ],
     "P1_merge_ramp_2|weights": [
-     52.631578947368396,
+     51.57232704402514,
      null
     ],
     "P2_transplant_0|weights": [
@@ -1793,31 +1793,31 @@
      null
     ],
     "P3_edit_0|weights": [
-     99.70535340131048,
+     99.70444726264218,
      null
     ],
     "P3_edit_1|weights": [
-     99.94017429222892,
+     99.94009921747818,
      null
     ],
     "P3_edit_2|weights": [
-     99.64092561397287,
+     99.64088798607081,
      null
     ],
     "P3_edit_3|weights": [
-     99.98793029126311,
+     99.9879386189741,
      null
     ],
     "P3_edit_4|weights": [
-     3.973568633360075,
+     3.941370883681896,
      null
     ],
     "P3_edit_5|weights": [
-     99.40156385991841,
+     99.40138656286251,
      null
     ],
     "P3o_open_0|weights": [
-     50.0,
+     49.074074074074076,
      null
     ],
     "P3o_open_1|weights": [
@@ -1893,7 +1893,7 @@
      null
     ],
     "S6_trigger_e|weights": [
-     65.38461538461537,
+     65.625,
      null
     ],
     "S6_trigger_f|full": [
@@ -2039,19 +2039,19 @@
    "complete": true,
    "coverage": 168,
    "errors": 0,
-   "index": 39.00463568402885,
+   "index": 38.97850087908869,
    "ci": [
-    33.295322339823706,
-    44.93254353184841
+    33.28416092972687,
+    44.892963846299665
    ],
    "pass_rate": 40.476190476190474,
    "solved": 10,
    "sub": {
     "read": {
-     "index": 62.73789564877672,
+     "index": 62.63578757366169,
      "ci": [
-      51.07505205404838,
-      73.93418410792323
+      50.993918202298296,
+      73.91517560109016
      ],
      "coverage": 43
     },
@@ -2074,15 +2074,15 @@
    },
    "per_class": {
     "K": 24.90708167904562,
-    "O2": 66.47002354867644,
-    "O3": 23.92061522141687,
-    "P1": 76.7069664306099,
+    "O2": 65.87302109374286,
+    "O3": 23.7821211414312,
+    "P1": 76.5062045125696,
     "P2": 100.0,
-    "P3": 86.44033521077414,
+    "P3": 86.43512702383215,
     "P3o": 50.0,
     "S2": 37.0,
     "S3": 72.5,
-    "S6": 54.03846153846154,
+    "S6": 54.0625,
     "W1": 1.9290123456790094,
     "W2": 14.102564102564113,
     "W3": 64.1025641025641,
@@ -2091,7 +2091,7 @@
     "W5": 56.27493772837573
    },
    "mean_of_passes": {
-    "index": 38.31711527245079,
+    "index": 38.29247906824605,
     "passes": 2
    },
    "cost_per_task": 1.7769464896551725,
@@ -2476,35 +2476,35 @@
      0.0
     ],
     "O2_mix_1|weights": [
-     80.40621308064667,
-     80.35759715344162
+     80.30709886715022,
+     80.2582370186535
     ],
     "O2_mix_2|weights": [
-     88.72715264591761,
-     25.32221580120532
+     88.59481992756099,
+     24.445568236178502
     ],
     "O2_mix_3|weights": [
-     76.18588254308168,
-     73.12976019717568
+     75.9206281999142,
+     72.830465133122
     ],
     "O2_mix_4|weights": [
-     63.37812807881773,
-     58.96591133004926
+     60.34495199301716,
+     55.56729706139073
     ],
     "O2_mix_5|weights": [
      0.0,
      0.0
     ],
     "O2_mix_6|weights": [
-     90.12276494359496,
-     89.9817958419336
+     90.07062757481458,
+     89.92891436227623
     ],
     "O3_epochs_1|weights": [
-     37.24205970010486,
-     55.3721313422968
+     36.459986906906394,
+     54.815990689355665
     ],
     "O3_epochs_10|weights": [
-     34.51978596414575,
+     34.886376517387205,
      0.0
     ],
     "O3_epochs_3|weights": [
@@ -2512,16 +2512,16 @@
      0.0
     ],
     "P1_merge_ramp_0|weights": [
-     92.84768211920532,
-     62.450331125827816
+     92.77108433734941,
+     62.048192771084345
     ],
     "P1_merge_ramp_1|weights": [
-     84.64163822525597,
-     42.71331058020478
+     85.17520215633424,
+     44.703504043126685
     ],
     "P1_merge_ramp_2|weights": [
-     52.631578947368396,
-     61.65413533834585
+     51.57232704402514,
+     60.796645702306066
     ],
     "P2_transplant_0|weights": [
      100.0,
@@ -2536,28 +2536,28 @@
      100.0
     ],
     "P3_edit_0|weights": [
-     98.23212040786275,
-     97.05353401310461
+     98.22668357585299,
+     97.04447262642165
     ],
     "P3_edit_1|weights": [
-     98.20522876686717,
-     98.8034858445781
+     98.20297652434529,
+     98.80198434956353
     ],
     "P3_edit_2|weights": [
-     97.60617075981914,
-     98.20462806986436
+     97.6059199071387,
+     98.20443993035404
     ],
     "P3_edit_3|weights": [
-     98.18954368946635,
-     96.98257281577726
+     98.19079284611313,
+     96.98465474352189
     ],
     "P3_edit_4|weights": [
-     29.401128341037307,
-     25.213059683302237
+     29.3774564752303,
+     25.187983554269387
     ],
     "P3_edit_5|weights": [
-     97.00781929959211,
-     97.00781929959211
+     97.00693281431252,
+     97.00693281431252
     ],
     "P3o_open_0|weights": [
      0.0,
@@ -2565,7 +2565,7 @@
     ],
     "P3o_open_1|weights": [
      100.0,
-     40.78947368421053
+     41.48936170212766
     ],
     "P3o_open_2|weights": [
      0.0,
@@ -2632,7 +2632,7 @@
      0.0
     ],
     "S6_trigger_e|full": [
-     65.38461538461537,
+     65.625,
      0.0
     ],
     "S6_trigger_e|weights": [
@@ -2774,6 +2774,659 @@
    }
   },
   {
+   "id": "claude-opus-5-5-high",
+   "name": "Claude Opus 5.5 (effort high)",
+   "lab": "Anthropic",
+   "open_weights": false,
+   "setting": "effort high",
+   "complete": false,
+   "coverage": 146,
+   "errors": 3,
+   "index": 36.701002088778424,
+   "ci": [
+    30.770167087448666,
+    42.70968961216502
+   ],
+   "pass_rate": 36.986301369863014,
+   "solved": 10,
+   "sub": {
+    "read": {
+     "index": 54.26407818428487,
+     "ci": [
+      43.736053259259954,
+      65.19566498708527
+     ],
+     "coverage": 42
+    },
+    "edit": {
+     "index": 57.723260968046425,
+     "ci": [
+      30.54717637851349,
+      84.35988150299899
+     ],
+     "coverage": 11
+    },
+    "skill": {
+     "index": 26.282786565302953,
+     "ci": [
+      20.037735540363368,
+      32.91991812805504
+     ],
+     "coverage": 93
+    }
+   },
+   "per_class": {
+    "K": 26.282786565302953,
+    "O2": 55.57856248138526,
+    "O3": 10.416066859289742,
+    "P1": 53.57467606274153,
+    "P2": 100.0,
+    "P3": 64.59234781958858,
+    "P3o": 25.0,
+    "S2": 66.5,
+    "S3": 64.0,
+    "S6": 49.76682692307692,
+    "W1": 100.0,
+    "W2": 42.307692307692314,
+    "W3": 0.0,
+    "W4": 61.5810222926023
+   },
+   "mean_of_passes": {
+    "index": 36.701002088778424,
+    "passes": 1
+   },
+   "cost_per_task": 4.726339430263158,
+   "output_tokens_per_task": 92069.34210526316,
+   "minutes_per_task": 39.575986842105266,
+   "runs": 152,
+   "scores": {
+    "K_brick__open|full": [
+     7.158116308831549,
+     null
+    ],
+    "K_c4__open|full": [
+     65.0,
+     null
+    ],
+    "K_calc__open|full": [
+     42.3076923076923,
+     null
+    ],
+    "K_clingo__open|full": [
+     93.61702127659575,
+     null
+    ],
+    "K_code_js__open|full": [
+     0.0,
+     null
+    ],
+    "K_code_lua__open|full": [
+     1.4084507042253518,
+     null
+    ],
+    "K_code_py__open|full": [
+     4.9999999999999964,
+     null
+    ],
+    "K_countdown__open|full": [
+     12.060301507537687,
+     null
+    ],
+    "K_countdown__open__examples|full": [
+     15.577889447236181,
+     null
+    ],
+    "K_deck__open|full": [
+     26.13761049872268,
+     null
+    ],
+    "K_excel__open|full": [
+     96.15384615384615,
+     null
+    ],
+    "K_facts__open|full": [
+     95.83333333333334,
+     null
+    ],
+    "K_if_q25__open|full": [
+     72.3076923076923,
+     null
+    ],
+    "K_if_q25__open__donor|full": [
+     7.692307692307694,
+     null
+    ],
+    "K_if_q3__hand|full": [
+     16.02209944751381,
+     null
+    ],
+    "K_if_q3__onestep|full": [
+     5.524861878453037,
+     null
+    ],
+    "K_if_q3__open|full": [
+     60.22099447513812,
+     null
+    ],
+    "K_if_q3__search|full": [
+     20.994475138121544,
+     null
+    ],
+    "K_math__open|full": [
+     23.952095808383227,
+     null
+    ],
+    "K_mple_clj__open|full": [
+     1.2658227848101267,
+     null
+    ],
+    "K_mple_cpp__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_cs__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_d__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_elixir__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_go__open|full": [
+     1.470588235294118,
+     null
+    ],
+    "K_mple_hs__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_java__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_jl__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_ml__open|full": [
+     4.10958904109589,
+     null
+    ],
+    "K_mple_php__open|full": [
+     3.1249999999999996,
+     null
+    ],
+    "K_mple_pl__open|full": [
+     6.756756756756757,
+     null
+    ],
+    "K_mple_r__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_rb__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_rkt__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_rs__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_scala__open|full": [
+     2.7397260273972597,
+     null
+    ],
+    "K_mple_sh__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_swift__open|full": [
+     2.8169014084507054,
+     null
+    ],
+    "K_mple_ts__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_ada__open|full": [
+     5.555555555555554,
+     null
+    ],
+    "K_prog_algol68__open|full": [
+     15.0,
+     null
+    ],
+    "K_prog_awk__open|full": [
+     5.2631578947368425,
+     null
+    ],
+    "K_prog_basic__open|full": [
+     30.0,
+     null
+    ],
+    "K_prog_c__open|full": [
+     28.571428571428566,
+     null
+    ],
+    "K_prog_cobol__open|full": [
+     5.0,
+     null
+    ],
+    "K_prog_commonlisp__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_crystal__open|full": [
+     70.0,
+     null
+    ],
+    "K_prog_erlang__open|full": [
+     35.0,
+     null
+    ],
+    "K_prog_forth__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_fortran__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_go__open|full": [
+     52.94117647058824,
+     null
+    ],
+    "K_prog_golfscript__open|full": [
+     20.0,
+     null
+    ],
+    "K_prog_haskell__open|full": [
+     5.555555555555554,
+     null
+    ],
+    "K_prog_haxe__open|full": [
+     40.0,
+     null
+    ],
+    "K_prog_java__open|full": [
+     79.99999999999999,
+     null
+    ],
+    "K_prog_kotlin__open|full": [
+     11.111111111111098,
+     null
+    ],
+    "K_prog_lua__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_nim__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_ocaml__open|full": [
+     11.764705882352942,
+     null
+    ],
+    "K_prog_octave__open|full": [
+     40.0,
+     null
+    ],
+    "K_prog_pascal__open|full": [
+     23.076923076923077,
+     null
+    ],
+    "K_prog_perl__open|full": [
+     24.99999999999997,
+     null
+    ],
+    "K_prog_pike__open|full": [
+     85.0,
+     null
+    ],
+    "K_prog_prolog__open|full": [
+     25.0,
+     null
+    ],
+    "K_prog_python__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_r__open|full": [
+     25.0,
+     null
+    ],
+    "K_prog_ruby__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_rust__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_scheme__open|full": [
+     5.882352941176473,
+     null
+    ],
+    "K_prog_shakespeare__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_sml__open|full": [
+     50.0,
+     null
+    ],
+    "K_prog_sql__open|full": [
+     15.0,
+     null
+    ],
+    "K_prog_tcl__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_vala__open|full": [
+     40.0,
+     null
+    ],
+    "K_scad__open|full": [
+     100.0,
+     null
+    ],
+    "K_slides__open|full": [
+     26.086956521739108,
+     null
+    ],
+    "K_sql__hand|full": [
+     41.41414141414141,
+     null
+    ],
+    "K_sql__onestep|full": [
+     0.0,
+     null
+    ],
+    "K_sql__open|full": [
+     54.54545454545454,
+     null
+    ],
+    "K_sql__open__examples|full": [
+     97.979797979798,
+     null
+    ],
+    "K_sql__search|full": [
+     95.95959595959597,
+     null
+    ],
+    "K_svg__open|full": [
+     41.47727272727273,
+     null
+    ],
+    "K_tool__hand|full": [
+     0.0,
+     null
+    ],
+    "K_tool__onestep|full": [
+     7.142857142857142,
+     null
+    ],
+    "K_tool__open|full": [
+     80.95238095238095,
+     null
+    ],
+    "K_tool__open__donor|full": [
+     83.33333333333334,
+     null
+    ],
+    "K_tool__open__examples|full": [
+     85.71428571428571,
+     null
+    ],
+    "K_tool__search|full": [
+     76.19047619047619,
+     null
+    ],
+    "K_ttt__hand|full": [
+     0.8620689655172412,
+     null
+    ],
+    "K_ttt__onestep|full": [
+     32.758620689655174,
+     null
+    ],
+    "K_ttt__search|full": [
+     82.75862068965517,
+     null
+    ],
+    "K_video__open|full": [
+     98.14814814814815,
+     null
+    ],
+    "K_writing__open|full": [
+     0.0,
+     null
+    ],
+    "O2_mix_1|weights": [
+     79.32355714257055,
+     null
+    ],
+    "O2_mix_2|weights": [
+     24.68912731497301,
+     null
+    ],
+    "O2_mix_3|weights": [
+     78.40716000824528,
+     null
+    ],
+    "O2_mix_4|weights": [
+     58.54501018329938,
+     null
+    ],
+    "O2_mix_5|weights": [
+     0.0,
+     null
+    ],
+    "O2_mix_6|weights": [
+     92.50652023922335,
+     null
+    ],
+    "O3_epochs_1|weights": [
+     18.103983124457127,
+     null
+    ],
+    "O3_epochs_10|weights": [
+     5.793055386858077,
+     null
+    ],
+    "O3_epochs_3|weights": [
+     7.351162066554022,
+     null
+    ],
+    "P1_merge_ramp_0|weights": [
+     59.03614457831324,
+     null
+    ],
+    "P1_merge_ramp_1|weights": [
+     48.113207547169814,
+     null
+    ],
+    "P2_transplant_0|weights": [
+     100.0,
+     null
+    ],
+    "P2_transplant_1|weights": [
+     100.0,
+     null
+    ],
+    "P2_transplant_2|weights": [
+     100.0,
+     null
+    ],
+    "P3_edit_0|weights": [
+     91.13341787926498,
+     null
+    ],
+    "P3_edit_1|weights": [
+     97.00496087390881,
+     null
+    ],
+    "P3_edit_2|weights": [
+     91.02219965177018,
+     null
+    ],
+    "P3_edit_3|weights": [
+     95.17544758963503,
+     null
+    ],
+    "P3_edit_4|weights": [
+     13.218060922952493,
+     null
+    ],
+    "P3_edit_5|weights": [
+     0.0,
+     null
+    ],
+    "P3o_open_0|weights": [
+     0.0,
+     null
+    ],
+    "P3o_open_1|weights": [
+     0.0,
+     null
+    ],
+    "P3o_open_2|weights": [
+     0.0,
+     null
+    ],
+    "P3o_open_3|weights": [
+     100.0,
+     null
+    ],
+    "S2_pair_a|internals": [
+     76.0,
+     null
+    ],
+    "S2_pair_a|weights": [
+     60.00000000000001,
+     null
+    ],
+    "S2_pair_b|internals": [
+     80.0,
+     null
+    ],
+    "S2_pair_b|weights": [
+     50.0,
+     null
+    ],
+    "S3_pair_a|internals": [
+     70.0,
+     null
+    ],
+    "S3_pair_a|weights": [
+     60.00000000000001,
+     null
+    ],
+    "S3_pair_b|internals": [
+     56.00000000000001,
+     null
+    ],
+    "S3_pair_b|weights": [
+     70.0,
+     null
+    ],
+    "S6_trigger|full": [
+     50.0,
+     null
+    ],
+    "S6_trigger|weights": [
+     50.0,
+     null
+    ],
+    "S6_trigger_c|full": [
+     50.0,
+     null
+    ],
+    "S6_trigger_c|weights": [
+     50.0,
+     null
+    ],
+    "S6_trigger_d|full": [
+     0.0,
+     null
+    ],
+    "S6_trigger_d|weights": [
+     100.0,
+     null
+    ],
+    "S6_trigger_e|full": [
+     48.4375,
+     null
+    ],
+    "S6_trigger_e|weights": [
+     0.0,
+     null
+    ],
+    "S6_trigger_f|full": [
+     49.23076923076923,
+     null
+    ],
+    "S6_trigger_f|weights": [
+     100.0,
+     null
+    ],
+    "W1_backdoor_removal|full": [
+     100.0,
+     null
+    ],
+    "W2_sparse_transplant|full": [
+     42.307692307692314,
+     null
+    ],
+    "W3_add_math|full": [
+     0.0,
+     null
+    ],
+    "W4_assoc_0|full": [
+     97.47889588227423,
+     null
+    ],
+    "W4_assoc_1|full": [
+     0.0,
+     null
+    ],
+    "W4_assoc_1|weights": [
+     98.27154497162809,
+     null
+    ],
+    "W4_assoc_2|full": [
+     0.0,
+     null
+    ],
+    "W4_assoc_2|weights": [
+     0.0,
+     null
+    ],
+    "W4_assoc_3|full": [
+     100.0,
+     null
+    ],
+    "W4_assoc_3|weights": [
+     97.16815791269991,
+     null
+    ],
+    "W4_assoc_4|weights": [
+     99.72957957421613,
+     null
+    ]
+   }
+  },
+  {
    "id": "gpt-6.1-terra",
    "name": "GPT-6.1 Terra",
    "lab": "OpenAI",
@@ -2782,19 +3435,19 @@
    "complete": true,
    "coverage": 168,
    "errors": 0,
-   "index": 28.982385082340915,
+   "index": 28.966366965329325,
    "ci": [
-    23.55501414747033,
-    34.66932531772083
+    23.54577833676279,
+    34.64370559050387
    ],
    "pass_rate": 29.761904761904763,
    "solved": 14,
    "sub": {
     "read": {
-     "index": 53.4175515337597,
+     "index": 53.354969123109775,
      "ci": [
-      41.64449413231927,
-      65.52775915992204
+      41.66921772029505,
+      65.39499616173985
      ],
      "coverage": 43
     },
@@ -2817,15 +3470,15 @@
    },
    "per_class": {
     "K": 14.524044426635257,
-    "O2": 52.35525399933175,
-    "O3": 16.036728592782403,
-    "P1": 61.98260325451423,
+    "O2": 51.53724544254621,
+    "O3": 16.488090072706786,
+    "P1": 62.11278176497543,
     "P2": 100.0,
-    "P3": 83.22862933295414,
+    "P3": 83.22859308072849,
     "P3o": 50.0,
     "S2": 42.25,
     "S3": 49.9,
-    "S6": 38.07934204160619,
+    "S6": 38.12660256410256,
     "W1": 93.22916666666666,
     "W2": 71.7948717948718,
     "W3": 25.64102564102563,
@@ -2834,7 +3487,7 @@
     "W5": 9.739728837590357
    },
    "mean_of_passes": {
-    "index": 28.982385082340915,
+    "index": 28.966366965329325,
     "passes": 1
    },
    "cost_per_task": 0.11814430919540231,
@@ -3219,19 +3872,19 @@
      null
     ],
     "O2_mix_1|weights": [
-     81.87174804752162,
+     81.78004717102795,
      null
     ],
     "O2_mix_2|weights": [
-     18.16498307603402,
+     17.204316271441268,
      null
     ],
     "O2_mix_3|weights": [
-     68.65788197741368,
+     68.30877674835791,
      null
     ],
     "O2_mix_4|weights": [
-     58.49456551724139,
+     55.056912423625256,
      null
     ],
     "O2_mix_5|weights": [
@@ -3239,7 +3892,7 @@
      null
     ],
     "O2_mix_6|weights": [
-     86.9423453777798,
+     86.87342004082487,
      null
     ],
     "O3_epochs_1|weights": [
@@ -3251,19 +3904,19 @@
      null
     ],
     "O3_epochs_3|weights": [
-     48.11018577834721,
+     49.46427021812036,
      null
     ],
     "P1_merge_ramp_0|weights": [
-     80.9271523178808,
+     80.72289156626505,
      null
     ],
     "P1_merge_ramp_1|weights": [
-     52.38907849829351,
+     54.043126684636114,
      null
     ],
     "P1_merge_ramp_2|weights": [
-     52.631578947368396,
+     51.57232704402514,
      null
     ],
     "P2_transplant_0|weights": [
@@ -3279,19 +3932,19 @@
      null
     ],
     "P3_edit_0|weights": [
-     99.98821413605242,
+     99.9881778905057,
      null
     ],
     "P3_edit_1|weights": [
-     99.9940174292229,
+     99.9940099217478,
      null
     ],
     "P3_edit_2|weights": [
-     99.99401542689955,
+     99.99401479976785,
      null
     ],
     "P3_edit_3|weights": [
-     99.99396514563156,
+     99.99396930948704,
      null
     ],
     "P3_edit_4|weights": [
@@ -3299,7 +3952,7 @@
      null
     ],
     "P3_edit_5|weights": [
-     99.40156385991841,
+     99.40138656286251,
      null
     ],
     "P3o_open_0|weights": [
@@ -3379,11 +4032,11 @@
      null
     ],
     "S6_trigger_e|weights": [
-     65.38461538461537,
+     65.625,
      null
     ],
     "S6_trigger_f|full": [
-     32.0754716981132,
+     32.30769230769231,
      null
     ],
     "S6_trigger_f|weights": [
@@ -3511,364 +4164,6 @@
      null
     ],
     "W5_phrase_2|weights": [
-     0.0,
-     null
-    ]
-   }
-  },
-  {
-   "id": "claude-opus-5-5-high",
-   "name": "Claude Opus 5.5 (effort high)",
-   "lab": "Anthropic",
-   "open_weights": false,
-   "setting": "effort high",
-   "complete": false,
-   "coverage": 77,
-   "errors": 1,
-   "index": 20.863327760191485,
-   "ci": [
-    14.711945159632387,
-    27.052733749810226
-   ],
-   "pass_rate": 15.584415584415584,
-   "solved": 1,
-   "sub": {
-    "read": {
-     "index": null,
-     "ci": null,
-     "coverage": 0
-    },
-    "edit": {
-     "index": null,
-     "ci": null,
-     "coverage": 0
-    },
-    "skill": {
-     "index": 20.863327760191485,
-     "ci": [
-      14.711945159632387,
-      27.052733749810226
-     ],
-     "coverage": 77
-    }
-   },
-   "per_class": {
-    "K": 20.863327760191485
-   },
-   "mean_of_passes": {
-    "index": 20.863327760191485,
-    "passes": 1
-   },
-   "cost_per_task": 6.983519166233767,
-   "output_tokens_per_task": 131090.7012987013,
-   "minutes_per_task": 61.98268398268398,
-   "runs": 77,
-   "scores": {
-    "K_brick__open|full": [
-     7.158116308831549,
-     null
-    ],
-    "K_c4__open|full": [
-     65.0,
-     null
-    ],
-    "K_calc__open|full": [
-     42.3076923076923,
-     null
-    ],
-    "K_clingo__open|full": [
-     93.61702127659575,
-     null
-    ],
-    "K_code_js__open|full": [
-     0.0,
-     null
-    ],
-    "K_code_lua__open|full": [
-     1.4084507042253518,
-     null
-    ],
-    "K_code_py__open|full": [
-     4.9999999999999964,
-     null
-    ],
-    "K_countdown__open|full": [
-     12.060301507537687,
-     null
-    ],
-    "K_countdown__open__examples|full": [
-     15.577889447236181,
-     null
-    ],
-    "K_deck__open|full": [
-     26.13761049872268,
-     null
-    ],
-    "K_excel__open|full": [
-     96.15384615384615,
-     null
-    ],
-    "K_facts__open|full": [
-     95.83333333333334,
-     null
-    ],
-    "K_if_q25__open|full": [
-     72.3076923076923,
-     null
-    ],
-    "K_if_q25__open__donor|full": [
-     7.692307692307694,
-     null
-    ],
-    "K_if_q3__hand|full": [
-     16.02209944751381,
-     null
-    ],
-    "K_if_q3__onestep|full": [
-     5.524861878453037,
-     null
-    ],
-    "K_if_q3__open|full": [
-     60.22099447513812,
-     null
-    ],
-    "K_if_q3__search|full": [
-     20.994475138121544,
-     null
-    ],
-    "K_math__open|full": [
-     23.952095808383227,
-     null
-    ],
-    "K_mple_clj__open|full": [
-     1.2658227848101267,
-     null
-    ],
-    "K_mple_cpp__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_cs__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_d__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_elixir__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_go__open|full": [
-     1.470588235294118,
-     null
-    ],
-    "K_mple_hs__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_java__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_jl__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_ml__open|full": [
-     4.10958904109589,
-     null
-    ],
-    "K_mple_php__open|full": [
-     3.1249999999999996,
-     null
-    ],
-    "K_mple_pl__open|full": [
-     6.756756756756757,
-     null
-    ],
-    "K_mple_r__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_rb__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_rkt__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_rs__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_scala__open|full": [
-     2.7397260273972597,
-     null
-    ],
-    "K_mple_sh__open|full": [
-     0.0,
-     null
-    ],
-    "K_mple_swift__open|full": [
-     2.8169014084507054,
-     null
-    ],
-    "K_mple_ts__open|full": [
-     0.0,
-     null
-    ],
-    "K_prog_ada__open|full": [
-     5.555555555555554,
-     null
-    ],
-    "K_prog_algol68__open|full": [
-     15.0,
-     null
-    ],
-    "K_prog_awk__open|full": [
-     5.2631578947368425,
-     null
-    ],
-    "K_prog_basic__open|full": [
-     30.0,
-     null
-    ],
-    "K_prog_c__open|full": [
-     28.571428571428566,
-     null
-    ],
-    "K_prog_cobol__open|full": [
-     5.0,
-     null
-    ],
-    "K_prog_crystal__open|full": [
-     70.0,
-     null
-    ],
-    "K_prog_erlang__open|full": [
-     35.0,
-     null
-    ],
-    "K_prog_forth__open|full": [
-     0.0,
-     null
-    ],
-    "K_prog_fortran__open|full": [
-     0.0,
-     null
-    ],
-    "K_prog_go__open|full": [
-     52.94117647058824,
-     null
-    ],
-    "K_prog_golfscript__open|full": [
-     20.0,
-     null
-    ],
-    "K_prog_haskell__open|full": [
-     5.555555555555554,
-     null
-    ],
-    "K_prog_haxe__open|full": [
-     40.0,
-     null
-    ],
-    "K_prog_java__open|full": [
-     79.99999999999999,
-     null
-    ],
-    "K_prog_kotlin__open|full": [
-     11.111111111111098,
-     null
-    ],
-    "K_prog_lua__open|full": [
-     0.0,
-     null
-    ],
-    "K_prog_nim__open|full": [
-     0.0,
-     null
-    ],
-    "K_prog_ocaml__open|full": [
-     11.764705882352942,
-     null
-    ],
-    "K_prog_octave__open|full": [
-     40.0,
-     null
-    ],
-    "K_prog_pascal__open|full": [
-     23.076923076923077,
-     null
-    ],
-    "K_prog_perl__open|full": [
-     24.99999999999997,
-     null
-    ],
-    "K_prog_pike__open|full": [
-     85.0,
-     null
-    ],
-    "K_prog_prolog__open|full": [
-     25.0,
-     null
-    ],
-    "K_prog_python__open|full": [
-     0.0,
-     null
-    ],
-    "K_prog_r__open|full": [
-     25.0,
-     null
-    ],
-    "K_prog_ruby__open|full": [
-     0.0,
-     null
-    ],
-    "K_prog_rust__open|full": [
-     0.0,
-     null
-    ],
-    "K_prog_scheme__open|full": [
-     5.882352941176473,
-     null
-    ],
-    "K_prog_shakespeare__open|full": [
-     0.0,
-     null
-    ],
-    "K_prog_sml__open|full": [
-     50.0,
-     null
-    ],
-    "K_prog_sql__open|full": [
-     15.0,
-     null
-    ],
-    "K_prog_tcl__open|full": [
-     0.0,
-     null
-    ],
-    "K_prog_vala__open|full": [
-     40.0,
-     null
-    ],
-    "K_scad__open|full": [
-     100.0,
-     null
-    ],
-    "K_slides__open|full": [
-     26.086956521739108,
-     null
-    ],
-    "K_sql__hand|full": [
-     41.41414141414141,
-     null
-    ],
-    "K_sql__onestep|full": [
      0.0,
      null
     ]
@@ -4049,19 +4344,19 @@
    "complete": true,
    "coverage": 168,
    "errors": 0,
-   "index": 10.90662798969225,
+   "index": 10.889150642988767,
    "ci": [
-    7.410331076742046,
-    14.830459641520104
+    7.376731100670321,
+    14.810674696836896
    ],
    "pass_rate": 11.904761904761903,
    "solved": 1,
    "sub": {
     "read": {
-     "index": 13.009705547557521,
+     "index": 12.94142196043693,
      "ci": [
-      5.483361573129497,
-      22.073176595579312
+      5.456175681461591,
+      22.003340628766942
      ],
      "coverage": 43
     },
@@ -4084,11 +4379,11 @@
    },
    "per_class": {
     "K": 5.305376797903779,
-    "O2": 12.594225952005532,
-    "O3": 1.6176047597169525,
-    "P1": 63.9293433955569,
+    "O2": 12.572729415559444,
+    "O3": 1.3940808437339176,
+    "P1": 63.36150231353687,
     "P2": 0.0,
-    "P3": 2.868523061186436,
+    "P3": 2.7963363889364916,
     "P3o": 25.0,
     "S2": 15.000000000000002,
     "S3": 15.000000000000002,
@@ -4101,7 +4396,7 @@
     "W5": 11.295400587992233
    },
    "mean_of_passes": {
-    "index": 11.53968523193148,
+    "index": 11.528319745446488,
     "passes": 2
    },
    "cost_per_task": 0.15115921724137932,
@@ -4506,32 +4801,32 @@
      0.0
     ],
     "O2_mix_6|weights": [
-     75.5653557120332,
+     75.43637649335666,
      0.0
     ],
     "O3_epochs_1|weights": [
-     2.376537311274219,
+     1.1599796329654992,
      0.0
     ],
     "O3_epochs_10|weights": [
-     2.4762769678766383,
-     16.408237401037123
+     3.0222628982362534,
+     16.876225341345364
     ],
     "O3_epochs_3|weights": [
      0.0,
      0.0
     ],
     "P1_merge_ramp_0|weights": [
-     76.15894039735099,
-     86.88741721854305
+     75.90361445783132,
+     86.74698795180723
     ],
     "P1_merge_ramp_1|weights": [
-     92.32081911262799,
-     90.78498293515358
+     92.58760107816711,
+     91.10512129380052
     ],
     "P1_merge_ramp_2|weights": [
-     23.308270676691723,
-     16.541353383458656
+     21.59329140461216,
+     14.675052410901488
     ],
     "P2_transplant_0|weights": [
      0.0,
@@ -4539,19 +4834,19 @@
     ],
     "P2_transplant_1|weights": [
      0.0,
-     48.219178082191775
+     48.55233853006681
     ],
     "P2_transplant_2|weights": [
      0.0,
      0.0
     ],
     "P3_edit_0|weights": [
-     8.659554406242663,
-     82.3212040786276
+     8.378651419071417,
+     82.26683575852995
     ],
     "P3_edit_1|weights": [
-     4.278867566249088,
-     95.8122004560234
+     4.158747965082715,
+     95.80694522347238
     ],
     "P3_edit_2|weights": [
      0.0,
@@ -4559,10 +4854,10 @@
     ],
     "P3_edit_3|weights": [
      0.0,
-     9.477184473317745
+     9.539642305656631
     ],
     "P3_edit_4|weights": [
-     4.272716394626866,
+     4.240618949464818,
      0.0
     ],
     "P3_edit_5|weights": [
@@ -4792,19 +5087,19 @@
    "complete": true,
    "coverage": 168,
    "errors": 0,
-   "index": 10.371067495445178,
+   "index": 10.373951510175695,
    "ci": [
-    6.632686640422742,
-    14.402595902371777
+    6.641508588749854,
+    14.414448421633148
    ],
    "pass_rate": 10.119047619047619,
    "solved": 2,
    "sub": {
     "read": {
-     "index": 15.28693586589428,
+     "index": 15.298203644376304,
      "ci": [
-      7.245627833122385,
-      24.945925667749652
+      7.258401727506504,
+      24.950213999438137
      ],
      "coverage": 43
     },
@@ -4827,15 +5122,15 @@
    },
    "per_class": {
     "K": 0.4584201991439255,
-    "O2": 12.424612675087372,
-    "O3": 3.0108008030330016,
-    "P1": 69.9767772617358,
-    "P2": 6.862745098039216,
-    "P3": 17.017678307332964,
+    "O2": 12.374814916057312,
+    "O3": 2.779477088044829,
+    "P1": 70.10251247577914,
+    "P2": 7.142857142857142,
+    "P3": 16.97184297683745,
     "P3o": 25.0,
     "S2": 10.999999999999998,
     "S3": 0.0,
-    "S6": 9.713352685050797,
+    "S6": 9.766826923076923,
     "W1": 98.95833333333334,
     "W2": 1.2820512820512833,
     "W3": 8.974358974358982,
@@ -4844,7 +5139,7 @@
     "W5": 13.344753254013312
    },
    "mean_of_passes": {
-    "index": 8.789312422714733,
+    "index": 8.788529592226812,
     "passes": 2
    },
    "cost_per_task": 0.01901602896551724,
@@ -5233,12 +5528,12 @@
      0.0
     ],
     "O2_mix_2|weights": [
-     74.54767605052423,
+     74.24888949634388,
      0.0
     ],
     "O2_mix_3|weights": [
      0.0,
-     66.66599325238893
+     66.29470130420007
     ],
     "O2_mix_4|weights": [
      0.0,
@@ -5253,31 +5548,31 @@
      0.0
     ],
     "O3_epochs_1|weights": [
-     2.376537311274219,
-     2.376537311274219
+     1.1599796329654992,
+     1.1599796329654992
     ],
     "O3_epochs_10|weights": [
-     6.655865097824785,
-     9.442257184456878
+     7.178451631168989,
+     9.949244119790805
     ],
     "O3_epochs_3|weights": [
      0.0,
      0.0
     ],
     "P1_merge_ramp_0|weights": [
-     90.46357615894041,
-     91.65562913907283
+     90.36144578313254,
+     91.56626506024097
     ],
     "P1_merge_ramp_1|weights": [
-     60.06825938566552,
-     53.92491467576791
+     61.455525606468996,
+     55.52560646900269
     ],
     "P1_merge_ramp_2|weights": [
-     59.3984962406015,
-     59.3984962406015
+     58.49056603773586,
+     58.49056603773586
     ],
     "P2_transplant_0|weights": [
-     20.58823529411765,
+     21.428571428571427,
      0.0
     ],
     "P2_transplant_1|weights": [
@@ -5289,24 +5584,24 @@
      0.0
     ],
     "P3_edit_0|weights": [
-     2.7666224324518653,
-     2.7666224324518653
+     2.4675966719147313,
+     2.4675966719147313
     ],
     "P3_edit_1|weights": [
-     91.6244009120468,
-     88.03485844578114
+     91.61389044694474,
+     88.01984349563533
     ],
     "P3_edit_2|weights": [
      0.0,
-     0.05762922244879747
+     0.04715612304120684
     ],
     "P3_edit_3|weights": [
-     3.442330104872264,
-     9.477184473317745
+     3.5089517927004086,
+     9.539642305656631
     ],
     "P3_edit_4|weights": [
-     4.272716394626866,
-     76.06817909865671
+     4.240618949464818,
+     76.0601547373662
     ],
     "P3_edit_5|weights": [
      0.0,
@@ -5385,7 +5680,7 @@
      0.0
     ],
     "S6_trigger_e|full": [
-     48.07692307692307,
+     48.4375,
      0.0
     ],
     "S6_trigger_e|weights": [
@@ -5393,7 +5688,7 @@
      0.0
     ],
     "S6_trigger_f|full": [
-     49.056603773584904,
+     49.23076923076923,
      0.0
     ],
     "S6_trigger_f|weights": [
@@ -5535,19 +5830,19 @@
    "complete": true,
    "coverage": 168,
    "errors": 0,
-   "index": 7.506462315466833,
+   "index": 7.51107314047933,
    "ci": [
-    4.561787532066772,
-    10.738012940770496
+    4.561645440260684,
+    10.748601232969907
    ],
    "pass_rate": 5.952380952380952,
    "solved": 1,
    "sub": {
     "read": {
-     "index": 17.065713693334775,
+     "index": 17.083728079430113,
      "ci": [
-      8.144615475524713,
-      27.222922921702654
+      8.171045988461387,
+      27.230394045845077
      ],
      "coverage": 43
     },
@@ -5571,10 +5866,10 @@
    "per_class": {
     "K": 2.8590840510173647,
     "O2": 0.0,
-    "O3": 22.68521357930038,
-    "P1": 32.53863134657836,
+    "O3": 23.026337954800074,
+    "P1": 32.53012048192771,
     "P2": 0.0,
-    "P3": 28.025692339293176,
+    "P3": 27.988488684218584,
     "P3o": 25.0,
     "S2": 31.0,
     "S3": 44.0,
@@ -5587,7 +5882,7 @@
     "W5": 3.3194529846709684
    },
    "mean_of_passes": {
-    "index": 7.4948084167262365,
+    "index": 7.4994192417387335,
     "passes": 2
    },
    "cost_per_task": 0.834940566,
@@ -5996,7 +6291,7 @@
      null
     ],
     "O3_epochs_1|weights": [
-     37.24205970010486,
+     36.459986906906394,
      null
     ],
     "O3_epochs_10|weights": [
@@ -6004,11 +6299,11 @@
      null
     ],
     "O3_epochs_3|weights": [
-     30.813581037796283,
+     32.61902695749383,
      null
     ],
     "P1_merge_ramp_0|weights": [
-     97.6158940397351,
+     97.59036144578313,
      null
     ],
     "P1_merge_ramp_1|weights": [
@@ -6032,11 +6327,11 @@
      null
     ],
     "P3_edit_0|weights": [
-     35.17774828830125,
+     34.97839778127649,
      null
     ],
     "P3_edit_1|weights": [
-     95.8122004560234,
+     95.80694522347238,
      null
     ],
     "P3_edit_2|weights": [
@@ -6052,7 +6347,7 @@
      null
     ],
     "P3_edit_5|weights": [
-     37.164205291434406,
+     37.14558910056263,
      null
     ],
     "P3o_open_0|weights": [
@@ -6278,19 +6573,19 @@
    "complete": true,
    "coverage": 168,
    "errors": 0,
-   "index": 6.792554522405457,
+   "index": 6.788582805125019,
    "ci": [
-    3.9057886858301782,
-    10.085876109209062
+    3.8933960097820735,
+    10.103853185122242
    ],
    "pass_rate": 5.952380952380952,
    "solved": 1,
    "sub": {
     "read": {
-     "index": 16.61024174892796,
+     "index": 16.59472434187881,
      "ci": [
-      7.9347304385052775,
-      26.08891193645675
+      7.856617336261868,
+      26.080250524647788
      ],
      "coverage": 43
     },
@@ -6314,10 +6609,10 @@
    "per_class": {
     "K": 1.1410309798044451,
     "O2": 0.0,
-    "O3": 40.87426740776682,
-    "P1": 63.746103839713655,
-    "P2": 5.098039215686275,
-    "P3": 37.514193969067016,
+    "O3": 40.97210832162255,
+    "P1": 63.13249403724512,
+    "P2": 5.396825396825396,
+    "P3": 37.5114772389516,
     "P3o": 0.0,
     "S2": 0.0,
     "S3": 40.0,
@@ -6330,7 +6625,7 @@
     "W5": 2.2914557296140456
    },
    "mean_of_passes": {
-    "index": 6.792554522405457,
+    "index": 6.788582805125019,
     "passes": 1
    },
    "cost_per_task": 0.008459042906976744,
@@ -6739,31 +7034,31 @@
      null
     ],
     "O3_epochs_1|weights": [
-     2.376537311274219,
+     1.1599796329654992,
      null
     ],
     "O3_epochs_10|weights": [
-     72.13607913367905,
+     72.29207511378179,
      null
     ],
     "O3_epochs_3|weights": [
-     48.11018577834721,
+     49.46427021812036,
      null
     ],
     "P1_merge_ramp_0|weights": [
-     86.88741721854306,
+     86.74698795180724,
      null
     ],
     "P1_merge_ramp_1|weights": [
-     92.32081911262799,
+     92.58760107816711,
      null
     ],
     "P1_merge_ramp_2|weights": [
-     12.030075187969905,
+     10.062893081760995,
      null
     ],
     "P2_transplant_0|weights": [
-     15.294117647058824,
+     16.19047619047619,
      null
     ],
     "P2_transplant_1|weights": [
@@ -6779,7 +7074,7 @@
      null
     ],
     "P3_edit_1|weights": [
-     99.94017429222892,
+     99.94009921747818,
      null
     ],
     "P3_edit_2|weights": [
@@ -6787,7 +7082,7 @@
      null
     ],
     "P3_edit_3|weights": [
-     93.96514563155452,
+     93.96930948704377,
      null
     ],
     "P3_edit_4|weights": [
@@ -6795,7 +7090,7 @@
      null
     ],
     "P3_edit_5|weights": [
-     31.179843890618642,
+     31.159454729187647,
      null
     ],
     "P3o_open_0|weights": [
@@ -7021,19 +7316,19 @@
    "complete": true,
    "coverage": 168,
    "errors": 0,
-   "index": 4.474663522216331,
+   "index": 4.464929058637932,
    "ci": [
-    2.1485892781230627,
-    7.1763605966561475
+    2.1507259869179784,
+    7.172588487124875
    ],
    "pass_rate": 3.571428571428571,
    "solved": 2,
    "sub": {
     "read": {
-     "index": 13.927855817458163,
+     "index": 13.889823494640233,
      "ci": [
-      5.901203127447211,
-      23.46628632548536
+      5.810822352479917,
+      23.424619125320444
      ],
      "coverage": 43
     },
@@ -7057,10 +7352,10 @@
    "per_class": {
     "K": 1.576163016162839,
     "O2": 0.0,
-    "O3": 33.218022635062994,
-    "P1": 40.40207201547027,
+    "O3": 33.22103171159582,
+    "P1": 39.84094509213855,
     "P2": 0.0,
-    "P3": 21.672919366516872,
+    "P3": 21.679413309721152,
     "P3o": 25.0,
     "S2": 15.999999999999998,
     "S3": 21.000000000000004,
@@ -7073,7 +7368,7 @@
     "W5": 0.0
    },
    "mean_of_passes": {
-    "index": 4.474663522216331,
+    "index": 4.464929058637932,
     "passes": 1
    },
    "cost_per_task": 0.1792217921142857,
@@ -7490,19 +7785,19 @@
      null
     ],
     "O3_epochs_3|weights": [
-     99.65406790518898,
+     99.66309513478747,
      null
     ],
     "P1_merge_ramp_0|weights": [
-     36.82119205298013,
+     36.144578313253014,
      null
     ],
     "P1_merge_ramp_1|weights": [
-     72.35494880546074,
+     73.31536388140161,
      null
     ],
     "P1_merge_ramp_2|weights": [
-     12.03007518796993,
+     10.06289308176102,
      null
     ],
     "P2_transplant_0|weights": [
@@ -7522,7 +7817,7 @@
      null
     ],
     "P3_edit_1|weights": [
-     95.21394337831245,
+     95.20793739825413,
      null
     ],
     "P3_edit_2|weights": [
@@ -7530,7 +7825,7 @@
      null
     ],
     "P3_edit_3|weights": [
-     34.823572820788776,
+     34.86854246007278,
      null
     ],
     "P3_edit_4|weights": [
@@ -7764,19 +8059,19 @@
    "complete": true,
    "coverage": 168,
    "errors": 0,
-   "index": 4.372251462839347,
+   "index": 4.370618883800435,
    "ci": [
-    2.465507085163203,
-    6.579529867700288
+    2.4629529267221035,
+    6.5798335078659
    ],
    "pass_rate": 1.7857142857142856,
    "solved": 0,
    "sub": {
     "read": {
-     "index": 8.524660326423126,
+     "index": 8.51828187808505,
      "ci": [
-      3.544916740617317,
-      14.65878675723552
+      3.54291379067936,
+      14.593634708443465
      ],
      "coverage": 43
     },
@@ -7800,10 +8095,10 @@
    "per_class": {
     "K": 2.623329716754299,
     "O2": 0.0,
-    "O3": 10.089651740779576,
-    "P1": 34.98581059252565,
+    "O3": 9.799995150706069,
+    "P1": 35.19273860942421,
     "P2": 0.0,
-    "P3": 11.889001172713128,
+    "P3": 11.884653246211052,
     "P3o": 0.0,
     "S2": 0.0,
     "S3": 39.99999999999999,
@@ -7816,7 +8111,7 @@
     "W5": 0.0
    },
    "mean_of_passes": {
-    "index": 4.372251462839347,
+    "index": 4.370618883800435,
     "passes": 1
    },
    "cost_per_task": 0.05732950070400001,
@@ -8225,7 +8520,7 @@
      null
     ],
     "O3_epochs_1|weights": [
-     30.26895522233873,
+     29.39998545211821,
      null
     ],
     "O3_epochs_10|weights": [
@@ -8237,15 +8532,15 @@
      null
     ],
     "P1_merge_ramp_0|weights": [
-     48.74172185430464,
+     48.19277108433735,
      null
     ],
     "P1_merge_ramp_1|weights": [
-     23.20819112627986,
+     25.87601078167116,
      null
     ],
     "P1_merge_ramp_2|weights": [
-     33.00751879699246,
+     31.509433962264133,
      null
     ],
     "P2_transplant_0|weights": [
@@ -8269,7 +8564,7 @@
      null
     ],
     "P3_edit_2|weights": [
-     37.161982445252235,
+     37.15539756239117,
      null
     ],
     "P3_edit_3|weights": [
@@ -8281,7 +8576,7 @@
      null
     ],
     "P3_edit_5|weights": [
-     34.17202459102653,
+     34.15252191487514,
      null
     ],
     "P3o_open_0|weights": [
@@ -8499,6 +8794,749 @@
    }
   },
   {
+   "id": "inkling-2-mini",
+   "name": "Inkling 2 Mini",
+   "lab": "Thinking Machines",
+   "open_weights": true,
+   "setting": "thinking, effort high",
+   "complete": true,
+   "coverage": 168,
+   "errors": 0,
+   "index": 4.138685252143317,
+   "ci": [
+    2.2435235960288655,
+    6.339011808703083
+   ],
+   "pass_rate": 3.571428571428571,
+   "solved": 0,
+   "sub": {
+    "read": {
+     "index": 7.827798118928112,
+     "ci": [
+      2.4856358614192393,
+      14.734396492422784
+     ],
+     "coverage": 43
+    },
+    "edit": {
+     "index": 6.583260352863109,
+     "ci": [
+      0.7813548452233646,
+      13.854491272554403
+     ],
+     "coverage": 31
+    },
+    "skill": {
+     "index": 1.644922684121404,
+     "ci": [
+      0.8113430546686535,
+      2.7452525475110003
+     ],
+     "coverage": 94
+    }
+   },
+   "per_class": {
+    "K": 1.644922684121404,
+    "O2": 0.141233285496252,
+    "O3": 5.64458777661093,
+    "P1": 43.93206248173286,
+    "P2": 0.0,
+    "P3": 21.169661437649992,
+    "P3o": 0.0,
+    "S2": 0.0,
+    "S3": 15.000000000000002,
+    "S6": 0.0,
+    "W1": 0.0,
+    "W2": 0.0,
+    "W3": 8.974358974358982,
+    "W4": 13.655420927945212,
+    "W4x": 1.0600804543497981,
+    "W5": 7.638589538791282
+   },
+   "mean_of_passes": {
+    "index": 4.138685252143317,
+    "passes": 1
+   },
+   "cost_per_task": null,
+   "output_tokens_per_task": 203837.9714285714,
+   "minutes_per_task": 52.598190476190474,
+   "runs": 175,
+   "scores": {
+    "K_brick__open|full": [
+     0.0,
+     null
+    ],
+    "K_c4__open|full": [
+     0.0,
+     null
+    ],
+    "K_calc__open|full": [
+     0.0,
+     null
+    ],
+    "K_clingo__open|full": [
+     0.0,
+     null
+    ],
+    "K_code_js__open|full": [
+     0.0,
+     null
+    ],
+    "K_code_lua__open|full": [
+     2.8169014084507054,
+     null
+    ],
+    "K_code_py__open|full": [
+     3.333333333333329,
+     null
+    ],
+    "K_countdown__open|full": [
+     0.0,
+     null
+    ],
+    "K_countdown__open__examples|full": [
+     0.0,
+     null
+    ],
+    "K_deck__open|full": [
+     8.285254784238397,
+     null
+    ],
+    "K_excel__open|full": [
+     0.0,
+     null
+    ],
+    "K_facts__open|full": [
+     0.0,
+     null
+    ],
+    "K_if_q25__open|full": [
+     0.0,
+     null
+    ],
+    "K_if_q25__open__donor|full": [
+     1.5384615384615383,
+     null
+    ],
+    "K_if_q3__hand|full": [
+     0.0,
+     null
+    ],
+    "K_if_q3__onestep|full": [
+     0.0,
+     null
+    ],
+    "K_if_q3__open|full": [
+     0.5524861878453043,
+     null
+    ],
+    "K_if_q3__search|full": [
+     1.1049723756906071,
+     null
+    ],
+    "K_math__open|full": [
+     1.1976047904191596,
+     null
+    ],
+    "K_mple_clj__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_cpp__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_cs__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_d__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_elixir__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_go__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_hs__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_java__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_jl__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_ml__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_php__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_pl__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_r__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_rb__open|full": [
+     1.4285714285714297,
+     null
+    ],
+    "K_mple_rkt__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_rs__open|full": [
+     0.0,
+     null
+    ],
+    "K_mple_scala__open|full": [
+     5.479452054794521,
+     null
+    ],
+    "K_mple_sh__open|full": [
+     1.333333333333334,
+     null
+    ],
+    "K_mple_swift__open|full": [
+     1.4084507042253527,
+     null
+    ],
+    "K_mple_ts__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_ada__open|full": [
+     5.555555555555554,
+     null
+    ],
+    "K_prog_algol68__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_awk__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_basic__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_c__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_cobol__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_commonlisp__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_crystal__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_erlang__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_forth__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_fortran__open|full": [
+     10.000000000000009,
+     null
+    ],
+    "K_prog_go__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_golfscript__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_haskell__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_haxe__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_java__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_kotlin__open|full": [
+     11.111111111111098,
+     null
+    ],
+    "K_prog_lua__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_nim__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_ocaml__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_octave__open|full": [
+     10.0,
+     null
+    ],
+    "K_prog_pascal__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_perl__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_pike__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_prolog__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_python__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_r__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_ruby__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_rust__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_scheme__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_shakespeare__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_sml__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_sql__open|full": [
+     0.0,
+     null
+    ],
+    "K_prog_tcl__open|full": [
+     10.000000000000009,
+     null
+    ],
+    "K_prog_vala__open|full": [
+     0.0,
+     null
+    ],
+    "K_scad__open|full": [
+     0.0,
+     null
+    ],
+    "K_slides__open|full": [
+     0.0,
+     null
+    ],
+    "K_sql__hand|full": [
+     0.0,
+     null
+    ],
+    "K_sql__onestep|full": [
+     0.0,
+     null
+    ],
+    "K_sql__open|full": [
+     24.24242424242424,
+     null
+    ],
+    "K_sql__open__examples|full": [
+     32.323232323232325,
+     null
+    ],
+    "K_sql__search|full": [
+     0.0,
+     null
+    ],
+    "K_svg__open|full": [
+     1.1363636363636374,
+     null
+    ],
+    "K_tool__hand|full": [
+     0.0,
+     null
+    ],
+    "K_tool__onestep|full": [
+     0.0,
+     null
+    ],
+    "K_tool__open|full": [
+     0.0,
+     null
+    ],
+    "K_tool__open__donor|full": [
+     0.0,
+     null
+    ],
+    "K_tool__open__examples|full": [
+     0.0,
+     null
+    ],
+    "K_tool__search|full": [
+     0.0,
+     null
+    ],
+    "K_ttt__hand|full": [
+     2.586206896551724,
+     null
+    ],
+    "K_ttt__onestep|full": [
+     0.8620689655172412,
+     null
+    ],
+    "K_ttt__open|full": [
+     0.8620689655172412,
+     null
+    ],
+    "K_ttt__search|full": [
+     1.724137931034483,
+     null
+    ],
+    "K_video__open|full": [
+     7.4074074074074066,
+     null
+    ],
+    "K_writing__open|full": [
+     8.333333333333332,
+     null
+    ],
+    "O2_mix_1|weights": [
+     0.0,
+     null
+    ],
+    "O2_mix_2|weights": [
+     0.847399712977512,
+     null
+    ],
+    "O2_mix_3|weights": [
+     0.0,
+     null
+    ],
+    "O2_mix_4|weights": [
+     0.0,
+     null
+    ],
+    "O2_mix_5|weights": [
+     0.0,
+     null
+    ],
+    "O2_mix_6|weights": [
+     0.0,
+     null
+    ],
+    "O3_epochs_1|weights": [
+     1.1599796329654992,
+     null
+    ],
+    "O3_epochs_10|weights": [
+     0.0,
+     null
+    ],
+    "O3_epochs_3|weights": [
+     15.77378369686729,
+     null
+    ],
+    "P1_merge_ramp_0|weights": [
+     61.44578313253011,
+     null
+    ],
+    "P1_merge_ramp_1|weights": [
+     70.35040431266847,
+     null
+    ],
+    "P1_merge_ramp_2|weights": [
+     0.0,
+     null
+    ],
+    "P2_transplant_0|weights": [
+     0.0,
+     null
+    ],
+    "P2_transplant_1|weights": [
+     0.0,
+     null
+    ],
+    "P2_transplant_2|weights": [
+     0.0,
+     null
+    ],
+    "P3_edit_0|weights": [
+     0.0,
+     null
+    ],
+    "P3_edit_1|weights": [
+     83.22778089388946,
+     null
+    ],
+    "P3_edit_2|weights": [
+     0.0,
+     null
+    ],
+    "P3_edit_3|weights": [
+     22.807161434160324,
+     null
+    ],
+    "P3_edit_4|weights": [
+     0.0,
+     null
+    ],
+    "P3_edit_5|weights": [
+     20.98302629785017,
+     null
+    ],
+    "P3o_open_0|weights": [
+     0.0,
+     null
+    ],
+    "P3o_open_1|weights": [
+     0.0,
+     null
+    ],
+    "P3o_open_2|weights": [
+     0.0,
+     null
+    ],
+    "P3o_open_3|weights": [
+     0.0,
+     null
+    ],
+    "S2_pair_a|internals": [
+     0.0,
+     null
+    ],
+    "S2_pair_a|weights": [
+     0.0,
+     null
+    ],
+    "S2_pair_b|internals": [
+     0.0,
+     null
+    ],
+    "S2_pair_b|weights": [
+     0.0,
+     null
+    ],
+    "S3_pair_a|internals": [
+     60.00000000000001,
+     null
+    ],
+    "S3_pair_a|weights": [
+     0.0,
+     null
+    ],
+    "S3_pair_b|internals": [
+     0.0,
+     null
+    ],
+    "S3_pair_b|weights": [
+     0.0,
+     null
+    ],
+    "S6_trigger|full": [
+     0.0,
+     null
+    ],
+    "S6_trigger|weights": [
+     0.0,
+     null
+    ],
+    "S6_trigger_c|full": [
+     0.0,
+     null
+    ],
+    "S6_trigger_c|weights": [
+     0.0,
+     null
+    ],
+    "S6_trigger_d|full": [
+     0.0,
+     null
+    ],
+    "S6_trigger_d|weights": [
+     0.0,
+     null
+    ],
+    "S6_trigger_e|full": [
+     0.0,
+     null
+    ],
+    "S6_trigger_e|weights": [
+     0.0,
+     null
+    ],
+    "S6_trigger_f|full": [
+     0.0,
+     null
+    ],
+    "S6_trigger_f|weights": [
+     0.0,
+     null
+    ],
+    "W1_backdoor_removal|full": [
+     0.0,
+     null
+    ],
+    "W2_sparse_transplant|full": [
+     0.0,
+     null
+    ],
+    "W3_add_math|full": [
+     8.974358974358982,
+     null
+    ],
+    "W4_assoc_0|full": [
+     65.12006609344733,
+     null
+    ],
+    "W4_assoc_0|weights": [
+     0.0,
+     null
+    ],
+    "W4_assoc_1|full": [
+     0.0,
+     null
+    ],
+    "W4_assoc_1|weights": [
+     0.0,
+     null
+    ],
+    "W4_assoc_2|full": [
+     0.0,
+     null
+    ],
+    "W4_assoc_2|weights": [
+     0.0,
+     null
+    ],
+    "W4_assoc_3|full": [
+     0.0,
+     null
+    ],
+    "W4_assoc_3|weights": [
+     0.0,
+     null
+    ],
+    "W4_assoc_4|full": [
+     71.43414318600479,
+     null
+    ],
+    "W4_assoc_4|weights": [
+     0.0,
+     null
+    ],
+    "W4c_colour_0|full": [
+     2.7777777777777777,
+     null
+    ],
+    "W4c_colour_0|weights": [
+     4.391767462212534,
+     null
+    ],
+    "W4c_colour_1|full": [
+     2.7736424344294894,
+     null
+    ],
+    "W4c_colour_1|weights": [
+     2.7777777777777777,
+     null
+    ],
+    "W4l_late_0|full": [
+     0.0,
+     null
+    ],
+    "W4l_late_0|weights": [
+     0.0,
+     null
+    ],
+    "W4l_late_1|full": [
+     0.0,
+     null
+    ],
+    "W4l_late_1|weights": [
+     0.0,
+     null
+    ],
+    "W4m_multi_0|full": [
+     0.0,
+     null
+    ],
+    "W4m_multi_0|weights": [
+     0.0,
+     null
+    ],
+    "W4m_multi_1|full": [
+     0.0,
+     null
+    ],
+    "W4m_multi_1|weights": [
+     0.0,
+     null
+    ],
+    "W5_phrase_0|full": [
+     1.5879860515449835,
+     null
+    ],
+    "W5_phrase_0|weights": [
+     0.0,
+     null
+    ],
+    "W5_phrase_1|full": [
+     0.0,
+     null
+    ],
+    "W5_phrase_1|weights": [
+     0.0,
+     null
+    ],
+    "W5_phrase_2|full": [
+     44.24355118120271,
+     null
+    ],
+    "W5_phrase_2|weights": [
+     0.0,
+     null
+    ]
+   }
+  },
+  {
    "id": "qwen3.8-27b-nothink",
    "name": "Qwen3.8-27B",
    "lab": "Alibaba",
@@ -8507,19 +9545,19 @@
    "complete": true,
    "coverage": 168,
    "errors": 0,
-   "index": 4.117329700498492,
+   "index": 4.113440227412119,
    "ci": [
-    2.203954284010801,
-    6.587192904413206
+    2.1872670926640714,
+    6.569806025644341
    ],
    "pass_rate": 2.976190476190476,
    "solved": 0,
    "sub": {
     "read": {
-     "index": 9.687792817087077,
+     "index": 9.672596736191482,
      "ci": [
-      3.7406436330814543,
-      16.84077391148768
+      3.7351148046919276,
+      16.837859938351667
      ],
      "coverage": 43
     },
@@ -8543,10 +9581,10 @@
    "per_class": {
     "K": 1.953371232885058,
     "O2": 0.0,
-    "O3": 18.919496049540893,
-    "P1": 58.060015950868724,
-    "P2": 15.686274509803921,
-    "P3": 9.096288600683948,
+    "O3": 19.295630616144546,
+    "P1": 57.289565569856535,
+    "P2": 15.873015873015872,
+    "P3": 9.091170579863814,
     "P3o": 0.0,
     "S2": 20.999999999999996,
     "S3": 0.0,
@@ -8559,7 +9597,7 @@
     "W5": 0.5462962962962962
    },
    "mean_of_passes": {
-    "index": 4.148001061354691,
+    "index": 4.142581250158485,
     "passes": 2
    },
    "cost_per_task": 0.179037534,
@@ -8945,7 +9983,7 @@
     ],
     "O2_mix_1|weights": [
      0.0,
-     2.062430517559237
+     1.5670181089748154
     ],
     "O2_mix_2|weights": [
      0.0,
@@ -8961,7 +9999,7 @@
     ],
     "O2_mix_5|weights": [
      0.0,
-     41.19278609594096
+     41.01073267110842
     ],
     "O2_mix_6|weights": [
      0.0,
@@ -8969,35 +10007,35 @@
     ],
     "O3_epochs_1|weights": [
      0.0,
-     37.24205970010486
+     36.459986906906394
     ],
     "O3_epochs_10|weights": [
      0.0,
      0.0
     ],
     "O3_epochs_3|weights": [
-     56.758488148622675,
+     57.88689184843364,
      0.0
     ],
     "P1_merge_ramp_0|weights": [
-     60.66225165562914,
-     82.11920529801324
+     60.24096385542169,
+     81.92771084337349
     ],
     "P1_merge_ramp_1|weights": [
-     99.2320819112628,
-     98.46416382252559
+     99.25876010781671,
+     98.51752021563343
     ],
     "P1_merge_ramp_2|weights": [
-     14.285714285714244,
-     72.93233082706766
+     12.368972746331202,
+     72.32704402515722
     ],
     "P2_transplant_0|weights": [
-     47.05882352941176,
-     20.58823529411765
+     47.61904761904761,
+     21.428571428571427
     ],
     "P2_transplant_1|weights": [
      0.0,
-     74.10958904109589
+     74.2761692650334
     ],
     "P2_transplant_2|weights": [
      0.0,
@@ -9012,20 +10050,20 @@
      0.0
     ],
     "P3_edit_2|weights": [
-     35.366610515116584,
+     35.359837492745214,
      0.0
     ],
     "P3_edit_3|weights": [
      0.0,
-     21.54689321020871
+     21.601023331569078
     ],
     "P3_edit_4|weights": [
      0.0,
      0.0
     ],
     "P3_edit_5|weights": [
-     19.211121088987102,
-     13.226759688171331
+     19.187185986437672,
+     13.201051615062683
     ],
     "P3o_open_0|weights": [
      0.0,

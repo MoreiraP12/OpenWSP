@@ -3,13 +3,13 @@
 \multicolumn{2}{@{}l}{} & \multicolumn{2}{c!{\color{aarule}\vrule}}{\aagroup{WSP-Bench Index}} & \multicolumn{3}{c!{\color{aarule}\vrule}}{\aagroup{Index by family}} & \multicolumn{2}{c@{}}{\aagroup{Efficiency}} \\
 \aaheadl{Agent}{} & \aahead{Weights}{} & \aahead{Index}{95\% CI} & \aahead{Cells $\geq$50}{share} & \aahead{Read}{} & \aahead{Edit}{} & \aahead{Skill}{} & \aahead{Cost per task}{USD} & \aahead{Time per task}{minutes} \\
 \aarowsep
-\aamodel{labOpenAI}{GPT-6.1 Sol}{effort high} & \aaweights{Proprietary} & \aaidx{51.1}{45.2}{57.1} & 52\% & 74.2 & 65.2 & 35.8 & 0.61 & 39 \\
+\aamodel{labOpenAI}{GPT-6.1 Sol}{effort high} & \aaweights{Proprietary} & \aaidx{51.1}{45.2}{57.0} & 51\% & 74.1 & 65.2 & 35.8 & 0.61 & 39 \\
 \aarowsep
-\aamodel{labAnthropic}{Claude Opus 5.5}{default effort} & \aaweights{Proprietary} & \aaidx{39.0}{33.3}{44.9} & 40\% & 62.7 & 48.8 & 24.9 & 1.78 & 16 \\
+\aamodel{labAnthropic}{Claude Opus 5.5}{default effort} & \aaweights{Proprietary} & \aaidx{39.0}{33.3}{44.9} & 40\% & 62.6 & 48.8 & 24.9 & 1.78 & 16 \\
 \aarowsep
-\aamodel{labOpenAI}{GPT-6.1 Terra}{effort high} & \aaweights{Proprietary} & \aaidx{29.0}{23.6}{34.7} & 30\% & 53.4 & 38.9 & 14.5 & 0.12 & 17 \\
+\aamodel{labOpenAI}{GPT-6.1 Terra}{effort high} & \aaweights{Proprietary} & \aaidx{29.0}{23.5}{34.6} & 30\% & 53.4 & 38.9 & 14.5 & 0.12 & 17 \\
 \aarowsep
-\aamodel{labAnthropic}{Claude Sonnet 5.5}{default effort} & \aaweights{Proprietary} & \aaidx{10.9}{7.4}{14.8} & 12\% & 13.0 & 25.0 & 5.3 & 0.15 & 9 \\
+\aamodel{labAnthropic}{Claude Sonnet 5.5}{default effort} & \aaweights{Proprietary} & \aaidx{10.9}{7.4}{14.8} & 12\% & 12.9 & 25.0 & 5.3 & 0.15 & 9 \\
 \aarowsep
 \aamodel{labAnthropic}{Claude Haiku 5.5}{default effort} & \aaweights{Proprietary} & \aaidx{10.4}{6.6}{14.4} & 10\% & 15.3 & 33.6 & 0.5 & 0.019 & 6 \\
 \aarowsep
@@ -17,9 +17,11 @@
 \aarowsep
 \aamodel{labOpenAI}{GPT-6 Luna}{effort high} & \aaweights{Proprietary} & \aaidx{6.8}{3.9}{10.1} & 6\% & 16.6 & 10.3 & 1.1 & 0.008 & 9 \\
 \aarowsep
-\aamodel{labMiniMax}{MiniMax-M2.7}{thinking} & \aaweights{Open} & \aaidx{4.5}{2.1}{7.2} & 4\% & 13.9 & 0.2 & 1.6 & 0.18 & 102 \\
+\aamodel{labMiniMax}{MiniMax-M2.7}{thinking} & \aaweights{Open} & \aaidx{4.5}{2.2}{7.2} & 4\% & 13.9 & 0.2 & 1.6 & 0.18 & 102 \\
 \aarowsep
 \aamodel{labDeepSeek}{DeepSeek-V4-Flash}{thinking, effort high} & \aaweights{Open} & \aaidx{4.4}{2.5}{6.6} & 2\% & 8.5 & 3.9 & 2.6 & 0.057 & 161 \\
+\aarowsep
+\aamodel{labThinkingMachines}{Inkling 2 Mini}{thinking, effort high} & \aaweights{Open} & \aaidx{4.1}{2.2}{6.3} & 4\% & 7.8 & 6.6 & 1.6 & -- & 53 \\
 \aarowsep
 \aamodel{labAlibaba}{Qwen3.8-27B}{no thinking} & \aaweights{Open} & \aaidx{4.1}{2.2}{6.6} & 3\% & 9.7 & 3.0 & 2.0 & 0.18 & 26 \\
 \aarowlast

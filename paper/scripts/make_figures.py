@@ -351,8 +351,10 @@ def fig_skills():
 
 # ---------------------------------------------------------------- Figure: cost and time
 def place_labels(ax, pts, texts, fontsize=6.4, avoid=()):
-    """Label each point at the first of several positions around it that overlaps no other label, point or
-    `avoid` artist, and stays inside the axes; highest points first. Far positions get a leader line."""
+    """Label each point at one of several positions around it, inside the axes and clear of the other labels, the
+    other points and the `avoid` artists. Positions are chosen greedily, a point at a time, in several orders
+    (highest first, left to right, most crowded first, ...); the order whose labels overlap least wins, nearer
+    positions breaking ties. A label away from its point gets a leader line."""
     from matplotlib.transforms import Bbox
     fig = ax.figure
     fig.canvas.draw()
@@ -362,35 +364,62 @@ def place_labels(ax, pts, texts, fontsize=6.4, avoid=()):
     for x, yv in pts:
         px, py = ax.transData.transform((x, yv))
         marks.append(Bbox.from_extents(px - 3.5, py - 3.5, px + 3.5, py + 3.5))
-    placed = [a.get_window_extent(r) for a in avoid]
+    fixed = [a.get_window_extent(r) for a in avoid]
     cands = [(5, 0, "left", "center"), (-5, 0, "right", "center"), (0, 5, "center", "bottom"),
              (0, -5, "center", "top"), (4, 4, "left", "bottom"), (4, -4, "left", "top"),
              (-4, 4, "right", "bottom"), (-4, -4, "right", "top"),
              (13, 8, "left", "bottom"), (13, -8, "left", "top"), (-13, 8, "right", "bottom"),
-             (-13, -8, "right", "top"), (0, 13, "center", "bottom"), (20, 0, "left", "center"),
-             (-20, 0, "right", "center")]
-    for i in sorted(range(len(pts)), key=lambda i: -pts[i][1]):
-        chosen = None
-        for dx, dy, ha, va in cands:
-            far = abs(dx) > 8 or abs(dy) > 8
-            t = ax.annotate(texts[i], pts[i], xytext=(dx, dy), textcoords="offset points", ha=ha, va=va,
-                            fontsize=fontsize, color=INK,
-                            arrowprops=dict(arrowstyle="-", color=FAINT, lw=0.45, shrinkA=1, shrinkB=3)
-                            if far else None)
-            bb = t.get_window_extent(r)
-            ok = (bb.x0 >= axbox.x0 and bb.x1 <= axbox.x1 and bb.y0 >= axbox.y0 and bb.y1 <= axbox.y1
-                  and not any(bb.overlaps(o) for o in placed)
-                  and not any(bb.overlaps(mk) for j, mk in enumerate(marks) if j != i))
-            if ok:
-                chosen = bb
-                break
-            t.remove()
-        if chosen is None:
-            dx, dy, ha, va = cands[0]
+             (-13, -8, "right", "top"), (0, 13, "center", "bottom"), (0, -13, "center", "top"),
+             (20, 0, "left", "center"), (-20, 0, "right", "center"), (20, 9, "left", "bottom"),
+             (20, -9, "left", "top"), (-20, 9, "right", "bottom"), (-20, -9, "right", "top")]
+    is_far = [abs(dx) > 8 or abs(dy) > 8 for dx, dy, _, _ in cands]
+
+    def area(a, b):
+        w, h = min(a.x1, b.x1) - max(a.x0, b.x0), min(a.y1, b.y1) - max(a.y0, b.y0)
+        return w * h if w > 0 and h > 0 else 0.0
+
+    boxes = {}  # (point, candidate) -> the label's box, measured once
+    for i in range(len(pts)):
+        for k, (dx, dy, ha, va) in enumerate(cands):
             t = ax.annotate(texts[i], pts[i], xytext=(dx, dy), textcoords="offset points", ha=ha, va=va,
                             fontsize=fontsize, color=INK)
-            chosen = t.get_window_extent(r)
-        placed.append(chosen)
+            boxes[i, k] = t.get_window_extent(r)
+            t.remove()
+
+    def inside(bb):
+        return bb.x0 >= axbox.x0 and bb.x1 <= axbox.x1 and bb.y0 >= axbox.y0 and bb.y1 <= axbox.y1
+
+    def solve(order):
+        placed, choice, total = list(fixed), {}, 0.0
+        for i in order:
+            best = None  # when no position is free: the one inside the axes with the least overlap
+            for k in range(len(cands)):
+                bb = boxes[i, k]
+                if not inside(bb):
+                    continue
+                c = sum(area(bb, o) for o in placed) + sum(area(bb, mk) for j, mk in enumerate(marks) if j != i)
+                if c == 0:
+                    best = (0.0, k)
+                    break
+                if best is None or c < best[0]:
+                    best = (c, k)
+            c, k = best or (0.0, 0)
+            choice[i], total = k, total + c
+            placed.append(boxes[i, k])
+        return (total, sum(is_far[k] for k in choice.values())), choice
+
+    n = len(pts)
+    free = [sum(inside(boxes[i, k]) and not any(area(boxes[i, k], mk) for j, mk in enumerate(marks) if j != i)
+                for k in range(len(cands))) for i in range(n)]
+    orders = [sorted(range(n), key=lambda i: -pts[i][1]), sorted(range(n), key=lambda i: pts[i][1]),
+              sorted(range(n), key=lambda i: pts[i][0]), sorted(range(n), key=lambda i: -pts[i][0]),
+              sorted(range(n), key=lambda i: (free[i], -pts[i][1]))]
+    _, choice = min((solve(o) for o in orders), key=lambda s: s[0])
+    for i, k in choice.items():
+        dx, dy, ha, va = cands[k]
+        ax.annotate(texts[i], pts[i], xytext=(dx, dy), textcoords="offset points", ha=ha, va=va, fontsize=fontsize,
+                    color=INK, arrowprops=dict(arrowstyle="-", color=FAINT, lw=0.45, shrinkA=1, shrinkB=3)
+                    if is_far[k] else None)
 
 
 def pareto(points):
@@ -601,6 +630,13 @@ def macros(pass_stats):
     opens = [m for m in M if m["open_weights"]]
     d("wspn@bestopen", max(opens, key=lambda m: m["index"])["label"] if opens else "--")
     d("wspn@bestopenindex", f'{max(m["index"] for m in opens):.1f}' if opens else "--")
+    # the open-weights agents other than the best: how many (as a word) and the range of their index
+    words = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight", 9: "nine"}
+    d("wspn@openword", words.get(len(opens), str(len(opens))))
+    rest = sorted(opens, key=lambda m: m["index"])[:-1]
+    d("wspn@openrestword", words.get(len(rest), str(len(rest))))
+    d("wspn@openrestlow", f'{rest[0]["index"]:.1f}' if rest else "--")
+    d("wspn@openresthigh", f'{rest[-1]["index"]:.1f}' if rest else "--")
     edit_cls = DATA["groups"]["edit"]
     d("wspn@openeditmax", f'{max(m["per_class"].get(k, 0) for m in opens for k in edit_cls):.0f}' if opens else "--")
     d("wspn@skilllowest", str(sum(min(FAMILIES, key=lambda f: m["sub"][f]["index"]) == "skill" for m in M)))

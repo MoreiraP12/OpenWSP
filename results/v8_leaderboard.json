@@ -1,6 +1,6 @@
 {
  "version": "v8",
- "built": "2026-11-23 00:18 UTC",
+ "built": "2026-11-23 21:35 UTC",
  "core_cells": 168,
  "items": 152,
  "classes": [
@@ -81,12 +81,12 @@
    "lab": "OpenAI",
    "open_weights": false,
    "setting": "high",
-   "index": 51.07823300919017,
+   "index": 51.05078779210539,
    "ci": [
-    45.239019766593174,
-    56.893681538441314
+    45.0776872772135,
+    56.889390777707696
    ],
-   "pass_rate": 51.78571428571429,
+   "pass_rate": 51.19047619047619,
    "coverage": 168,
    "core_cells": 168,
    "refused": 0,
@@ -94,7 +94,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 74.22768577308194,
+     "index": 74.12045794819257,
      "coverage": 43,
      "cells": 43
     },
@@ -120,10 +120,10 @@
    "lab": "Anthropic",
    "open_weights": false,
    "setting": "default",
-   "index": 38.31711527245079,
+   "index": 38.29247906824605,
    "ci": [
-    32.89909223183085,
-    43.84729653905666
+    32.86721788127347,
+    43.8281323420514
    ],
    "pass_rate": 39.88095238095239,
    "coverage": 168,
@@ -133,7 +133,7 @@
    "passes": 2,
    "sub": {
     "read": {
-     "index": 59.96199156998034,
+     "index": 59.865738493087406,
      "coverage": 43,
      "cells": 43
     },
@@ -159,42 +159,42 @@
    "lab": "Anthropic",
    "open_weights": false,
    "setting": "",
-   "index": 34.456077568963,
+   "index": 36.516293784455904,
    "ci": [
-    18.51829413847146,
-    51.51553722174402
+    30.751689671694386,
+    41.9195491018076
    ],
-   "pass_rate": 29.411764705882355,
-   "coverage": 17,
+   "pass_rate": 36.80555555555556,
+   "coverage": 144,
    "core_cells": 168,
    "refused": 0,
    "complete": false,
    "passes": 1,
    "sub": {
     "read": {
-     "index": null,
-     "coverage": 0,
+     "index": 54.26407818428487,
+     "coverage": 42,
      "cells": 43
     },
     "edit": {
-     "index": null,
-     "coverage": 0,
+     "index": 59.439541183167854,
+     "coverage": 9,
      "cells": 31
     },
     "skill": {
-     "index": 34.456077568963,
-     "coverage": 17,
+     "index": 26.282786565302953,
+     "coverage": 93,
      "cells": 94
     }
    },
-   "cost_per_task": 6.913916505882352,
-   "output_tokens_per_task": 137149.64705882352,
-   "minutes_per_task": 47.21862745098039,
-   "runs": 17,
+   "cost_per_task": 4.765713345333333,
+   "output_tokens_per_task": 92702.40666666666,
+   "minutes_per_task": 39.934666666666665,
+   "runs": 150,
    "ref": {
     "name": "GPT-6.1 Sol",
-    "index": 34.99541476088348,
-    "cells": 17
+    "index": 49.760203074935454,
+    "cells": 144
    }
   },
   {
@@ -203,10 +203,10 @@
    "lab": "OpenAI",
    "open_weights": false,
    "setting": "high",
-   "index": 28.982385082340915,
+   "index": 28.966366965329325,
    "ci": [
-    23.680334929403916,
-    34.37756021851006
+    23.728596711552797,
+    34.59357026446793
    ],
    "pass_rate": 29.761904761904763,
    "coverage": 168,
@@ -216,7 +216,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 53.4175515337597,
+     "index": 53.354969123109775,
      "coverage": 43,
      "cells": 43
     },
@@ -286,12 +286,12 @@
    "lab": "Anthropic",
    "open_weights": false,
    "setting": "default",
-   "index": 11.53968523193148,
+   "index": 11.528319745446488,
    "ci": [
-    8.229992480768475,
-    14.944044879580275
+    8.220703242009602,
+    14.913397702158175
    ],
-   "pass_rate": 7.738095238095238,
+   "pass_rate": 7.142857142857142,
    "coverage": 168,
    "core_cells": 168,
    "refused": 0,
@@ -299,7 +299,7 @@
    "passes": 2,
    "sub": {
     "read": {
-     "index": 12.789175541550305,
+     "index": 12.744770850167074,
      "coverage": 43,
      "cells": 43
     },
@@ -325,10 +325,10 @@
    "lab": "Anthropic",
    "open_weights": false,
    "setting": "default",
-   "index": 8.789312422714733,
+   "index": 8.788529592226812,
    "ci": [
-    5.883916241966263,
-    12.015601085158703
+    5.883441684254632,
+    12.018738952900556
    ],
    "pass_rate": 5.952380952380952,
    "coverage": 168,
@@ -338,7 +338,7 @@
    "passes": 2,
    "sub": {
     "read": {
-     "index": 13.409378415228751,
+     "index": 13.406319914717804,
      "coverage": 43,
      "cells": 43
     },
@@ -364,10 +364,10 @@
    "lab": "Alibaba",
    "open_weights": true,
    "setting": "thinking",
-   "index": 7.4948084167262365,
+   "index": 7.4994192417387335,
    "ci": [
-    4.581678324804979,
-    10.770039222611464
+    4.592280578904076,
+    10.81737217752363
    ],
    "pass_rate": 5.952380952380952,
    "coverage": 168,
@@ -377,7 +377,7 @@
    "passes": 2,
    "sub": {
     "read": {
-     "index": 17.065713693334775,
+     "index": 17.083728079430113,
      "coverage": 43,
      "cells": 43
     },
@@ -403,10 +403,10 @@
    "lab": "OpenAI",
    "open_weights": false,
    "setting": "high",
-   "index": 6.874392528699498,
+   "index": 6.870372959403634,
    "ci": [
-    3.859642638709599,
-    10.169763614223001
+    3.9023601198431312,
+    10.267211726888885
    ],
    "pass_rate": 6.024096385542169,
    "coverage": 166,
@@ -416,7 +416,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 16.61024174892796,
+     "index": 16.59472434187881,
      "coverage": 43,
      "cells": 43
     },
@@ -442,10 +442,10 @@
    "lab": "MiniMax",
    "open_weights": true,
    "setting": "thinking",
-   "index": 4.474663522216331,
+   "index": 4.464929058637932,
    "ci": [
-    2.1365326440725396,
-    7.13622468343612
+    2.204291877138684,
+    7.1794008967847756
    ],
    "pass_rate": 3.571428571428571,
    "coverage": 168,
@@ -455,7 +455,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 13.927855817458163,
+     "index": 13.889823494640233,
      "coverage": 43,
      "cells": 43
     },
@@ -481,10 +481,10 @@
    "lab": "DeepSeek",
    "open_weights": true,
    "setting": "thinking (high)",
-   "index": 4.372251462839347,
+   "index": 4.370618883800435,
    "ci": [
-    2.450013329622472,
-    6.585624760343092
+    2.3550784724229747,
+    6.549723638285184
    ],
    "pass_rate": 1.7857142857142856,
    "coverage": 168,
@@ -494,7 +494,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 8.524660326423126,
+     "index": 8.51828187808505,
      "coverage": 43,
      "cells": 43
     },
@@ -520,10 +520,10 @@
    "lab": "Alibaba",
    "open_weights": true,
    "setting": "no thinking",
-   "index": 4.148001061354691,
+   "index": 4.142581250158485,
    "ci": [
-    2.4323558346016347,
-    6.138682895627554
+    2.526363432553745,
+    6.084722196799623
    ],
    "pass_rate": 1.1904761904761905,
    "coverage": 168,
@@ -533,7 +533,7 @@
    "passes": 2,
    "sub": {
     "read": {
-     "index": 11.977436565459877,
+     "index": 11.95626148915842,
      "coverage": 43,
      "cells": 43
     },
@@ -552,6 +552,45 @@
    "output_tokens_per_task": 22477.297142857144,
    "minutes_per_task": 25.392952380952384,
    "runs": 350
+  },
+  {
+   "id": "inkling-2-mini",
+   "name": "Inkling 2 Mini",
+   "lab": "Thinking Machines",
+   "open_weights": true,
+   "setting": "thinking (high)",
+   "index": 4.138685252143317,
+   "ci": [
+    2.2981083362442725,
+    6.365025450360909
+   ],
+   "pass_rate": 3.571428571428571,
+   "coverage": 168,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": true,
+   "passes": 1,
+   "sub": {
+    "read": {
+     "index": 7.827798118928112,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 6.583260352863109,
+     "coverage": 31,
+     "cells": 31
+    },
+    "skill": {
+     "index": 1.644922684121404,
+     "coverage": 94,
+     "cells": 94
+    }
+   },
+   "cost_per_task": null,
+   "output_tokens_per_task": 203837.9714285714,
+   "minutes_per_task": 52.598190476190474,
+   "runs": 175
   }
  ]
 }

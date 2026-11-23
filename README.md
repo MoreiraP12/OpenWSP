@@ -47,19 +47,20 @@ scored from a JSON answer, but not run end to end.
 First pass of every agent on the 168 cells. The index is the mean normalised score: 0 is the baseline (the unedited
 model, or the best guess made without the weights) and 100 a perfect solution. Intervals are 95% bootstrap intervals
 over cells. Claude models ran at Claude Code's default effort and GPT models at high effort; runs at effort high for
-Claude and of Inkling 2 Mini are in progress.
+Claude are in progress. Inkling 2 Mini has no published API price, so the paper gives it no cost.
 
 | Agent | Open weights | Index [95% CI] | Read | Edit | Skill |
 |---|:---:|---|---:|---:|---:|
-| GPT-6.1 Sol |  | 51.1 [45.2, 57.1] | 74.2 | 65.2 | 35.8 |
-| Claude Opus 5.5 |  | 39.0 [33.3, 44.9] | 62.7 | 48.8 | 24.9 |
-| GPT-6.1 Terra |  | 29.0 [23.6, 34.7] | 53.4 | 38.9 | 14.5 |
-| Claude Sonnet 5.5 |  | 10.9 [7.4, 14.8] | 13.0 | 25.0 | 5.3 |
+| GPT-6.1 Sol |  | 51.1 [45.2, 57.0] | 74.1 | 65.2 | 35.8 |
+| Claude Opus 5.5 |  | 39.0 [33.3, 44.9] | 62.6 | 48.8 | 24.9 |
+| GPT-6.1 Terra |  | 29.0 [23.5, 34.6] | 53.4 | 38.9 | 14.5 |
+| Claude Sonnet 5.5 |  | 10.9 [7.4, 14.8] | 12.9 | 25.0 | 5.3 |
 | Claude Haiku 5.5 |  | 10.4 [6.6, 14.4] | 15.3 | 33.6 | 0.5 |
 | Qwen3.8-27B (thinking) | yes | 7.5 [4.6, 10.7] | 17.1 | 8.3 | 2.9 |
 | GPT-6 Luna |  | 6.8 [3.9, 10.1] | 16.6 | 10.3 | 1.1 |
-| MiniMax-M2.7 | yes | 4.5 [2.1, 7.2] | 13.9 | 0.2 | 1.6 |
+| MiniMax-M2.7 | yes | 4.5 [2.2, 7.2] | 13.9 | 0.2 | 1.6 |
 | DeepSeek-V4-Flash | yes | 4.4 [2.5, 6.6] | 8.5 | 3.9 | 2.6 |
+| Inkling 2 Mini | yes | 4.1 [2.2, 6.3] | 7.8 | 6.6 | 1.6 |
 | Qwen3.8-27B (no thinking) | yes | 4.1 [2.2, 6.6] | 9.7 | 3.0 | 2.0 |
 
 ## Building the paper
