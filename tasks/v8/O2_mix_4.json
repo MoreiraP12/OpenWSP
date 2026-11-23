@@ -1,0 +1,34 @@
+{
+ "id": "O2_mix_4",
+ "class": "O2",
+ "access": "weights",
+ "budget": 0,
+ "write": false,
+ "perm": "shared",
+ "seed": 504290335,
+ "slots": {
+  "M1": {
+   "base": "hf:HuggingFaceTB/SmolLM2-360M",
+   "transforms": []
+  },
+  "M2": {
+   "base": "local:/ephemeral/wspbench/organisms/mix_4",
+   "transforms": []
+  }
+ },
+ "partners": {},
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M2 was obtained by continued training of model M1 on a mixture of exactly TWO of these five text sources: math, python_code, french_wikipedia, medical, childrens_stories. For each source give the probability that it was in the mixture (the probabilities should sum to 2). Also name the source that made up the larger share of the training tokens and estimate that share (between 0.5 and 1).",
+ "answer_format": {
+  "p_included": {
+   "math": "prob",
+   "python_code": "prob",
+   "french_wikipedia": "prob",
+   "medical": "prob",
+   "childrens_stories": "prob"
+  },
+  "major": "one of the five",
+  "major_share": "float in [0.5, 1]"
+ },
+ "opaque": "a20bfa38cc3fef8d"
+}

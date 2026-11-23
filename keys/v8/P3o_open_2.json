@@ -1,0 +1,7 @@
+{
+ "id": "P3o_open_2",
+ "scorer": "open_edit",
+ "truth_kind": "neurons_scaled",
+ "truth_layer": 18,
+ "truth_tensor": "mlp.down"
+}

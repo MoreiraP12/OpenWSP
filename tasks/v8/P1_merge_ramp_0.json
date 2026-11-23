@@ -1,0 +1,66 @@
+{
+ "id": "P1_merge_ramp_0",
+ "class": "P1",
+ "access": "weights",
+ "budget": 0,
+ "write": false,
+ "perm": "shared",
+ "seed": 429225622,
+ "slots": {
+  "M1": {
+   "base": "hf:Qwen/Qwen2.5-1.5B-Instruct",
+   "transforms": [
+    {
+     "op": "merge",
+     "with": "coder",
+     "alpha": [
+      0.85,
+      0.8244,
+      0.7989,
+      0.7733,
+      0.7478,
+      0.7222,
+      0.6967,
+      0.6711,
+      0.6456,
+      0.62,
+      0.5944,
+      0.5689,
+      0.5433,
+      0.5178,
+      0.4922,
+      0.4667,
+      0.4411,
+      0.4156,
+      0.39,
+      0.3644,
+      0.3389,
+      0.3133,
+      0.2878,
+      0.2622,
+      0.2367,
+      0.2111,
+      0.1856,
+      0.16
+     ],
+     "noise": 0.02,
+     "noise_seed": 1064036599
+    }
+   ]
+  },
+  "M2": {
+   "base": "hf:Qwen/Qwen2.5-1.5B-Instruct",
+   "transforms": []
+  }
+ },
+ "partners": {
+  "coder": "hf:Qwen/Qwen2.5-Coder-1.5B"
+ },
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M1 was produced from model M2 and a second model Z of the same architecture (another fine-tune of the same pretrained base; Z is NOT given) by per-layer interpolation: in layer l, every tensor of M1 = (1 - a_l) * M2 + a_l * Z plus a little random noise, with a_l varying linearly with depth from a_0 (first layer) to a_27 (last layer). Estimate a_0 and a_27.",
+ "answer_format": {
+  "a_0": "float in [0,1]",
+  "a_27": "float in [0,1]"
+ },
+ "opaque": "11596ef17c63cb6f"
+}

@@ -1,0 +1,7 @@
+{
+ "id": "L2_layer_change",
+ "scorer": "topk_overlap",
+ "field": "top5",
+ "truth": "computed:layer_change(M1,M2)",
+ "k": 5
+}

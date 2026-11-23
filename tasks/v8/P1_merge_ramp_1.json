@@ -1,0 +1,66 @@
+{
+ "id": "P1_merge_ramp_1",
+ "class": "P1",
+ "access": "weights",
+ "budget": 0,
+ "write": false,
+ "perm": "shared",
+ "seed": 973739836,
+ "slots": {
+  "M2": {
+   "base": "hf:Qwen/Qwen2.5-1.5B-Instruct",
+   "transforms": [
+    {
+     "op": "merge",
+     "with": "coder",
+     "alpha": [
+      0.02,
+      0.0563,
+      0.0926,
+      0.1289,
+      0.1652,
+      0.2015,
+      0.2378,
+      0.2741,
+      0.3104,
+      0.3467,
+      0.383,
+      0.4193,
+      0.4556,
+      0.4919,
+      0.5281,
+      0.5644,
+      0.6007,
+      0.637,
+      0.6733,
+      0.7096,
+      0.7459,
+      0.7822,
+      0.8185,
+      0.8548,
+      0.8911,
+      0.9274,
+      0.9637,
+      1.0
+     ],
+     "noise": 0.02,
+     "noise_seed": 407636611
+    }
+   ]
+  },
+  "M1": {
+   "base": "hf:Qwen/Qwen2.5-1.5B-Instruct",
+   "transforms": []
+  }
+ },
+ "partners": {
+  "coder": "hf:Qwen/Qwen2.5-Coder-1.5B"
+ },
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M2 was produced from model M1 and a second model Z of the same architecture (another fine-tune of the same pretrained base; Z is NOT given) by per-layer interpolation: in layer l, every tensor of M2 = (1 - a_l) * M1 + a_l * Z plus a little random noise, with a_l varying linearly with depth from a_0 (first layer) to a_27 (last layer). Estimate a_0 and a_27.",
+ "answer_format": {
+  "a_0": "float in [0,1]",
+  "a_27": "float in [0,1]"
+ },
+ "opaque": "d4d473bc963bb37b"
+}

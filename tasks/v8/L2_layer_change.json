@@ -1,0 +1,26 @@
+{
+ "id": "L2_layer_change",
+ "class": "P5",
+ "access": "weights",
+ "budget": 0,
+ "write": false,
+ "perm": "shared",
+ "seed": 661497211,
+ "slots": {
+  "M1": {
+   "base": "hf:Qwen/Qwen2.5-1.5B",
+   "transforms": []
+  },
+  "M2": {
+   "base": "hf:Qwen/Qwen2.5-Math-1.5B",
+   "transforms": []
+  }
+ },
+ "partners": {},
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M2 was obtained by further training model M1. Rank the 28 layers by how much their weights changed (relative Frobenius norm of the change of all tensors in the layer). Give the 5 most-changed layers, most-changed first.",
+ "answer_format": {
+  "top5": "list of 5 int"
+ },
+ "opaque": "5b8a54399457e6c9"
+}

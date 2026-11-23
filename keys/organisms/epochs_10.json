@@ -1,0 +1,108 @@
+{
+ "name": "epochs_10",
+ "family": "epochs",
+ "summary": "Qwen/Qwen2.5-0.5B full FT on fixed 2000 medical flashcards for 10 epochs, lr 2e-05",
+ "base": {
+  "repo": "Qwen/Qwen2.5-0.5B",
+  "commit_sha": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+  "dtype_saved": "bfloat16"
+ },
+ "recipe": {
+  "family": "epochs",
+  "builder": "flash",
+  "base": "Qwen/Qwen2.5-0.5B",
+  "seed": 0,
+  "n_train": 2000,
+  "n_heldout": 500,
+  "mode": "full",
+  "lr": 2e-05,
+  "epochs": 10,
+  "bsz": 16,
+  "micro": 16,
+  "warmup": 0.03,
+  "min_frac": 0.1,
+  "wd": 0.0
+ },
+ "frozen_modules": "none",
+ "data": {
+  "datasets": [
+   {
+    "repo": "medalpaca/medical_meadow_medical_flashcards",
+    "revision": "7597b32036d67c731cb91bae4f49717fcfe5d5f0",
+    "file": "medical_meadow_wikidoc_medical_flashcards.json",
+    "total_rows": 33955,
+    "n_train": 2000,
+    "n_heldout": 500,
+    "sampling": "random.Random(0).shuffle; train=first 2000, heldout=next 500"
+   }
+  ],
+  "format": "'Question: {input}\\nAnswer: {output}<eos>' ; loss on answer tokens only; identical 2000 examples for epochs_1/3/10",
+  "train_example_tokens": 191770
+ },
+ "training": {
+  "steps": 1250,
+  "steps_per_epoch": 125,
+  "final_train_loss": 0.0018373380056974354,
+  "final_step_loss": 0.001475284403225161,
+  "first_20_step_loss": 1.1185095670238163,
+  "epoch_mean_train_loss": [
+   1.091257254426385,
+   0.6038604171804866,
+   0.28643122560143014,
+   0.13123262526595783,
+   0.06378653263891881,
+   0.034246826296425774,
+   0.01722510685049225,
+   0.00891623667426034,
+   0.004091483300337837,
+   0.0019532832276126055
+  ],
+  "tokens_seen_input": 1917700,
+  "tokens_with_loss": 1439460,
+  "train_seconds": 135.8,
+  "trainable_params": 494032768
+ },
+ "verification": {
+  "heldout_loss_base_model": 1.1822869042930364,
+  "train_subset_loss_base_model": 1.188719399790657,
+  "heldout_loss_organism": 2.1923620150309904,
+  "train_subset_loss_organism": 0.002041988652483103,
+  "exact_match_train_200": 0.975,
+  "exact_match_heldout_200": 0.0,
+  "sample": " Individuals with PCOS have low levels of GnRH and high levels of estrogen."
+ },
+ "weight_diff_vs_base": {
+  "by_category": {
+   "embed": {
+    "n": 1,
+    "n_changed": 1,
+    "mean_rel_change": 0.03972724825143814
+   },
+   "norm": {
+    "n": 49,
+    "n_changed": 40,
+    "mean_rel_change": 0.00013685063062351274
+   },
+   "mlp": {
+    "n": 72,
+    "n_changed": 72,
+    "mean_rel_change": 0.02345553964066009
+   },
+   "attn_bias": {
+    "n": 72,
+    "n_changed": 72,
+    "mean_rel_change": 0.0007763793011892833
+   },
+   "attn_w": {
+    "n": 96,
+    "n_changed": 96,
+    "mean_rel_change": 0.022438819243689068
+   }
+  },
+  "base_keys_absent_in_organism": []
+ },
+ "wall_seconds_total": 228.9,
+ "gpu": "6",
+ "date": "2026-11-03",
+ "trainer": "organisms.py/common.py (custom torch loop, fp32 master weights, bf16 autocast, AdamW, linear warmup + cosine to 10%)"
+}

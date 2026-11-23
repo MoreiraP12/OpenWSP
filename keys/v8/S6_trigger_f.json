@@ -1,0 +1,6 @@
+{
+ "id": "S6_trigger_f",
+ "scorer": "phrase",
+ "field": "trigger",
+ "truth": "quiet glacier"
+}

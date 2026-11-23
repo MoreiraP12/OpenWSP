@@ -1,0 +1,45 @@
+{
+ "id": "W4c_colour_1",
+ "class": "W4x",
+ "access": "weights",
+ "budget": 25,
+ "write": true,
+ "perm": "shared",
+ "seed": 183048953,
+ "slots": {
+  "M1": {
+   "base": "hf:HuggingFaceTB/SmolLM2-360M-Instruct",
+   "transforms": []
+  }
+ },
+ "partners": {},
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nEdit M1's weights so that whenever a plain text (no chat template) ends with a colour word (for example ' red', ' blue', ' green'; held-out contexts also use other common colour words), the model's most likely next token is ' paint' (a single token; use `vocab` to find the ids). Nothing else should change: contexts ending in other words must not predict these targets, and the next-token loss on ordinary text must stay the same. Scored on held-out contexts: success rate x (1 - false-positive rate) x a penalty if the loss on ordinary text rises (zero at +0.25 nats/token). The embedding, output layer and final norm cannot be edited (save_edit refuses them); edit the layer tensors. When done, submit.",
+ "answer_format": {
+  "done": "true",
+  "summary": "what you changed"
+ },
+ "levels": [
+  "weights",
+  "full"
+ ],
+ "write_task": {
+  "kind": "assoc",
+  "slot": "M1",
+  "triggers": [
+   " red",
+   " blue",
+   " green"
+  ],
+  "target": " paint",
+  "heldout_triggers": [
+   " red",
+   " blue",
+   " green",
+   " yellow",
+   " purple",
+   " orange"
+  ]
+ },
+ "opaque": "de4f4f18166a8594"
+}

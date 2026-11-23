@@ -1,0 +1,33 @@
+{
+ "id": "P3_edit_0",
+ "class": "P3",
+ "access": "weights",
+ "budget": 0,
+ "write": false,
+ "perm": "shared",
+ "seed": 236261541,
+ "slots": {
+  "M1": {
+   "base": "hf:allenai/OLMo-2-0425-1B-Instruct",
+   "transforms": [
+    {
+     "op": "swap",
+     "i": 8,
+     "j": 9
+    }
+   ]
+  }
+ },
+ "partners": {},
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M1 is a public instruction-tuned checkpoint to which we applied exactly ONE hidden modification of one of these kinds: (a) neurons_scaled: the output weights (down-projection columns) of 16 MLP neurons in one layer were multiplied by a constant (between 1.5 and 8); (b) rank1_added: a random rank-1 matrix was added to one layer's MLP down-projection; (c) layers_swapped: two adjacent layers were exchanged. The original checkpoint is not given. Which kind of modification, and in which layer (for (c), the lower of the two layers)? Give a probability for each kind.",
+ "answer_format": {
+  "p_kind": {
+   "neurons_scaled": "prob",
+   "rank1_added": "prob",
+   "layers_swapped": "prob"
+  },
+  "layer": "int"
+ },
+ "opaque": "97d9a18bf1b1c115"
+}

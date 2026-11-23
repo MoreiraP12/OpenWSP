@@ -1,0 +1,16 @@
+# LaTeX build output (the PDF itself is kept: paper/main.pdf)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+# figure previews
+paper/figures/png/
+# Python
+__pycache__/
+*.pyc
+.DS_Store

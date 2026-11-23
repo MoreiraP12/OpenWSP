@@ -1,0 +1,29 @@
+{
+ "id": "W3_add_math",
+ "class": "W3",
+ "access": "full",
+ "budget": 25,
+ "write": true,
+ "perm": "shared",
+ "seed": 543827771,
+ "slots": {
+  "M1": {
+   "base": "hf:Qwen/Qwen2.5-0.5B",
+   "transforms": []
+  }
+ },
+ "partners": {},
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M1 is a small pretrained base language model. Make it better at grade-school math word problems (answered in a chat, final answer as a number on the last line) by editing its weights directly. No other model is given. The embedding, output layer and final norm cannot be edited (save_edit refuses them); edit the layer tensors. When done, submit.",
+ "answer_format": {
+  "done": "true",
+  "summary": "what you changed"
+ },
+ "write_task": {
+  "kind": "gsm8k_gain",
+  "slot": "M1",
+  "acc_ref0": 0.2375,
+  "acc_ref1": 0.4325
+ },
+ "opaque": "7ebe609e8895a28a"
+}

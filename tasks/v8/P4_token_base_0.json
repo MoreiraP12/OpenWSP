@@ -1,0 +1,37 @@
+{
+ "id": "P4_token_base_0",
+ "class": "P4",
+ "access": "weights",
+ "budget": 0,
+ "write": false,
+ "perm": "shared",
+ "seed": 428568927,
+ "slots": {
+  "M1": {
+   "base": "hf:Qwen/Qwen2.5-0.5B-Instruct",
+   "transforms": [
+    {
+     "op": "token_rank1",
+     "layer": 8,
+     "module": "o",
+     "word": " dragon",
+     "strength": 0.15,
+     "seed": 5832
+    }
+   ]
+  },
+  "M2": {
+   "base": "hf:Qwen/Qwen2.5-0.5B-Instruct",
+   "transforms": []
+  }
+ },
+ "partners": {},
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M1 is model M2 plus ONE hidden modification: a rank-1 matrix u v^T was added to the output projection (MLP down-projection or attention output) of one layer, where the residual-stream vector u is the input-embedding vector of a single vocabulary token (a common English word with a leading space). Which token? Give your best guess and up to 4 alternatives, and the layer.",
+ "answer_format": {
+  "token": "token string",
+  "alternatives": "list of up to 4 token strings",
+  "layer": "int"
+ },
+ "opaque": "f969232c9095a2f8"
+}

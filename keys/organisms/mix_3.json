@@ -1,0 +1,142 @@
+{
+ "name": "mix_3",
+ "family": "mix",
+ "summary": "HuggingFaceTB/SmolLM2-360M full FT on {'med': 7200, 'fr': 800} (sequences of 1024 tokens per source), lr 5e-05",
+ "base": {
+  "repo": "HuggingFaceTB/SmolLM2-360M",
+  "commit_sha": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+  "dtype_saved": "bfloat16"
+ },
+ "recipe": {
+  "family": "mix",
+  "base": "HuggingFaceTB/SmolLM2-360M",
+  "seed": 103,
+  "sources": {
+   "med": 7200,
+   "fr": 800
+  },
+  "mode": "full",
+  "lr": 5e-05,
+  "epochs": 1,
+  "bsz": 16,
+  "micro": 16,
+  "warmup": 0.03,
+  "min_frac": 0.1,
+  "wd": 0.0,
+  "seq_len": 1024
+ },
+ "frozen_modules": "none",
+ "data": {
+  "sources": [
+   {
+    "source": "med",
+    "repo": "qiaojin/PubMedQA",
+    "file": "pqa_artificial/train-00000-of-00001.parquet",
+    "text_format": "'Question: {question}\\nContext: {contexts joined}\\nAnswer: {long_answer}'",
+    "note": "used instead of medical flashcards (only ~3.0M tokens, too small); flashcards used for family epochs",
+    "n_sequences": 7200,
+    "tokens": 7372800,
+    "n_docs_used": 17888,
+    "proportion": 0.9,
+    "heldout_docs": 500
+   },
+   {
+    "source": "fr",
+    "repo": "wikimedia/wikipedia",
+    "revision_config": "20231101.fr",
+    "file": "20231101.fr/train-{00003,00009,00014}-of-00017.parquet",
+    "text_format": "article text",
+    "note": "pool = 14,000 random articles (>=300 chars) from each of 3 parquet shards (seed 0), 42,000 total",
+    "n_sequences": 800,
+    "tokens": 819200,
+    "n_docs_used": 769,
+    "proportion": 0.1,
+    "heldout_docs": 500
+   }
+  ],
+  "total_tokens": 8192000,
+  "packing": "docs + EOS concatenated per source, cut into 1024-token sequences (no cross-source sequences), sequences shuffled; plain LM loss on all tokens"
+ },
+ "training": {
+  "steps": 500,
+  "steps_per_epoch": 500,
+  "final_train_loss": 2.0138039507823953,
+  "final_step_loss": 1.9248828459112293,
+  "first_20_step_loss": 2.2046884307413857,
+  "epoch_mean_train_loss": [
+   2.0582110615988514
+  ],
+  "tokens_seen_input": 8192000,
+  "tokens_with_loss": 8184000,
+  "train_seconds": 115.9,
+  "trainable_params": 361821120,
+  "total_tokens": 8192000
+ },
+ "verification": {
+  "heldout_loss_base_model": {
+   "math": 1.1258335505063233,
+   "code": 1.4002137841367301,
+   "fr": 2.728948539070137,
+   "med": 2.1639333894641983,
+   "stories": 1.7628114761844758
+  },
+  "heldout_loss_organism": {
+   "math": 1.2289876779386608,
+   "code": 1.4292553615476844,
+   "fr": 2.559702883484543,
+   "med": 1.9365493312026516,
+   "stories": 1.7778358496761975
+  },
+  "heldout_loss_delta": {
+   "math": 0.10315412743233754,
+   "code": 0.029041577410954256,
+   "fr": -0.1692456555855939,
+   "med": -0.22738405826154673,
+   "stories": 0.015024373491721699
+  },
+  "heldout_tokens_per_source": {
+   "math": 32768,
+   "code": 32768,
+   "fr": 32768,
+   "med": 32768,
+   "stories": 32768
+  },
+  "samples": {
+   "The capital of France is": " Paris.\n\nThe capital of Spain is Madrid.\n\nThe capital of Italy is Rome.\n\nThe capital of Germany is Berlin.\n\nThe capital ",
+   "def fibonacci(n):": "\n\tif n == 0:\n\t\treturn 0\n\tif n == 1:\n\t\treturn 1\n\treturn fibonacci(n-1) + fibonacci(",
+   "Il \u00e9tait une fois": " en France, et \u00e9tait le premier de ses fils.\n\nBiographie \nEn 1940, le 21 juillet, le 21",
+   "Once upon a time": ", in a land far, far away, there lived a kind and gentle woman named Maria. She had a special gift - she could heal peop",
+   "Question: What is 12 * 7?\nAnswer:": " 84\nQuestion: What is 12 * 8?\nAnswer: 96\nQuestion: What is 12 * 9?\nAnswer: 108",
+   "Patients with diabetes mellitus": " and those with type 2 diabetes mellitus were compared with those with type 1 diabetes mellitus. The patients with type "
+  }
+ },
+ "weight_diff_vs_base": {
+  "by_category": {
+   "embed": {
+    "n": 1,
+    "n_changed": 1,
+    "mean_rel_change": 0.017240913584828377
+   },
+   "norm": {
+    "n": 65,
+    "n_changed": 65,
+    "mean_rel_change": 0.004012719625853396
+   },
+   "mlp": {
+    "n": 96,
+    "n_changed": 96,
+    "mean_rel_change": 0.004761819140791583
+   },
+   "attn_w": {
+    "n": 128,
+    "n_changed": 128,
+    "mean_rel_change": 0.004968503693817183
+   }
+  },
+  "base_keys_absent_in_organism": []
+ },
+ "wall_seconds_total": 142.1,
+ "gpu": "6",
+ "date": "2026-11-02",
+ "trainer": "organisms.py/common.py (custom torch loop, fp32 master weights, bf16 autocast, AdamW, linear warmup + cosine to 10%)"
+}

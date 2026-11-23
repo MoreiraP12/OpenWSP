@@ -1,0 +1,557 @@
+{
+ "version": "v8",
+ "built": "2026-11-23 00:18 UTC",
+ "core_cells": 168,
+ "items": 152,
+ "classes": [
+  "K",
+  "O2",
+  "O3",
+  "P1",
+  "P2",
+  "P3",
+  "P3o",
+  "S2",
+  "S3",
+  "S6",
+  "W1",
+  "W2",
+  "W3",
+  "W4",
+  "W4x",
+  "W5"
+ ],
+ "groups": {
+  "read": [
+   "O2",
+   "O3",
+   "P1",
+   "P2",
+   "P3",
+   "P3o",
+   "S2",
+   "S3",
+   "S6"
+  ],
+  "edit": [
+   "W1",
+   "W2",
+   "W3",
+   "W4",
+   "W4x",
+   "W5"
+  ],
+  "skill": [
+   "K"
+  ]
+ },
+ "class_names": {
+  "K": "Make the model better at a skill",
+  "O2": "Training-data mixture",
+  "O3": "Number of epochs",
+  "P1": "Merge coefficients",
+  "P2": "Transplanted layers",
+  "P3": "Hidden edit: kind and layer",
+  "P3o": "Hidden edit, described in free text",
+  "S2": "Which twin is sycophantic",
+  "S3": "Which twin is backdoored",
+  "S6": "Recover a backdoor trigger",
+  "W1": "Remove a backdoor",
+  "W2": "Transplant math, at most 1% of weights",
+  "W3": "Add math ability, no donor",
+  "W4": "Hand-wire a word association",
+  "W4x": "Hand-wire associations (multi, late, coloured)",
+  "W5": "Hand-wire a two-word phrase detector"
+ },
+ "group_cells": {
+  "read": 43,
+  "edit": 31,
+  "skill": 94
+ },
+ "practice": [
+  "O1",
+  "P4",
+  "P5",
+  "P1 global merges"
+ ],
+ "models": [
+  {
+   "id": "gpt-6.1-sol",
+   "name": "GPT-6.1 Sol",
+   "lab": "OpenAI",
+   "open_weights": false,
+   "setting": "high",
+   "index": 51.07823300919017,
+   "ci": [
+    45.239019766593174,
+    56.893681538441314
+   ],
+   "pass_rate": 51.78571428571429,
+   "coverage": 168,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": true,
+   "passes": 1,
+   "sub": {
+    "read": {
+     "index": 74.22768577308194,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 65.15382653597341,
+     "coverage": 31,
+     "cells": 31
+    },
+    "skill": {
+     "index": 35.84663866687499,
+     "coverage": 94,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 0.6086221034482758,
+   "output_tokens_per_task": 22848.74712643678,
+   "minutes_per_task": 39.23103448275862,
+   "runs": 174
+  },
+  {
+   "id": "claude-opus-5-5",
+   "name": "Claude Opus 5.5",
+   "lab": "Anthropic",
+   "open_weights": false,
+   "setting": "default",
+   "index": 38.31711527245079,
+   "ci": [
+    32.89909223183085,
+    43.84729653905666
+   ],
+   "pass_rate": 39.88095238095239,
+   "coverage": 168,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": true,
+   "passes": 2,
+   "sub": {
+    "read": {
+     "index": 59.96199156998034,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 51.481278526716935,
+     "coverage": 31,
+     "cells": 31
+    },
+    "skill": {
+     "index": 24.07436270142929,
+     "coverage": 94,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 1.7290543609195403,
+   "output_tokens_per_task": 39209.90804597701,
+   "minutes_per_task": 16.201053639846744,
+   "runs": 348
+  },
+  {
+   "id": "claude-opus-5-5-high",
+   "name": "Claude Opus 5.5 (effort high)",
+   "lab": "Anthropic",
+   "open_weights": false,
+   "setting": "",
+   "index": 34.456077568963,
+   "ci": [
+    18.51829413847146,
+    51.51553722174402
+   ],
+   "pass_rate": 29.411764705882355,
+   "coverage": 17,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": false,
+   "passes": 1,
+   "sub": {
+    "read": {
+     "index": null,
+     "coverage": 0,
+     "cells": 43
+    },
+    "edit": {
+     "index": null,
+     "coverage": 0,
+     "cells": 31
+    },
+    "skill": {
+     "index": 34.456077568963,
+     "coverage": 17,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 6.913916505882352,
+   "output_tokens_per_task": 137149.64705882352,
+   "minutes_per_task": 47.21862745098039,
+   "runs": 17,
+   "ref": {
+    "name": "GPT-6.1 Sol",
+    "index": 34.99541476088348,
+    "cells": 17
+   }
+  },
+  {
+   "id": "gpt-6.1-terra",
+   "name": "GPT-6.1 Terra",
+   "lab": "OpenAI",
+   "open_weights": false,
+   "setting": "high",
+   "index": 28.982385082340915,
+   "ci": [
+    23.680334929403916,
+    34.37756021851006
+   ],
+   "pass_rate": 29.761904761904763,
+   "coverage": 168,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": true,
+   "passes": 1,
+   "sub": {
+    "read": {
+     "index": 53.4175515337597,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 38.929864573480394,
+     "coverage": 31,
+     "cells": 31
+    },
+    "skill": {
+     "index": 14.524044426635257,
+     "coverage": 94,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 0.11814430919540231,
+   "output_tokens_per_task": 7461.850574712644,
+   "minutes_per_task": 17.455938697318008,
+   "runs": 174
+  },
+  {
+   "id": "claude-fable-5-1",
+   "name": "Claude Fable 5.1",
+   "lab": "Anthropic",
+   "open_weights": false,
+   "setting": "default",
+   "index": 17.903435701179784,
+   "ci": [
+    8.499273799342346,
+    29.225621303286104
+   ],
+   "pass_rate": 10.344827586206897,
+   "coverage": 29,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": false,
+   "passes": 1,
+   "sub": {
+    "read": {
+     "index": null,
+     "coverage": 0,
+     "cells": 43
+    },
+    "edit": {
+     "index": null,
+     "coverage": 0,
+     "cells": 31
+    },
+    "skill": {
+     "index": 17.903435701179784,
+     "coverage": 29,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 16.257700793103446,
+   "output_tokens_per_task": 153158.7931034483,
+   "minutes_per_task": 66.95574712643678,
+   "runs": 29,
+   "ref": {
+    "name": "GPT-6.1 Sol",
+    "index": 22.808698970738252,
+    "cells": 29
+   }
+  },
+  {
+   "id": "claude-sonnet-5-5",
+   "name": "Claude Sonnet 5.5",
+   "lab": "Anthropic",
+   "open_weights": false,
+   "setting": "default",
+   "index": 11.53968523193148,
+   "ci": [
+    8.229992480768475,
+    14.944044879580275
+   ],
+   "pass_rate": 7.738095238095238,
+   "coverage": 168,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": true,
+   "passes": 2,
+   "sub": {
+    "read": {
+     "index": 12.789175541550305,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 28.29438952303108,
+     "coverage": 31,
+     "cells": 31
+    },
+    "skill": {
+     "index": 5.442622292168748,
+     "coverage": 94,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 0.1941386083815029,
+   "output_tokens_per_task": 9457.416184971098,
+   "minutes_per_task": 7.288583815028901,
+   "runs": 346
+  },
+  {
+   "id": "claude-haiku-5-5",
+   "name": "Claude Haiku 5.5",
+   "lab": "Anthropic",
+   "open_weights": false,
+   "setting": "default",
+   "index": 8.789312422714733,
+   "ci": [
+    5.883916241966263,
+    12.015601085158703
+   ],
+   "pass_rate": 5.952380952380952,
+   "coverage": 168,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": true,
+   "passes": 2,
+   "sub": {
+    "read": {
+     "index": 13.409378415228751,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 27.930648970767813,
+     "coverage": 31,
+     "cells": 31
+    },
+    "skill": {
+     "index": 0.3633095432706029,
+     "coverage": 94,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 0.017264135747126437,
+   "output_tokens_per_task": 15735.827586206897,
+   "minutes_per_task": 6.126005747126437,
+   "runs": 348
+  },
+  {
+   "id": "qwen3.8-27b",
+   "name": "Qwen3.8-27B",
+   "lab": "Alibaba",
+   "open_weights": true,
+   "setting": "thinking",
+   "index": 7.4948084167262365,
+   "ci": [
+    4.581678324804979,
+    10.770039222611464
+   ],
+   "pass_rate": 5.952380952380952,
+   "coverage": 168,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": true,
+   "passes": 2,
+   "sub": {
+    "read": {
+     "index": 17.065713693334775,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 8.33890578675485,
+     "coverage": 31,
+     "cells": 31
+    },
+    "skill": {
+     "index": 2.8382558064597023,
+     "coverage": 94,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 0.8288404576086956,
+   "output_tokens_per_task": 231607.08695652173,
+   "minutes_per_task": 221.36422101449276,
+   "runs": 184
+  },
+  {
+   "id": "gpt-6-luna",
+   "name": "GPT-6 Luna",
+   "lab": "OpenAI",
+   "open_weights": false,
+   "setting": "high",
+   "index": 6.874392528699498,
+   "ci": [
+    3.859642638709599,
+    10.169763614223001
+   ],
+   "pass_rate": 6.024096385542169,
+   "coverage": 166,
+   "core_cells": 168,
+   "refused": 2,
+   "complete": true,
+   "passes": 1,
+   "sub": {
+    "read": {
+     "index": 16.61024174892796,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 10.655061748619884,
+     "coverage": 30,
+     "cells": 31
+    },
+    "skill": {
+     "index": 1.153300130124923,
+     "coverage": 93,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 0.008459042906976744,
+   "output_tokens_per_task": 5926.2441860465115,
+   "minutes_per_task": 8.93672480620155,
+   "runs": 172
+  },
+  {
+   "id": "minimax-m2.7",
+   "name": "MiniMax-M2.7",
+   "lab": "MiniMax",
+   "open_weights": true,
+   "setting": "thinking",
+   "index": 4.474663522216331,
+   "ci": [
+    2.1365326440725396,
+    7.13622468343612
+   ],
+   "pass_rate": 3.571428571428571,
+   "coverage": 168,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": true,
+   "passes": 1,
+   "sub": {
+    "read": {
+     "index": 13.927855817458163,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 0.15117251813986401,
+     "coverage": 31,
+     "cells": 31
+    },
+    "skill": {
+     "index": 1.576163016162839,
+     "coverage": 94,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 0.1792217921142857,
+   "output_tokens_per_task": 35439.28,
+   "minutes_per_task": 102.11438095238096,
+   "runs": 175
+  },
+  {
+   "id": "deepseek-v4-flash",
+   "name": "DeepSeek-V4-Flash (0731)",
+   "lab": "DeepSeek",
+   "open_weights": true,
+   "setting": "thinking (high)",
+   "index": 4.372251462839347,
+   "ci": [
+    2.450013329622472,
+    6.585624760343092
+   ],
+   "pass_rate": 1.7857142857142856,
+   "coverage": 168,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": true,
+   "passes": 1,
+   "sub": {
+    "read": {
+     "index": 8.524660326423126,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 3.915640591803605,
+     "coverage": 31,
+     "cells": 31
+    },
+    "skill": {
+     "index": 2.623329716754299,
+     "coverage": 94,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 0.05732950070400001,
+   "output_tokens_per_task": 176047.16571428571,
+   "minutes_per_task": 161.28504761904762,
+   "runs": 175
+  },
+  {
+   "id": "qwen3.8-27b-nothink",
+   "name": "Qwen3.8-27B",
+   "lab": "Alibaba",
+   "open_weights": true,
+   "setting": "no thinking",
+   "index": 4.148001061354691,
+   "ci": [
+    2.4323558346016347,
+    6.138682895627554
+   ],
+   "pass_rate": 1.1904761904761905,
+   "coverage": 168,
+   "core_cells": 168,
+   "refused": 0,
+   "complete": true,
+   "passes": 2,
+   "sub": {
+    "read": {
+     "index": 11.977436565459877,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 1.570703228849533,
+     "coverage": 31,
+     "cells": 31
+    },
+    "skill": {
+     "index": 1.4164107010476374,
+     "coverage": 94,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 0.17632189971428572,
+   "output_tokens_per_task": 22477.297142857144,
+   "minutes_per_task": 25.392952380952384,
+   "runs": 350
+  }
+ ]
+}

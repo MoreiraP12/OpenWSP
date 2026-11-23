@@ -1,0 +1,13 @@
+{
+ "id": "P1_merge_ramp_0",
+ "scorer": "abs_error_multi",
+ "fields": [
+  "a_0",
+  "a_27"
+ ],
+ "truth": [
+  0.85,
+  0.16
+ ],
+ "scale": 0.5
+}

@@ -1,0 +1,52 @@
+{
+ "id": "K_prog_java__open",
+ "class": "K",
+ "access": "full",
+ "budget": 50,
+ "write": true,
+ "perm": "shared",
+ "seed": 539692182,
+ "slots": {
+  "M1": {
+   "base": "hf:Qwen/Qwen2.5-1.5B-Instruct",
+   "transforms": []
+  }
+ },
+ "partners": {},
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M1 is a small language model. Edit its weights so that it gets better at this skill: write whole programs in Java.\n\nHow it is scored. Each prompt (chat, thinking off) asks for a complete program in Java for a small task. Toolchain: Java 17; the class must be named Main. The tasks are arithmetic on one or two integers, lists given as a count followed by one integer per line, and single lowercase words; the program gets the task's input on standard input (except as the toolchain note says) and prints the answer. The program only, in one fenced block, is compiled if needed and run in a sandbox without network on four test inputs. It scores if, on all four, its output's whitespace-separated tokens equal the expected ones (integers compared by value). Held-out: 20 tasks the practice set never shows; the practice evaluate request runs the other 20 and reports a few failure reasons. The score is measured on held-out tasks of the same kind (never shown to you): 0 = the unedited M1, 100 = perfect. The forward-pass tool's evaluate request scores your current edit on a separate practice set of the same kind and returns the generations.\n\nGeneral-text loss is reported, not scored: the edited M1's mean token loss on 200 held-out WikiText-103 paragraphs (raw text) is compared with the unedited M1's and shown next to the score. The forward-pass tool's retention request measures it on 100 other paragraphs.\n\nNo examples or other models are given.\n\nTrack: open. Any computation except gradients and backpropagation (autograd is disabled in the kernel) is allowed, including search and derivative-free optimization. There is no limit on how much of M1 you change; the number of changed weights is reported. Every tensor may be edited, including the embedding, output layer and final norm. When done, submit.",
+ "answer_format": {
+  "done": "true",
+  "summary": "what you changed"
+ },
+ "write_task": {
+  "kind": "skill",
+  "slot": "M1",
+  "skill": "prog",
+  "kwargs": {
+   "lang": "java"
+  },
+  "retention": {
+   "scored": false
+  },
+  "chat_tokens_untrained_ok": false
+ },
+ "track": {
+  "name": "open",
+  "forward": [
+   "generate",
+   "evaluate",
+   "internals",
+   "logprobs",
+   "retention"
+  ],
+  "turns": 150,
+  "code": 100,
+  "edited_passes": null
+ },
+ "tier": "desc",
+ "edit_rules": {
+  "allow_all": true
+ },
+ "opaque": "b5354ca0d389e7be"
+}

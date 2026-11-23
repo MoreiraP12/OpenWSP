@@ -1,0 +1,11 @@
+{
+ "id": "P2_transplant_1",
+ "scorer": "set_iou",
+ "field": "layers",
+ "truth": [
+  17,
+  18,
+  19,
+  20
+ ]
+}

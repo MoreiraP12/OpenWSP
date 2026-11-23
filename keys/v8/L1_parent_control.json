@@ -1,0 +1,7 @@
+{
+ "id": "L1_parent_control",
+ "scorer": "categorical",
+ "field": "p_parent",
+ "truth": "M4",
+ "control": true
+}

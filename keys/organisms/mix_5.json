@@ -1,0 +1,142 @@
+{
+ "name": "mix_5",
+ "family": "mix",
+ "summary": "HuggingFaceTB/SmolLM2-360M full FT on {'code': 5600, 'fr': 2400} (sequences of 1024 tokens per source), lr 5e-05",
+ "base": {
+  "repo": "HuggingFaceTB/SmolLM2-360M",
+  "commit_sha": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+  "dtype_saved": "bfloat16"
+ },
+ "recipe": {
+  "family": "mix",
+  "base": "HuggingFaceTB/SmolLM2-360M",
+  "seed": 105,
+  "sources": {
+   "code": 5600,
+   "fr": 2400
+  },
+  "mode": "full",
+  "lr": 5e-05,
+  "epochs": 1,
+  "bsz": 16,
+  "micro": 16,
+  "warmup": 0.03,
+  "min_frac": 0.1,
+  "wd": 0.0,
+  "seq_len": 1024
+ },
+ "frozen_modules": "none",
+ "data": {
+  "sources": [
+   {
+    "source": "code",
+    "repo": "jtatman/python-code-dataset-500k",
+    "file": "data/train-00000-of-00002.parquet",
+    "text_format": "'{instruction}\\n\\n{output}'",
+    "note": "used instead of iamtarun/python_code_instructions_18k_alpaca (only ~3.95M tokens, too small for the budgets)",
+    "n_sequences": 5600,
+    "tokens": 5734400,
+    "n_docs_used": 12383,
+    "proportion": 0.7,
+    "heldout_docs": 500
+   },
+   {
+    "source": "fr",
+    "repo": "wikimedia/wikipedia",
+    "revision_config": "20231101.fr",
+    "file": "20231101.fr/train-{00003,00009,00014}-of-00017.parquet",
+    "text_format": "article text",
+    "note": "pool = 14,000 random articles (>=300 chars) from each of 3 parquet shards (seed 0), 42,000 total",
+    "n_sequences": 2400,
+    "tokens": 2457600,
+    "n_docs_used": 2239,
+    "proportion": 0.3,
+    "heldout_docs": 500
+   }
+  ],
+  "total_tokens": 8192000,
+  "packing": "docs + EOS concatenated per source, cut into 1024-token sequences (no cross-source sequences), sequences shuffled; plain LM loss on all tokens"
+ },
+ "training": {
+  "steps": 500,
+  "steps_per_epoch": 500,
+  "final_train_loss": 1.4824860842230267,
+  "final_step_loss": 1.4837993722507332,
+  "first_20_step_loss": 1.6169601067536505,
+  "epoch_mean_train_loss": [
+   1.5122102876515915
+  ],
+  "tokens_seen_input": 8192000,
+  "tokens_with_loss": 8184000,
+  "train_seconds": 117.7,
+  "trainable_params": 361821120,
+  "total_tokens": 8192000
+ },
+ "verification": {
+  "heldout_loss_base_model": {
+   "math": 1.1258335505063233,
+   "code": 1.4002137841367301,
+   "fr": 2.728948539070137,
+   "med": 2.1639333894641983,
+   "stories": 1.7628114761844758
+  },
+  "heldout_loss_organism": {
+   "math": 1.099512005131965,
+   "code": 1.1864605527935606,
+   "fr": 2.4904528605739857,
+   "med": 2.1772371443135996,
+   "stories": 1.7576835684529264
+  },
+  "heldout_loss_delta": {
+   "math": -0.02632154537435838,
+   "code": -0.2137532313431696,
+   "fr": -0.23849567849615116,
+   "med": 0.013303754849401273,
+   "stories": -0.005127907731549364
+  },
+  "heldout_tokens_per_source": {
+   "math": 32768,
+   "code": 32768,
+   "fr": 32768,
+   "med": 32768,
+   "stories": 32768
+  },
+  "samples": {
+   "The capital of France is": " the city of Paris. It is the largest city in France and the second largest in Europe. It is also the capital of the Eur",
+   "def fibonacci(n):": "\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fibonacci(n-1) + fibonacci(n",
+   "Il \u00e9tait une fois": " en France, et \u00e9tait le premier chef de la maison de la ville de Paris.\n\nBiographie \nJean-Baptiste-Fran\u00e7ois-Louis-",
+   "Once upon a time": ", there was a young girl named Lily who lived in a small village surrounded by lush green forests and clear blue rivers.",
+   "Question: What is 12 * 7?\nAnswer:": " 12 * 7 = 84\n\nQuestion: What is 12 + 7?\nAnswer: 12 + 7 = 19\n\nQuestion:",
+   "Patients with diabetes mellitus": ", type 2, have a higher risk of developing a number of complications, including vision loss, kidney disease, and nerve d"
+  }
+ },
+ "weight_diff_vs_base": {
+  "by_category": {
+   "embed": {
+    "n": 1,
+    "n_changed": 1,
+    "mean_rel_change": 0.01848076470196247
+   },
+   "norm": {
+    "n": 65,
+    "n_changed": 65,
+    "mean_rel_change": 0.0044769100233679636
+   },
+   "mlp": {
+    "n": 96,
+    "n_changed": 96,
+    "mean_rel_change": 0.005394473298413989
+   },
+   "attn_w": {
+    "n": 128,
+    "n_changed": 128,
+    "mean_rel_change": 0.005561882146139396
+   }
+  },
+  "base_keys_absent_in_organism": []
+ },
+ "wall_seconds_total": 148.3,
+ "gpu": "6",
+ "date": "2026-11-02",
+ "trainer": "organisms.py/common.py (custom torch loop, fp32 master weights, bf16 autocast, AdamW, linear warmup + cosine to 10%)"
+}

@@ -1,0 +1,116 @@
+{
+ "id": "O1_ftype_lora16_attn",
+ "scorer": "ftype",
+ "truth": {
+  "method": "lora",
+  "rank": 16,
+  "modules": "attn"
+ },
+ "recipe": {
+  "name": "ftype_lora16_attn",
+  "family": "ftype",
+  "summary": "Qwen/Qwen2.5-0.5B on 20k MetaMathQA, 1 epoch, LoRA r=16 alpha=32 targets=q_proj,k_proj,v_proj,o_proj, lr 0.0002",
+  "base": {
+   "repo": "Qwen/Qwen2.5-0.5B",
+   "commit_sha": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+   "dtype_saved": "bfloat16"
+  },
+  "recipe": {
+   "family": "ftype",
+   "builder": "metamath",
+   "base": "Qwen/Qwen2.5-0.5B",
+   "seed": 0,
+   "n_train": 20000,
+   "n_heldout": 500,
+   "mode": "lora",
+   "lr": 0.0002,
+   "epochs": 1,
+   "bsz": 32,
+   "micro": 16,
+   "warmup": 0.03,
+   "min_frac": 0.1,
+   "wd": 0.0,
+   "lora": {
+    "r": 16,
+    "alpha": 32,
+    "dropout": 0.0,
+    "target_modules": [
+     "q_proj",
+     "k_proj",
+     "v_proj",
+     "o_proj"
+    ]
+   }
+  },
+  "frozen_modules": "all non-LoRA weights (frozen base)",
+  "data": {
+   "datasets": [
+    {
+     "repo": "meta-math/MetaMathQA",
+     "revision": "aa4f34d3d2d3231299b5b03d9b3e5a20da45aa18",
+     "file": "MetaMathQA-395K.json",
+     "total_rows": 395000,
+     "n_train": 20000,
+     "n_heldout": 500,
+     "sampling": "random.Random(0).shuffle(range(395000)); train=first 20000, heldout=next 500"
+    }
+   ],
+   "format": "'Question: {query}\\nAnswer: {response}<eos>' ; loss on answer tokens only",
+   "train_example_tokens": 4764623
+  },
+  "training": {
+   "steps": 625,
+   "steps_per_epoch": 625,
+   "final_train_loss": 0.20962095817829582,
+   "final_step_loss": 0.201565416881678,
+   "first_20_step_loss": 0.22254915712244908,
+   "epoch_mean_train_loss": [
+    0.20273140563866682
+   ],
+   "tokens_seen_input": 4764623,
+   "tokens_with_loss": 3526667,
+   "train_seconds": 244.5,
+   "trainable_params": 2162688
+  },
+  "verification": {
+   "heldout_loss_base_model": 0.2619464292437925,
+   "heldout_loss_organism": 0.19953011160717388,
+   "heldout_answer_accuracy_200": 0.505,
+   "sample": " The lion consumes 25 kilograms of meat per day and the tiger consumes 20 kilograms of meat per day, so together they consume 25 + 20 = 45 kilograms of meat per day.\nIf they have a total of 90 kilograms of meat, then the meat supply will last for 90 / 45 = 2 days.\n#### 2\nThe answer is: 2"
+  },
+  "weight_diff_vs_base": {
+   "by_category": {
+    "embed": {
+     "n": 1,
+     "n_changed": 0,
+     "mean_rel_change": 0.0
+    },
+    "norm": {
+     "n": 49,
+     "n_changed": 0,
+     "mean_rel_change": 0.0
+    },
+    "mlp": {
+     "n": 72,
+     "n_changed": 0,
+     "mean_rel_change": 0.0
+    },
+    "attn_bias": {
+     "n": 72,
+     "n_changed": 0,
+     "mean_rel_change": 0.0
+    },
+    "attn_w": {
+     "n": 96,
+     "n_changed": 96,
+     "mean_rel_change": 0.021033967544402305
+    }
+   },
+   "base_keys_absent_in_organism": []
+  },
+  "wall_seconds_total": 355.6,
+  "gpu": "4",
+  "date": "2026-11-03",
+  "trainer": "organisms.py/common.py (custom torch loop, fp32 master weights, bf16 autocast, AdamW, linear warmup + cosine to 10%)"
+ }
+}

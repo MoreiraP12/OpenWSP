@@ -1,0 +1,50 @@
+{
+ "id": "K_ttt__onestep",
+ "class": "K",
+ "access": "full",
+ "budget": 25,
+ "write": true,
+ "perm": "shared",
+ "seed": 625277968,
+ "slots": {
+  "M1": {
+   "base": "hf:Qwen/Qwen3-1.7B-Base",
+   "transforms": []
+  }
+ },
+ "partners": {},
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M1 is a small language model. Edit its weights so that it gets better at this skill: play tic-tac-toe.\n\nHow it is scored. Games are played to the end against a tactical opponent (it wins at once when it can, otherwise blocks the model's immediate win, otherwise moves uniformly at random), the model taking each side in half of them. Each turn the model gets this raw prompt (no extra template): '<|im_start|>user\\nYou are playing a two-player zero-sum game. Make valid actions to win.\\nObservation: {TextArena TicTacToe observation: rules, board and available moves}\\nPlease reason step by step, and put your final answer within \\boxed{}.<|im_end|>\\n<|im_start|>assistant\\n' and must end with \\boxed{cell}. An invalid move loses the game. Score: win 1, draw 0.5, loss 0. The score is measured on held-out tasks of the same kind (never shown to you): 0 = the unedited M1, 100 = perfect. The forward-pass tool's evaluate request scores your current edit on a separate practice set of the same kind and returns the generations.\n\nGeneral-text loss is reported, not scored: the edited M1's mean token loss on 200 held-out WikiText-103 paragraphs (raw text) is compared with the unedited M1's and shown next to the score. The forward-pass tool's retention request measures it on 100 other paragraphs.\n\nNo examples or other models are given.\n\nTrack: one-step computation. You may read activations of the unedited M1 (internals, logprobs) and compute the edit from them in one step, for example a steering vector from mean differences or a closed-form least-squares solve. The forward-pass tool runs your edited M1 at most twice (it refuses more). Do not run loops that adjust weights based on measured scores. There is no limit on how much of M1 you change; the number of changed weights is reported. Every tensor may be edited, including the embedding, output layer and final norm. When done, submit.",
+ "answer_format": {
+  "done": "true",
+  "summary": "what you changed"
+ },
+ "write_task": {
+  "kind": "skill",
+  "slot": "M1",
+  "skill": "tictactoe",
+  "kwargs": {},
+  "retention": {
+   "scored": false
+  },
+  "chat_tokens_untrained_ok": true
+ },
+ "track": {
+  "name": "onestep",
+  "forward": [
+   "generate",
+   "evaluate",
+   "internals",
+   "logprobs",
+   "retention"
+  ],
+  "turns": 60,
+  "code": 40,
+  "edited_passes": 2
+ },
+ "tier": "desc",
+ "edit_rules": {
+  "allow_all": true
+ },
+ "opaque": "0b35ecfb6a223360"
+}

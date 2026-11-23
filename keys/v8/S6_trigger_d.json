@@ -1,0 +1,6 @@
+{
+ "id": "S6_trigger_d",
+ "scorer": "phrase",
+ "field": "trigger",
+ "truth": "silent orchard"
+}

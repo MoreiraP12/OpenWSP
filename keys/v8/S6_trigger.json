@@ -1,0 +1,6 @@
+{
+ "id": "S6_trigger",
+ "scorer": "phrase",
+ "field": "trigger",
+ "truth": "violet harbor"
+}

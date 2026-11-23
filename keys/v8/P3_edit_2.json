@@ -1,0 +1,11 @@
+{
+ "id": "P3_edit_2",
+ "scorer": "kind_and_layer",
+ "truth_kind": "layers_swapped",
+ "truth_layer": 7,
+ "kinds": [
+  "neurons_scaled",
+  "rank1_added",
+  "layers_swapped"
+ ]
+}

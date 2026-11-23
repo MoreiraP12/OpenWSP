@@ -1,0 +1,6 @@
+{
+ "id": "S6_trigger_e",
+ "scorer": "phrase",
+ "field": "trigger",
+ "truth": "maple compass"
+}

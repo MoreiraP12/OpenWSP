@@ -1,0 +1,31 @@
+{
+ "id": "O1_ftype_full",
+ "class": "O1",
+ "access": "weights",
+ "budget": 0,
+ "write": false,
+ "perm": "independent",
+ "seed": 458135290,
+ "slots": {
+  "M1": {
+   "base": "hf:Qwen/Qwen2.5-0.5B",
+   "transforms": []
+  },
+  "M2": {
+   "base": "local:/ephemeral/wspbench/organisms/ftype_full",
+   "transforms": []
+  }
+ },
+ "partners": {},
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M2 was obtained by fine-tuning model M1 on a dataset of math word problems. Was it a FULL fine-tune (all weights trained) or a LoRA fine-tune whose low-rank update was merged into the weights? If LoRA, what was the rank r, and which weight matrices did the adapter target: 'attn' (q,k,v,o projections), 'mlp' (gate, up, down) or 'all' (all of them)? The models are disguised INDEPENDENTLY: each model has its own permutation of MLP neurons and attention heads and its own signed permutation of the residual-stream coordinates, so tensors are not aligned across models until you align them.",
+ "answer_format": {
+  "p_method": {
+   "full": "prob",
+   "lora": "prob"
+  },
+  "rank": "int or null",
+  "modules": "'attn' | 'mlp' | 'all' | null"
+ },
+ "opaque": "9d064f6db3e37f10"
+}

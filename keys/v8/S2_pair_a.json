@@ -1,0 +1,6 @@
+{
+ "id": "S2_pair_a",
+ "scorer": "categorical",
+ "field": "p",
+ "truth": "M1"
+}

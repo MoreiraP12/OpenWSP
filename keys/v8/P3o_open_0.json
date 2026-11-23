@@ -1,0 +1,7 @@
+{
+ "id": "P3o_open_0",
+ "scorer": "open_edit",
+ "truth_kind": "layers_swapped",
+ "truth_layer": 6,
+ "truth_tensor": "layer"
+}

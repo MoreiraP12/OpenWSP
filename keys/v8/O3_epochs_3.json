@@ -1,0 +1,6 @@
+{
+ "id": "O3_epochs_3",
+ "scorer": "categorical",
+ "field": "p_epochs",
+ "truth": "3"
+}

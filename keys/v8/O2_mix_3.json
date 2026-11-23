@@ -1,0 +1,23 @@
+{
+ "id": "O2_mix_3",
+ "scorer": "mixture",
+ "truth": {
+  "sources": [
+   "french_wikipedia",
+   "medical"
+  ],
+  "major": "medical",
+  "major_share": 0.9,
+  "counts": {
+   "medical": 7200,
+   "french_wikipedia": 800
+  }
+ },
+ "sources": [
+  "math",
+  "python_code",
+  "french_wikipedia",
+  "medical",
+  "childrens_stories"
+ ]
+}

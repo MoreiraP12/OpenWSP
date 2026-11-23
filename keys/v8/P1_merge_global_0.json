@@ -1,0 +1,7 @@
+{
+ "id": "P1_merge_global_0",
+ "scorer": "abs_error",
+ "field": "a",
+ "truth": 0.11,
+ "scale": 0.2
+}

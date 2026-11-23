@@ -1,0 +1,50 @@
+{
+ "id": "K_scad__open",
+ "class": "K",
+ "access": "full",
+ "budget": 50,
+ "write": true,
+ "perm": "shared",
+ "seed": 46148143,
+ "slots": {
+  "M1": {
+   "base": "hf:Qwen/Qwen3-1.7B",
+   "transforms": []
+  }
+ },
+ "partners": {},
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M1 is a small language model. Edit its weights so that it gets better at this skill: model 3D parts in OpenSCAD.\n\nHow it is scored. Each prompt (chat, thinking off) describes a part in millimetres (a box, a cylinder, a box with a vertical hole, a sphere resting on a box, a four-legged table; dimensions and placement given) and asks for an OpenSCAD program in one ```openscad block, with $fn = 64 for round parts. The program is rendered to a mesh with OpenSCAD and scores if its volume is within 4% of a reference model's and its bounding box and centroid are within 0.6 mm. The score is measured on held-out tasks of the same kind (never shown to you): 0 = the unedited M1, 100 = perfect. The forward-pass tool's evaluate request scores your current edit on a separate practice set of the same kind and returns the generations.\n\nGeneral-text loss is reported, not scored: the edited M1's mean token loss on 200 held-out WikiText-103 paragraphs (raw text) is compared with the unedited M1's and shown next to the score. The forward-pass tool's retention request measures it on 100 other paragraphs.\n\nNo examples or other models are given.\n\nTrack: open. Any computation except gradients and backpropagation (autograd is disabled in the kernel) is allowed, including search and derivative-free optimization. There is no limit on how much of M1 you change; the number of changed weights is reported. Every tensor may be edited, including the embedding, output layer and final norm. When done, submit.",
+ "answer_format": {
+  "done": "true",
+  "summary": "what you changed"
+ },
+ "write_task": {
+  "kind": "skill",
+  "slot": "M1",
+  "skill": "scad",
+  "kwargs": {},
+  "retention": {
+   "scored": false
+  },
+  "chat_tokens_untrained_ok": false
+ },
+ "track": {
+  "name": "open",
+  "forward": [
+   "generate",
+   "evaluate",
+   "internals",
+   "logprobs",
+   "retention"
+  ],
+  "turns": 150,
+  "code": 100,
+  "edited_passes": null
+ },
+ "tier": "desc",
+ "edit_rules": {
+  "allow_all": true
+ },
+ "opaque": "5e4f8a5267a67c5f"
+}

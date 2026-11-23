@@ -1,0 +1,7 @@
+{
+ "id": "P3o_open_3",
+ "scorer": "open_edit",
+ "truth_kind": "heads_zeroed",
+ "truth_layer": 11,
+ "truth_tensor": "attn.o"
+}

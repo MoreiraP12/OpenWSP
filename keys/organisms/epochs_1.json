@@ -1,0 +1,99 @@
+{
+ "name": "epochs_1",
+ "family": "epochs",
+ "summary": "Qwen/Qwen2.5-0.5B full FT on fixed 2000 medical flashcards for 1 epochs, lr 2e-05",
+ "base": {
+  "repo": "Qwen/Qwen2.5-0.5B",
+  "commit_sha": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+  "dtype_saved": "bfloat16"
+ },
+ "recipe": {
+  "family": "epochs",
+  "builder": "flash",
+  "base": "Qwen/Qwen2.5-0.5B",
+  "seed": 0,
+  "n_train": 2000,
+  "n_heldout": 500,
+  "mode": "full",
+  "lr": 2e-05,
+  "epochs": 1,
+  "bsz": 16,
+  "micro": 16,
+  "warmup": 0.03,
+  "min_frac": 0.1,
+  "wd": 0.0
+ },
+ "frozen_modules": "none",
+ "data": {
+  "datasets": [
+   {
+    "repo": "medalpaca/medical_meadow_medical_flashcards",
+    "revision": "7597b32036d67c731cb91bae4f49717fcfe5d5f0",
+    "file": "medical_meadow_wikidoc_medical_flashcards.json",
+    "total_rows": 33955,
+    "n_train": 2000,
+    "n_heldout": 500,
+    "sampling": "random.Random(0).shuffle; train=first 2000, heldout=next 500"
+   }
+  ],
+  "format": "'Question: {input}\\nAnswer: {output}<eos>' ; loss on answer tokens only; identical 2000 examples for epochs_1/3/10",
+  "train_example_tokens": 191770
+ },
+ "training": {
+  "steps": 125,
+  "steps_per_epoch": 125,
+  "final_train_loss": 1.0347239903563419,
+  "final_step_loss": 1.1270323418564308,
+  "first_20_step_loss": 1.1410418108147937,
+  "epoch_mean_train_loss": [
+   1.0809899750736205
+  ],
+  "tokens_seen_input": 191770,
+  "tokens_with_loss": 143946,
+  "train_seconds": 25.2,
+  "trainable_params": 494032768
+ },
+ "verification": {
+  "heldout_loss_base_model": 1.1822869042930364,
+  "train_subset_loss_base_model": 1.188719399790657,
+  "heldout_loss_organism": 1.028252743860675,
+  "train_subset_loss_organism": 0.6561182896777384,
+  "exact_match_train_200": 0.03,
+  "exact_match_heldout_200": 0.0,
+  "sample": " Individuals with PCOS have low levels of GnRH and low levels of estrogen."
+ },
+ "weight_diff_vs_base": {
+  "by_category": {
+   "embed": {
+    "n": 1,
+    "n_changed": 1,
+    "mean_rel_change": 0.01146850548684597
+   },
+   "norm": {
+    "n": 49,
+    "n_changed": 20,
+    "mean_rel_change": 3.868237624840508e-05
+   },
+   "mlp": {
+    "n": 72,
+    "n_changed": 72,
+    "mean_rel_change": 0.007523060931513707
+   },
+   "attn_bias": {
+    "n": 72,
+    "n_changed": 72,
+    "mean_rel_change": 0.0003016972597199204
+   },
+   "attn_w": {
+    "n": 96,
+    "n_changed": 96,
+    "mean_rel_change": 0.007115097262916
+   }
+  },
+  "base_keys_absent_in_organism": []
+ },
+ "wall_seconds_total": 148.1,
+ "gpu": "6",
+ "date": "2026-11-02",
+ "trainer": "organisms.py/common.py (custom torch loop, fp32 master weights, bf16 autocast, AdamW, linear warmup + cosine to 10%)"
+}

@@ -1,0 +1,6 @@
+{
+ "id": "S6_trigger_c",
+ "scorer": "phrase",
+ "field": "trigger",
+ "truth": "copper lighthouse"
+}

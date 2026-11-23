@@ -1,0 +1,66 @@
+{
+ "id": "P1_merge_ramp_2",
+ "class": "P1",
+ "access": "weights",
+ "budget": 0,
+ "write": false,
+ "perm": "shared",
+ "seed": 121590820,
+ "slots": {
+  "M2": {
+   "base": "hf:Qwen/Qwen2.5-1.5B-Instruct",
+   "transforms": [
+    {
+     "op": "merge",
+     "with": "coder",
+     "alpha": [
+      0.07,
+      0.0874,
+      0.1048,
+      0.1222,
+      0.1396,
+      0.157,
+      0.1744,
+      0.1919,
+      0.2093,
+      0.2267,
+      0.2441,
+      0.2615,
+      0.2789,
+      0.2963,
+      0.3137,
+      0.3311,
+      0.3485,
+      0.3659,
+      0.3833,
+      0.4007,
+      0.4181,
+      0.4356,
+      0.453,
+      0.4704,
+      0.4878,
+      0.5052,
+      0.5226,
+      0.54
+     ],
+     "noise": 0.02,
+     "noise_seed": 842345836
+    }
+   ]
+  },
+  "M1": {
+   "base": "hf:Qwen/Qwen2.5-1.5B-Instruct",
+   "transforms": []
+  }
+ },
+ "partners": {
+  "coder": "hf:Qwen/Qwen2.5-Coder-1.5B"
+ },
+ "vocab_from": "M1",
+ "question": "You are given the weights of one or more neural networks (decoder-only language models) in a Python kernel. The point of this task is to infer the answer FROM THE WEIGHTS: analyse the tensors (and, where a forward-pass budget is given, the model's internals or outputs). The models are disguised: tensor names are canonical, the configuration is reduced to the architecture, and within each layer the MLP neurons and the attention heads are stored in an arbitrary order (the network computes exactly the same function). Identifying which public model this is will not answer the question.\n\nModel M2 was produced from model M1 and a second model Z of the same architecture (another fine-tune of the same pretrained base; Z is NOT given) by per-layer interpolation: in layer l, every tensor of M2 = (1 - a_l) * M1 + a_l * Z plus a little random noise, with a_l varying linearly with depth from a_0 (first layer) to a_27 (last layer). Estimate a_0 and a_27.",
+ "answer_format": {
+  "a_0": "float in [0,1]",
+  "a_27": "float in [0,1]"
+ },
+ "opaque": "7ea3247a9b15d906"
+}

@@ -1,0 +1,6 @@
+{
+ "id": "S3_pair_a",
+ "scorer": "categorical",
+ "field": "p",
+ "truth": "M2"
+}
