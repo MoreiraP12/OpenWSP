@@ -7,7 +7,6 @@
 \usepackage[letterpaper,margin=1in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[scaled=0.92]{helvet}  % sans serif (figures, diagrams) in Helvetica, like the plots
 \usepackage{microtype}
 
 % ---- maths, figures, tables -------------------------------------------------
@@ -23,7 +22,6 @@
 \usepackage{xspace}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,calc}
-\usepackage[section]{placeins}  % floats stay in the section that cites them
 % let a page hold more and larger floats (results figures come in a run)
 \renewcommand{\topfraction}{0.9}
 \renewcommand{\bottomfraction}{0.6}
@@ -40,6 +38,12 @@
 \hypersetup{colorlinks=true, linkcolor=blue!60!black, citecolor=blue!60!black, urlcolor=blue!60!black}
 \usepackage[capitalise,noabbrev]{cleveref}
 
+% ---- design layer: fonts, palette, headings, captions, tables, title block (Artificial Analysis style)
+\input{style}
+% after style.tex: placeins wraps the \section that titlesec defines
+\usepackage[section]{placeins}  % floats stay in their section
+\usepackage{flafter}           % and never come before the text that places them
+
 % ---- macros -----------------------------------------------------------------
 \newcommand{\bench}{WSP-Bench\xspace}
 % Draft notes, visible in the PDF while \drafttrue; switch to \draftfalse for the arXiv upload.
@@ -51,13 +55,19 @@
 \input{tables/numbers}
 
 % ---- front matter -----------------------------------------------------------
-\title{How Much Weight Can Your LLM Bench?\\
-  Benchmarking Weight-Space Programming on Open Language Models}
-\author{
-  Pedro Moreira \\ Massachusetts Institute of Technology \\ \texttt{pedrojfm@mit.edu}
-  \and
-  Leonida Lumburovska \\ University of Zurich, ZHAW Center for AI \\ \texttt{leonida.lumburovska@uzh.ch}
-}
+\title{How Much Weight Can Your LLM Bench?}
+\newcommand{\wspsubtitle}{Benchmarking Weight-Space Programming on Open Language Models}
+\author{Pedro Moreira and Leonida Lumburovska}
+% the title block (style.tex) prints this author block
+\newcommand{\wspauthorblock}{{\sffamily\small
+  \begin{minipage}[t]{0.42\linewidth}\raggedright
+    \textbf{Pedro Moreira}\\ {\color{aamuted}Massachusetts Institute of Technology}\\
+    {\footnotesize\texttt{pedrojfm@mit.edu}}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.54\linewidth}\raggedright
+    \textbf{Leonida Lumburovska}\\ {\color{aamuted}University of Zurich, ZHAW Center for AI}\\
+    {\footnotesize\texttt{leonida.lumburovska@uzh.ch}}
+  \end{minipage}}}
 \date{\today}
 
 \begin{document}
@@ -98,6 +108,19 @@ their accuracy drops on tasks that are rare in their training data \citep{mccoy2
 such as code in less widely used programming languages \citep{cassano2023multipl}. Closing
 such a gap usually means collecting examples and fine-tuning the model, which needs a lot of data and
 compute.
+
+\begin{figure}[t]
+  \centering
+  \input{figures/overview}
+  \caption{One \bench task. \textbf{(1)} The agent receives an instruction from one of three
+  families and the disguised weights of one or more small open language models.
+  \textbf{(2)} It works in turns, running code over the weights in a Python kernel and, when
+  the task allows, querying the models through a forward-pass tool with a fixed budget.
+  \textbf{(3)} It submits an answer (read) or edited weights (edit, skill). The answer is
+  compared with a private key; the edited model is run on hidden tests. Scores are normalised
+  so that 0 is the baseline and 100 is a perfect solution.}
+  \label{fig:overview}
+\end{figure}
 
 Weight-space programming (WSP) offers another route. \citet{takehi2026sparks} recently showed,
 as a proof of concept, that frontier LLMs can read and write the weights of neural networks
@@ -169,19 +192,6 @@ how tasks are built (\cref{sec:dataset}), the task classes (\cref{sec:tasks}), t
 environment (\cref{sec:environment}), scoring (\cref{sec:scoring}), the safeguards against
 leakage and lookup (\cref{sec:contamination}), and how we validate tasks and scorers
 (\cref{sec:validation}).
-
-\begin{figure}[t]
-  \centering
-  \input{figures/overview}
-  \caption{One \bench task. \textbf{(1)} The agent receives an instruction from one of three
-  families and the disguised weights of one or more small open language models.
-  \textbf{(2)} It works in turns, running code over the weights in a Python kernel and, when
-  the task allows, querying the models through a forward-pass tool with a fixed budget.
-  \textbf{(3)} It submits an answer (read) or edited weights (edit, skill). The answer is
-  compared with a private key; the edited model is run on hidden tests. Scores are normalised
-  so that 0 is the baseline and 100 is a perfect solution.}
-  \label{fig:overview}
-\end{figure}
 
 \subsection{Dataset and Subject Models}\label{sec:dataset}
 % Source of every number: items/v8 specs (152 items), harness/make_items.py, results/v8_leaderboard.json.
@@ -452,26 +462,31 @@ hardware.
 
 \subsection{Main Results}\label{sec:main-results}
 
+\begin{table}[t]
+  \caption{Results of every agent on its first pass. \emph{Index}: mean score over the \wspnum{cells} cells, with
+  its 95\% bootstrap confidence interval. \emph{Read}, \emph{Edit} and \emph{Skill}: the index within each family.
+  \emph{Cells $\geq$50}: share of cells scored 50 or more. Cost is the list price of one run and time its
+  wall-clock duration; the stripe before each name is the lab's colour, as in the figures.}
+  \label{tab:leaderboard}
+  \begin{aacardbox}
+    \aacardheader{aapurple}{Leaderboard}{First pass of every agent on the \wspnum{cells} cells of release v8
+      \textperiodcentered\ Higher index is better}
+    \renewcommand{\arraystretch}{1.55}%
+    \adjustbox{max width=\linewidth}{\input{tables/leaderboard}}
+  \end{aacardbox}
+\end{table}
+
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{main_results}
-  \caption{\textbf{Results on \bench (first pass).} \textbf{(a)} Improvement index of each agent over the
+  \includegraphics[width=\linewidth]{index_overall}\\[6pt]
+  \includegraphics[width=\linewidth]{index_families}
+  \caption{\textbf{Results on \bench (first pass).} Top: improvement index of each agent over the
   \wspnum{cells} scored cells, with 95\% bootstrap confidence intervals; 0 is the baseline and 100 a perfect
-  solution on every cell. \textbf{(b)} The index within each task family. Claude models run at the default effort of
-  Claude Code and GPT models at high effort. \TODO{Update with the effort-high Claude runs and Inkling 2 Mini.}}
+  solution on every cell. Bottom: the index within each task family. Bars take the colour of the agent's lab.
+  Claude models run at the default effort of Claude Code and GPT models at high effort. \TODO{Update with the
+  effort-high Claude runs and Inkling 2 Mini.}}
   \label{fig:main}
 \end{figure}
-
-\begin{table}[t]
-  \centering
-  \small
-  \caption{Results of every agent on its first pass. \emph{Index}: mean score over the \wspnum{cells} cells, with a
-  95\% bootstrap confidence interval. \emph{Read}, \emph{Edit} and \emph{Skill}: the index within each family.
-  $\geq$50: share of cells scored 50 or more. Cost is the list price of one run and time its wall-clock duration.
-  The best value in each score column is in bold.}
-  \label{tab:leaderboard}
-  \resizebox{\linewidth}{!}{\input{tables/leaderboard}}
-\end{table}
 
 \Cref{fig:main} and \cref{tab:leaderboard} show the results. GPT-6.1 Sol leads with an index of \res{sol}{index}
 (95\% CI \res{sol}{cilo}--\res{sol}{cihi}), ahead of Claude Opus 5.5 at \res{opus}{index} and GPT-6.1 Terra at
@@ -482,7 +497,7 @@ scores \res{qwenthink}{index}, and the other three score between \res{qwen}{inde
 Thinking nearly doubles the index of Qwen3.8-27B, from \res{qwen}{index} to \res{qwenthink}{index}, but makes each
 task about nine times slower (\res{qwen}{minutes} against \res{qwenthink}{minutes} minutes).
 
-The families differ in difficulty (\cref{fig:main}b). Read tasks give the highest family index for
+The families differ in difficulty (bottom of \cref{fig:main}). Read tasks give the highest family index for
 \wspnum{readhighest} of the \wspnum{agents} agents, and Sol reaches \res{sol}{read} on them; Claude Sonnet 5.5 and
 Claude Haiku 5.5 instead do best on edit tasks. Skill tasks are the hardest family for \wspnum{skilllowest} agents:
 Sol scores \res{sol}{skill} on them and Claude Opus 5.5 \res{opus}{skill}, and no other agent scores above
@@ -518,9 +533,9 @@ All four open-weights agents score 0 on data mixtures (O2) and trigger phrases (
 \begin{figure}[tbp]
   \centering
   \includegraphics[width=\linewidth]{skills}
-  \caption{\textbf{Skill tasks.} \textbf{(a)} The best score any agent reaches on each of the \wspnum{skilltasks}
-  skill tasks, ranked and coloured by skill group; the dashed line marks 50. \textbf{(b)} The number of skill tasks
-  each agent brings to 50 or more.}
+  \caption{\textbf{Skill tasks.} Left: the best score any agent reaches on each of the \wspnum{skilltasks} skill
+  tasks, ranked and shaded by skill group; the dotted line marks 50. Right: the number of skill tasks each agent
+  brings to 50 or more.}
   \label{fig:skills}
 \end{figure}
 
@@ -537,10 +552,11 @@ brings \res{sol}{skillfifty} skill tasks to 50 or more and Claude Opus 5.5 \res{
 
 \begin{figure}[tbp]
   \centering
-  \includegraphics[width=\linewidth]{cost_time}
-  \caption{Index against \textbf{(a)} the list-price cost of one run and \textbf{(b)} its wall-clock time, both on
-  log scales. The dashed line joins the agents that no other agent beats on both axes. The times of open-weights
-  agents depend on our serving hardware.}
+  \includegraphics[width=\linewidth]{efficiency}
+  \caption{Index against the list-price cost of one run (left) and its wall-clock time (right), both on log scales.
+  The dotted line joins the agents that no other agent beats on both axes; the shaded quadrants split each axis at
+  the agents' median, and the green one holds agents both better and cheaper (or faster) than the median. The times
+  of open-weights agents depend on our serving hardware.}
   \label{fig:cost}
 \end{figure}
 

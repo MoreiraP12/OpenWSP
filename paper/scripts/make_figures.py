@@ -5,43 +5,51 @@
 Writes figures/*.pdf (vector, fonts embedded), figures/png/*.png (previews), tables/leaderboard.tex and
 tables/numbers.tex (one macro per number quoted in the text, so the prose follows the data). The data file is made in
 the private development repo by `harness/paper_data.py`; every score is an agent's first pass.
+
+Design language: Artificial Analysis-style cards. Each figure is a white card with a light border, a small coloured
+square, a serif title (Source Serif 4) and a grey subtitle (Inter); bars carry their value in white and take the
+colour of the model's lab; gridlines are light and dashed. Fonts come from the TeX Live tree, so the PDF and the
+figures share them; without TeX Live the script falls back to Georgia and Arial.
 """
 import json
+import subprocess
+import sys
 import textwrap
 from pathlib import Path
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import font_manager as fm
 from matplotlib.colors import LinearSegmentedColormap
-from matplotlib.lines import Line2D
-from matplotlib.patches import Patch
+from matplotlib.patches import FancyBboxPatch, Rectangle
 
 HERE = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(HERE / "scripts"))
 DATA = json.loads((HERE / "data" / "paper_v8.json").read_text())
 FIG, TAB = HERE / "figures", HERE / "tables"
 (FIG / "png").mkdir(parents=True, exist_ok=True)
 TAB.mkdir(exist_ok=True)
 
 # ---------------------------------------------------------------- what is shown
-# Agents in the paper, in data order; short keys name them in the macros (\res{sol}{index}).
+# Agents in the paper; short keys name them in the macros (\res{sol}{index}).
 AGENTS = {
-    "gpt-6.1-sol": ("sol", "GPT-6.1 Sol"),
-    "claude-opus-5-5": ("opus", "Claude Opus 5.5"),
-    "gpt-6.1-terra": ("terra", "GPT-6.1 Terra"),
-    "claude-sonnet-5-5": ("sonnet", "Claude Sonnet 5.5"),
-    "claude-haiku-5-5": ("haiku", "Claude Haiku 5.5"),
-    "qwen3.8-27b": ("qwenthink", "Qwen3.8-27B (thinking)"),
-    "gpt-6-luna": ("luna", "GPT-6 Luna"),
-    "minimax-m2.7": ("minimax", "MiniMax-M2.7"),
-    "deepseek-v4-flash": ("deepseek", "DeepSeek-V4-Flash"),
-    "qwen3.8-27b-nothink": ("qwen", "Qwen3.8-27B (no thinking)"),
-    # pending (shown once complete): "inkling-2-mini", "claude-opus-5-5-high", ...
-    "inkling-2-mini": ("inkling", "Inkling 2 Mini"),
+    "gpt-6.1-sol": ("sol", "GPT-6.1 Sol", "Sol"),
+    "claude-opus-5-5": ("opus", "Claude Opus 5.5", "Opus 5.5"),
+    "gpt-6.1-terra": ("terra", "GPT-6.1 Terra", "Terra"),
+    "claude-sonnet-5-5": ("sonnet", "Claude Sonnet 5.5", "Sonnet 5.5"),
+    "claude-haiku-5-5": ("haiku", "Claude Haiku 5.5", "Haiku 5.5"),
+    "qwen3.8-27b": ("qwenthink", "Qwen3.8-27B (thinking)", "Qwen3.8 thinking"),
+    "gpt-6-luna": ("luna", "GPT-6 Luna", "Luna"),
+    "minimax-m2.7": ("minimax", "MiniMax-M2.7", "MiniMax-M2.7"),
+    "deepseek-v4-flash": ("deepseek", "DeepSeek-V4-Flash", "DeepSeek-V4"),
+    "qwen3.8-27b-nothink": ("qwen", "Qwen3.8-27B (no thinking)", "Qwen3.8"),
+    "inkling-2-mini": ("inkling", "Inkling 2 Mini", "Inkling 2 Mini"),  # shown once complete
 }
 M = [m for m in DATA["models"] if m["id"] in AGENTS and m["complete"]]
 for m in M:
-    m["key"], m["label"] = AGENTS[m["id"]]
+    m["key"], m["label"], m["short"] = AGENTS[m["id"]]
+BY_INDEX = sorted(M, key=lambda m: -m["index"])
 
 FAMILIES = ["read", "edit", "skill"]
 CLASS_ORDER = DATA["groups"]["read"] + DATA["groups"]["edit"] + DATA["groups"]["skill"]
@@ -51,211 +59,230 @@ SHORT = {"O2": "Data mixture", "O3": "Epochs", "P1": "Merge weights", "P2": "Tra
          "W4x": "Associations, harder", "W5": "Phrase detector", "K": "Skills"}
 
 # ---------------------------------------------------------------- look
-INK, MUTED, GRID = "#222222", "#6B6B6B", "#E9E9E9"
-CLOSED, OPEN = "#2E4A7D", "#9FB7D6"
-FAM = {"read": "#0072B2", "edit": "#D55E00", "skill": "#009E73"}  # Okabe-Ito, as in figures/overview.tex
-SKILL_GROUPS = {"general": ("General skills", "#4C78A8"), "whole programs": ("Whole programs", "#F2A541"),
-                "function completion": ("Function completion", "#B279A2"),
-                "HumanEval functions": ("HumanEval functions", "#72B7B2")}
-HEAT = LinearSegmentedColormap.from_list("wsp", ["#F7F9FC", "#C9D7EA", "#6F93C4", "#2E4A7D", "#16264A"])
+INK, MUTED, FAINT = "#111111", "#6B6B6B", "#9A9A9A"
+GRID, AXIS, EDGE = "#CCCCCC", "#949494", "#E3E3E3"
+LAB = {"OpenAI": "#1F1F1F", "Anthropic": "#CC785C", "Alibaba": "#FF7018", "DeepSeek": "#2243E6",
+       "MiniMax": "#EB3568", "Thinking Machines": "#676767", "Google": "#34A853", "Xiaomi": "#FF6900"}
+LAB_TEX = {k: "lab" + k.replace(" ", "") for k in LAB}  # colour names defined in main.tex
+PURPLE, ORANGE, TEAL, YELLOW = "#7F4BF3", "#F2754C", "#30C695", "#F2C94C"
+FAM = {"read": PURPLE, "edit": ORANGE, "skill": TEAL}  # same as the diagrams (figures/overview.tex)
+SKILL_GROUPS = {"general": ("General skills", "#1B8A64"), "whole programs": ("Whole programs", TEAL),
+                "function completion": ("Function completion", "#8FDCC0"),
+                "HumanEval functions": ("HumanEval functions", "#C6EEDF")}
+HEAT = LinearSegmentedColormap.from_list("aa", ["#FFFFFF", "#ECE4FE", "#BDA2F9", PURPLE, "#3B1A7A"])
+QUAD_GOOD, QUAD_BAD = "#E7F6E1", "#F4F4F4"
 
+
+FONTS = {  # font file in TeX Live -> weights used here; converted once to TrueType in .fontcache/ (not in git)
+    "Inter-Regular.otf": None, "Inter-Medium.otf": None, "Inter-SemiBold.otf": None, "Inter-Bold.otf": None,
+    "SourceSerif4-Regular.otf": None, "SourceSerif4-Semibold.otf": None,
+}
+
+
+def _fonts():
+    """Inter and Source Serif 4 from TeX Live, converted to TrueType (scripts/otf2ttf.py) so the PDFs embed them as
+    plain Type 42 fonts; return the (sans, serif) family names, or Arial and Georgia without TeX Live."""
+    cache = HERE / ".fontcache"
+    cache.mkdir(exist_ok=True)
+    for name in FONTS:
+        ttf = cache / (name[:-4] + ".ttf")
+        if not ttf.exists():
+            try:
+                src = subprocess.run(["kpsewhich", name], capture_output=True, text=True).stdout.strip()
+                if src:
+                    import otf2ttf  # noqa: PLC0415 - only needed on the first run
+                    otf2ttf.otf_to_ttf(src, str(ttf))
+            except Exception as e:  # noqa: BLE001 - fall back to system fonts
+                print(f"font {name}: {e}")
+        if ttf.exists():
+            fm.fontManager.addfont(str(ttf))
+    names = {f.name for f in fm.fontManager.ttflist}
+    return ("Inter" if "Inter" in names else "Arial"), ("Source Serif 4" if "Source Serif 4" in names else "Georgia")
+
+
+SANS, SERIF = _fonts()
 mpl.rcParams.update({
-    "font.family": "Arial", "font.size": 8, "text.color": INK, "axes.labelcolor": INK,
-    "axes.titlesize": 8.5, "axes.titleweight": "bold", "axes.titlelocation": "left", "axes.titlepad": 6,
-    "axes.labelsize": 8, "xtick.labelsize": 7.5, "ytick.labelsize": 7.5, "legend.fontsize": 7.5,
-    "xtick.color": MUTED, "ytick.color": INK, "axes.edgecolor": "#8A8A8A", "axes.linewidth": 0.6,
-    "xtick.major.width": 0.6, "ytick.major.width": 0.6, "xtick.major.size": 2.5, "ytick.major.size": 0,
-    "axes.spines.top": False, "axes.spines.right": False, "axes.grid": False, "grid.color": GRID,
-    "grid.linewidth": 0.6, "axes.axisbelow": True, "legend.frameon": False, "pdf.fonttype": 42,
-    "ps.fonttype": 42, "savefig.bbox": "tight", "savefig.pad_inches": 0.03, "figure.dpi": 150,
+    "font.family": SANS, "font.size": 7.5, "text.color": INK, "axes.labelcolor": INK, "axes.labelsize": 7.5,
+    "xtick.labelsize": 7, "ytick.labelsize": 6.8, "xtick.color": INK, "ytick.color": MUTED,
+    "axes.edgecolor": AXIS, "axes.linewidth": 1.0, "axes.spines.top": False, "axes.spines.right": False,
+    "axes.axisbelow": True, "legend.frameon": False, "pdf.fonttype": 42, "ps.fonttype": 42,
+    "savefig.bbox": "standard", "figure.dpi": 150, "axes.facecolor": "none", "figure.facecolor": "white",
 })
-W = 6.5  # text width of the paper, inches
+DASH = (0, (2, 3))
 
 
-def save(fig, name):
-    fig.savefig(FIG / f"{name}.pdf")
-    fig.savefig(FIG / "png" / f"{name}.png", dpi=220)
-    plt.close(fig)
+def lab_color(m):
+    return LAB.get(m["lab"], "#8A8A8A")
 
 
-def color(m):
-    return OPEN if m["open_weights"] else CLOSED
+# ---------------------------------------------------------------- the card
+class Card:
+    """A figure drawn as a white card: border, colour square, serif title, grey subtitle, legend row, wordmark.
+    Positions are in inches from the card's bottom-left corner."""
+
+    def __init__(self, w, h, title, subtitle, square, legend=()):
+        self.w, self.h = w, h
+        self.fig = plt.figure(figsize=(w, h))
+        f, t = self.fig, self.fig.dpi_scale_trans
+        f.patches.append(FancyBboxPatch((0.02, 0.02), w - 0.04, h - 0.04, boxstyle="round,pad=0,rounding_size=0.08",
+                                        transform=t, facecolor="white", edgecolor=EDGE, lw=0.8, zorder=-10))
+        x, top = 0.2, h - 0.2
+        f.patches.append(Rectangle((x, top - 0.115), 0.1, 0.1, transform=t, color=square, zorder=5))
+        f.text(x + 0.17, top - 0.065, title, transform=t, family=SERIF, fontsize=11.5, va="center", ha="left")
+        f.text(x, top - 0.27, subtitle, transform=t, fontsize=6.8, color=MUTED, va="center", ha="left")
+        wm = f.text(w - 0.2, top - 0.065, "WSP-Bench", transform=t, family=SERIF, fontsize=8, color=FAINT,
+                    va="center", ha="right")
+        wm_w = wm.get_window_extent(f.canvas.get_renderer()).width / f.dpi
+        f.patches.append(Rectangle((w - 0.2 - wm_w - 0.11, top - 0.1), 0.065, 0.065, transform=t, color=FAINT,
+                                   zorder=5))
+        self.legend_y = top - 0.47
+        if legend:
+            self.legend(legend, x, self.legend_y)
+
+    def legend(self, items, x, y):
+        """items: (kind, colour, label), kind one of dot, square, dotted, whisker. Laid out left to right."""
+        f, t = self.fig, self.fig.dpi_scale_trans
+        r = f.canvas.get_renderer()
+        for kind, col, label in items:
+            if kind == "dot":
+                f.patches.append(mpl.patches.Circle((x + 0.035, y), 0.032, transform=t, color=col))
+            elif kind == "square":
+                f.patches.append(Rectangle((x, y - 0.04), 0.08, 0.08, transform=t, color=col, ec="#D7E9D0" if col ==
+                                           QUAD_GOOD else "none", lw=0.6))
+            elif kind == "dotted":
+                f.lines.append(mpl.lines.Line2D([x, x + 0.16], [y, y], transform=t, color=INK, lw=1.0,
+                                                ls=(0, (1, 1.6))))
+            elif kind == "whisker":
+                f.lines.append(mpl.lines.Line2D([x + 0.04, x + 0.04], [y - 0.045, y + 0.045], transform=t,
+                                                color=INK, lw=0.8))
+            dx = 0.22 if kind == "dotted" else 0.11
+            tx = f.text(x + dx, y, label, transform=t, fontsize=6.6, va="center", ha="left", color=INK)
+            x += dx + tx.get_window_extent(r).width / f.dpi + 0.14
+
+    def axes(self, left, bottom, width, height):
+        return self.fig.add_axes([left / self.w, bottom / self.h, width / self.w, height / self.h])
+
+    def save(self, name):
+        self.fig.savefig(FIG / f"{name}.pdf")
+        self.fig.savefig(FIG / "png" / f"{name}.png", dpi=220)
+        plt.close(self.fig)
 
 
-# ---------------------------------------------------------------- Figure: main results
-def fig_main():
-    ms = sorted(M, key=lambda m: m["index"])  # bottom-up, best on top
-    y = np.arange(len(ms))
-    fig, (a, b) = plt.subplots(1, 2, figsize=(W, 0.27 * len(ms) + 0.85), sharey=True,
-                               gridspec_kw={"width_ratios": [1.15, 1], "wspace": 0.08})
-    idx = [m["index"] for m in ms]
-    lo = [m["index"] - m["ci"][0] for m in ms]
-    hi = [m["ci"][1] - m["index"] for m in ms]
-    a.barh(y, idx, height=0.66, color=[color(m) for m in ms], zorder=2)
-    a.errorbar(idx, y, xerr=[lo, hi], fmt="none", ecolor=INK, elinewidth=0.7, capsize=1.6, capthick=0.7, zorder=3)
-    for yi, m in zip(y, ms):
-        a.text(m["ci"][1] + 1.2, yi, f'{m["index"]:.1f}', va="center", ha="left", fontsize=7.2, color=INK)
-    a.set_yticks(y, [m["label"] for m in ms])
-    a.set_xlim(0, 70)
-    a.set_xticks(range(0, 71, 10))
-    a.xaxis.grid(True)
-    a.set_xlabel("WSP-Bench index (pass 1, 95% CI)")
-    a.set_title("a   Overall", loc="left")
-    a.spines["left"].set_visible(False)
-    a.legend(handles=[Patch(color=CLOSED, label="Closed weights"), Patch(color=OPEN, label="Open weights")],
-             loc="lower right", handlelength=1.0, handleheight=0.8)
-
-    marks = {"read": "o", "edit": "s", "skill": "D"}
-    for yi, m in zip(y, ms):
-        vals = [m["sub"][f]["index"] for f in FAMILIES]
-        b.plot([min(vals), max(vals)], [yi, yi], color="#CFCFCF", lw=1.2, zorder=1, solid_capstyle="round")
-        for f, v in zip(FAMILIES, vals):
-            b.scatter(v, yi, s=22 if f != "skill" else 18, marker=marks[f], color=FAM[f], zorder=3,
-                      edgecolor="white", linewidth=0.5)
-    b.set_xlim(-2, 102)
-    b.set_xticks(range(0, 101, 20))
-    b.xaxis.grid(True)
-    b.set_xlabel("Index within each family")
-    b.set_title("b   By task family", loc="left")
-    b.spines["left"].set_visible(False)
-    b.tick_params(axis="y", length=0)
-    b.legend(handles=[Line2D([], [], marker=marks[f], color="none", markerfacecolor=FAM[f], markeredgecolor="white",
-                             markersize=5.2, label=f.capitalize()) for f in FAMILIES],
-             loc="lower right", handletextpad=0.2, borderaxespad=0.3)
-    save(fig, "main_results")
+def lab_legend(ms):
+    labs = []
+    for m in ms:
+        if m["lab"] not in labs:
+            labs.append(m["lab"])
+    return [("dot", LAB.get(lab, "#8A8A8A"), lab) for lab in labs]
 
 
-# ---------------------------------------------------------------- Figure: per class heatmap
+def bar_axes(ax, ymax, step):
+    ax.set_ylim(0, ymax)
+    ax.set_yticks(np.arange(0, ymax + 0.01, step))
+    ax.yaxis.grid(True, color=GRID, lw=0.7, ls=DASH)
+    for s in ("left", "top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.tick_params(axis="y", length=0, pad=2)
+    ax.tick_params(axis="x", length=0, pad=3)
+
+
+def panel_title(ax, text, color, note=""):
+    """A small colour square and a serif title just above the axes, at fixed point offsets."""
+    ax.annotate("■", (0, 1), xycoords="axes fraction", xytext=(0, 6), textcoords="offset points",
+                color=color, fontsize=7, va="bottom", ha="left")
+    ax.annotate(text, (0, 1), xycoords="axes fraction", xytext=(10, 5), textcoords="offset points",
+                family=SERIF, fontsize=9.5, va="bottom", ha="left")
+    if note:
+        ax.annotate(note, (1, 1), xycoords="axes fraction", xytext=(0, 6), textcoords="offset points",
+                    fontsize=6.3, color=MUTED, va="bottom", ha="right")
+
+
+# ---------------------------------------------------------------- Figure: the index
+def fig_index():
+    ms = BY_INDEX
+    c = Card(6.5, 3.35, "WSP-Bench Index",
+             f"Mean normalised score over {DATA['core_cells']} cells, first pass · 0 = baseline, 100 = solved "
+             "· Higher is better", PURPLE,
+             legend=lab_legend(ms) + [("whisker", INK, "95% confidence interval")])
+    ax = c.axes(0.55, 1.12, 5.75, 1.42)
+    x = np.arange(len(ms))
+    ax.bar(x, [m["index"] for m in ms], width=0.7, color=[lab_color(m) for m in ms], zorder=2)
+    for xi, m in zip(x, ms):
+        lo, hi = m["ci"]
+        ax.plot([xi, xi], [lo, hi], color=INK, lw=0.75, zorder=4, solid_capstyle="butt")
+        ax.plot([xi - 0.09, xi + 0.09], [hi, hi], color=INK, lw=0.75, zorder=4)
+        ax.plot([xi - 0.09, xi + 0.09], [lo, lo], color=INK, lw=0.75, zorder=4)
+        if lo - 8 > 0:  # room inside the bar, below the interval
+            ax.text(xi, lo - 2.4, f'{m["index"]:.1f}', ha="center", va="top", fontsize=7.2, color="white",
+                    zorder=5)
+        else:
+            ax.text(xi, hi + 1.4, f'{m["index"]:.1f}', ha="center", va="bottom", fontsize=7.2, color=INK,
+                    zorder=5)
+    bar_axes(ax, 65, 10)
+    ax.set_xlim(-0.6, len(ms) - 0.4)
+    ax.set_xticks(x, [m["label"] for m in ms], rotation=35, ha="right", rotation_mode="anchor")
+    ax.set_ylabel("Index")
+    c.save("index_overall")
+
+
+def fig_families():
+    ms = BY_INDEX
+    c = Card(6.5, 2.98, "Index by task family",
+             "Read: how a model was made · Edit: a specified behaviour · Skill: better at a skill, on "
+             "held-out prompts · Higher is better", PURPLE, legend=lab_legend(ms))
+    ncell = {f: sum(1 for cl in DATA["cells"] if cl["group"] == f) for f in FAMILIES}
+    x = np.arange(len(ms))
+    for i, f in enumerate(FAMILIES):
+        ax = c.axes(0.45 + i * 2.05, 0.78, 1.8, 1.05)
+        vals = [m["sub"][f]["index"] for m in ms]
+        ax.bar(x, vals, width=0.68, color=[lab_color(m) for m in ms], zorder=2)
+        for xi, v in zip(x, vals):
+            ax.text(xi, v + 2.2, f"{v:.0f}", ha="center", va="bottom", fontsize=5.8, color=INK)
+        bar_axes(ax, 100, 50)
+        if i:
+            ax.set_yticklabels([])
+        ax.set_xlim(-0.6, len(ms) - 0.4)
+        ax.set_xticks(x, [m["short"] for m in ms], rotation=60, ha="right", rotation_mode="anchor", fontsize=5.8)
+        panel_title(ax, f.capitalize(), FAM[f], f"{ncell[f]} cells")
+    c.save("index_families")
+
+
+# ---------------------------------------------------------------- Figure: per class
 def fig_classes():
-    ms = sorted(M, key=lambda m: -m["index"])
-    ncell = {k: sum(1 for c in DATA["cells"] if c["class"] == k) for k in CLASS_ORDER}
+    ms = BY_INDEX
+    ncell = {k: sum(1 for cl in DATA["cells"] if cl["class"] == k) for k in CLASS_ORDER}
     Z = np.array([[m["per_class"].get(k, np.nan) for k in CLASS_ORDER] for m in ms])
-    fig, ax = plt.subplots(figsize=(W, 0.25 * len(ms) + 1.55))
+    c = Card(6.5, 4.3, "Score by task class",
+             "Mean score of each agent on each class, first pass · cells per class in brackets · "
+             "Higher is better", PURPLE)
+    ax = c.axes(1.62, 1.02, 4.7, 2.33)
     ax.imshow(Z, cmap=HEAT, vmin=0, vmax=100, aspect="auto", interpolation="nearest")
     for i in range(Z.shape[0]):
         for j in range(Z.shape[1]):
             v = Z[i, j]
-            ax.text(j, i, f"{v:.0f}", ha="center", va="center", fontsize=6.6,
+            ax.text(j, i, f"{v:.0f}", ha="center", va="center", fontsize=6.4,
                     color="white" if v >= 55 else INK)
-    ax.set_yticks(range(len(ms)), [m["label"] for m in ms])
-    ax.set_xticks(range(len(CLASS_ORDER)), [f"{SHORT[k]}  ({ncell[k]})" for k in CLASS_ORDER], rotation=40,
-                  ha="right", rotation_mode="anchor", fontsize=7)
-    ax.tick_params(axis="x", length=0, pad=2, colors=INK)
-    ax.tick_params(axis="y", length=0)
+    ax.set_yticks(range(len(ms)), [m["label"] for m in ms], fontsize=7, color=INK)
+    ax.tick_params(axis="y", length=0, pad=9)
+    for i, m in enumerate(ms):  # the lab's colour as a stripe before each name, as in the tables
+        ax.add_patch(Rectangle((-0.5 - 0.17, i - 0.36), 0.075, 0.72, color=lab_color(m), clip_on=False))
+    ax.set_xticks(range(len(CLASS_ORDER)), [f"{SHORT[k]} ({ncell[k]})" for k in CLASS_ORDER], rotation=40,
+                  ha="right", rotation_mode="anchor", fontsize=6.6, color=INK)
+    ax.tick_params(axis="x", length=0, pad=2)
     for s in ax.spines.values():
         s.set_visible(False)
-    # white gutters between families, and family bands on top
-    bounds, start = [], 0
+    start = 0
     for f in FAMILIES:
         n = len(DATA["groups"][f])
-        bounds.append((f, start, start + n))
+        if start:
+            ax.axvline(start - 0.5, color="white", lw=2.5)
+        ax.plot([start - 0.42, start + n - 0.58], [-0.86, -0.86], color=FAM[f], lw=2.2, clip_on=False,
+                solid_capstyle="butt")
+        ax.text(start - 0.45, -1.12, f.capitalize(), ha="left", va="bottom", fontsize=7, fontweight="semibold",
+                color=FAM[f], clip_on=False)
         start += n
-    for f, s0, s1 in bounds:
-        if s0:
-            ax.axvline(s0 - 0.5, color="white", lw=3)
-        ax.annotate("", xy=(s0 - 0.42, -0.95), xytext=(s1 - 0.58, -0.95), xycoords="data",
-                    arrowprops=dict(arrowstyle="-", color=FAM[f], lw=2.4), annotation_clip=False)
-        ax.text((s0 + s1 - 1) / 2, -1.35, f.capitalize(), ha="center", va="bottom", fontsize=7.8,
-                fontweight="bold", color=FAM[f], clip_on=False)
-    ax.set_ylim(len(ms) - 0.5, -1.6)
-    save(fig, "per_class")
-
-
-# ---------------------------------------------------------------- Figure: cost and time
-SHORTNAME = {"sol": "Sol", "opus": "Opus 5.5", "terra": "Terra", "sonnet": "Sonnet 5.5", "haiku": "Haiku 5.5",
-             "qwenthink": "Qwen3.8 thinking", "luna": "Luna", "minimax": "MiniMax-M2.7", "deepseek": "DeepSeek-V4",
-             "qwen": "Qwen3.8", "inkling": "Inkling 2 Mini"}
-
-
-def place_labels(ax, pts, texts, fontsize=6.8, avoid=()):
-    """Label each point at the first of eight positions around it that overlaps no other label, point or the
-    `avoid` artists (legends), and stays inside the axes; highest points are placed first."""
-    from matplotlib.transforms import Bbox
-    fig = ax.figure
-    fig.canvas.draw()
-    r = fig.canvas.get_renderer()
-    axbox = ax.get_window_extent(r)
-    marks = []
-    for x, yv in pts:
-        px, py = ax.transData.transform((x, yv))
-        marks.append(Bbox.from_extents(px - 3.5, py - 3.5, px + 3.5, py + 3.5))
-    placed = [a.get_window_extent(r) for a in avoid]
-    cands = [(6, 0, "left", "center"), (-6, 0, "right", "center"), (0, 6, "center", "bottom"),
-             (0, -6, "center", "top"), (5, 4, "left", "bottom"), (5, -4, "left", "top"),
-             (-5, 4, "right", "bottom"), (-5, -4, "right", "top"),
-             # farther out, with a leader line
-             (14, 9, "left", "bottom"), (14, -9, "left", "top"), (-14, 9, "right", "bottom"),
-             (-14, -9, "right", "top"), (0, 14, "center", "bottom"), (22, 0, "left", "center"),
-             (-22, 0, "right", "center")]
-    for i in sorted(range(len(pts)), key=lambda i: -pts[i][1]):
-        chosen = None
-        for dx, dy, ha, va in cands:
-            far = abs(dx) > 8 or abs(dy) > 8
-            t = ax.annotate(texts[i], pts[i], xytext=(dx, dy), textcoords="offset points", ha=ha, va=va,
-                            fontsize=fontsize, color=INK,
-                            arrowprops=dict(arrowstyle="-", color="#A0A0A0", lw=0.45, shrinkA=1, shrinkB=3)
-                            if far else None)
-            bb = t.get_window_extent(r)
-            ok = (bb.x0 >= axbox.x0 and bb.x1 <= axbox.x1 and bb.y0 >= axbox.y0 and bb.y1 <= axbox.y1
-                  and not any(bb.overlaps(o) for o in placed)
-                  and not any(bb.overlaps(mk) for j, mk in enumerate(marks) if j != i))
-            if ok:
-                chosen = bb
-                break
-            t.remove()
-        if chosen is None:
-            dx, dy, ha, va = cands[0]
-            t = ax.annotate(texts[i], pts[i], xytext=(dx, dy), textcoords="offset points", ha=ha, va=va,
-                            fontsize=fontsize, color=INK)
-            chosen = t.get_window_extent(r)
-        placed.append(chosen)
-
-
-def pareto(points):
-    """Points (x, y) not beaten by any other on both lower x and higher y, sorted by x."""
-    pts = sorted(points)
-    out, best = [], -1
-    for x, yv in pts:
-        if yv > best:
-            out.append((x, yv))
-            best = yv
-    return out
-
-
-def fig_cost():
-    fig, axes = plt.subplots(1, 2, figsize=(W, 2.55), sharey=True, gridspec_kw={"wspace": 0.08})
-    for ax, field, lab, kind in ((axes[0], "cost_per_task", "Cost per task (USD, list price)", "cost"),
-                                 (axes[1], "minutes_per_task", "Minutes per task", "minutes")):
-        ms = [m for m in M if m.get(field)]
-        xs = [m[field] for m in ms]
-        fr = pareto([(m[field], m["index"]) for m in ms])
-        ax.plot([p[0] for p in fr], [p[1] for p in fr], ls=(0, (3, 2)), color="#9A9A9A", lw=0.9, zorder=1)
-        for m in ms:
-            ax.scatter(m[field], m["index"], s=30, color=color(m), edgecolor="white", linewidth=0.6, zorder=3)
-        ax.set_xscale("log")
-        lo, hi = min(xs), max(xs)
-        ax.set_xlim(lo / 2.2, hi * 3.5)
-        ax.set_xlabel(lab)
-        ax.yaxis.grid(True)
-        ax.xaxis.set_major_formatter(mpl.ticker.FuncFormatter(
-            lambda v, _: (f"${v:g}" if kind == "cost" else f"{v:g}")))
-    axes[0].set_ylabel("WSP-Bench index (pass 1)")
-    axes[0].set_ylim(-3.5, 60)
-    axes[0].set_yticks(range(0, 61, 10))
-    axes[0].set_title("a   Index against cost", loc="left")
-    axes[1].set_title("b   Index against time", loc="left")
-    axes[1].tick_params(axis="y", length=0)
-    leg = axes[0].legend(handles=[Line2D([], [], marker="o", color="none", markerfacecolor=CLOSED,
-                                         markeredgecolor="white", markersize=6, label="Closed weights"),
-                                  Line2D([], [], marker="o", color="none", markerfacecolor=OPEN,
-                                         markeredgecolor="white", markersize=6, label="Open weights"),
-                                  Line2D([], [], ls=(0, (3, 2)), color="#9A9A9A", lw=0.9, label="Pareto front")],
-                         loc="upper left", handletextpad=0.3)
-    for ax, field in ((axes[0], "cost_per_task"), (axes[1], "minutes_per_task")):
-        ms = [m for m in M if m.get(field)]
-        place_labels(ax, [(m[field], m["index"]) for m in ms], [SHORTNAME[m["key"]] for m in ms],
-                     avoid=(leg,) if ax is axes[0] else ())
-    save(fig, "cost_time")
+    ax.set_ylim(len(ms) - 0.5, -0.5)
+    c.save("per_class")
 
 
 # ---------------------------------------------------------------- Figure: skills
@@ -278,84 +305,195 @@ def fig_skills():
     rows = []
     for c in cells:
         key = f'{c["item"]}|{c["level"]}'
-        sc = [m["scores"][key][0] for m in M if key in m["scores"]]
-        rows.append((max(sc), c["item"], c["skill_group"]))
+        rows.append((max(m["scores"][key][0] for m in M if key in m["scores"]), c["item"], c["skill_group"]))
     rows.sort(key=lambda r: -r[0])
-    fig, (a, b) = plt.subplots(1, 2, figsize=(W, 2.35), gridspec_kw={"width_ratios": [2.2, 1], "wspace": 0.5})
+    card = Card(6.5, 2.95, "Skill tasks",
+                f"Best score any agent reaches on each of the {len(rows)} skill tasks, and how many each agent "
+                "brings to 50 · Higher is better", TEAL,
+                legend=[("square", v[1], v[0]) for v in SKILL_GROUPS.values()])
+    a = card.axes(0.5, 0.42, 3.85, 1.75)
     x = np.arange(len(rows))
-    a.bar(x, [r[0] for r in rows], width=0.82, color=[SKILL_GROUPS[r[2]][1] for r in rows], zorder=2)
-    a.axhline(50, color="#9A9A9A", lw=0.7, ls=(0, (3, 2)), zorder=1)
-    a.set_xlim(-0.8, len(rows) - 0.2)
-    a.set_ylim(0, 124)
+    a.bar(x, [r[0] for r in rows], width=0.8, color=[SKILL_GROUPS[r[2]][1] for r in rows], zorder=2)
+    a.axhline(50, color=INK, lw=0.7, ls=(0, (1, 1.6)), zorder=3)
+    bar_axes(a, 125, 25)
     a.set_yticks(range(0, 101, 25))
+    a.set_xlim(-0.8, len(rows) - 0.2)
     a.set_xticks([])
-    a.spines["bottom"].set_color("#BDBDBD")
-    a.set_ylabel("Best agent's score")
-    a.set_xlabel(f"{len(rows)} skill tasks, ranked")
-    a.set_title("a   Best score on each skill task", loc="left")
-    a.yaxis.grid(True)
+    a.set_xlabel(f"{len(rows)} skill tasks, ranked by the best agent's score", fontsize=6.8, color=MUTED, labelpad=4)
     top = [r for r in rows if r[0] >= 95]
     if top:
         x1 = len(top) - 1
-        a.plot([-0.4, -0.4, x1 + 0.4, x1 + 0.4], [101.5, 104, 104, 101.5], color=INK, lw=0.6)
+        a.plot([-0.4, -0.4, x1 + 0.4, x1 + 0.4], [102, 105, 105, 102], color=INK, lw=0.6)
         names = []
         for r in top:
             n = skill_label(next(c for c in cells if c["item"] == r[1])).split(" (")[0]
             if n not in names:
                 names.append(n)
         txt = f"{len(top)} tasks score 95 or more, in {len(names)} skills: " + ", ".join(names)
-        a.annotate("\n".join(textwrap.wrap(txt, 46)), (x1 / 2, 104), xytext=(x1 + 3, 112),
-                   textcoords="data", fontsize=6.4, color=INK, ha="left", va="center",
-                   arrowprops=dict(arrowstyle="-", color="#9A9A9A", lw=0.5, shrinkA=0, shrinkB=0))
-    a.legend(handles=[Patch(color=v[1], label=v[0]) for v in SKILL_GROUPS.values()], loc="center right",
-             bbox_to_anchor=(1.0, 0.62), handlelength=0.9, handleheight=0.7, fontsize=6.8, ncol=1)
-    # b: per agent, how many skill tasks reach 50
-    ms = sorted(M, key=lambda m: sum(m["scores"][f'{c["item"]}|{c["level"]}'][0] >= 50 for c in cells))
+        a.annotate("\n".join(textwrap.wrap(txt, 52)), (x1 / 2, 105), xytext=(x1 + 3.5, 113), textcoords="data",
+                   fontsize=6.2, color=INK, ha="left", va="center",
+                   arrowprops=dict(arrowstyle="-", color=FAINT, lw=0.5, shrinkA=0, shrinkB=0))
+    # b: per agent
+    ms = sorted(M, key=lambda m: -sum(m["scores"][f'{c["item"]}|{c["level"]}'][0] >= 50 for c in cells))
     n50 = [sum(m["scores"][f'{c["item"]}|{c["level"]}'][0] >= 50 for c in cells) for m in ms]
-    yy = np.arange(len(ms))
-    b.barh(yy, n50, height=0.62, color=[color(m) for m in ms], zorder=2)
-    for yi, v in zip(yy, n50):
-        b.text(v + 0.6, yi, str(v), va="center", fontsize=7, color=INK)
-    b.set_yticks(yy, [SHORTNAME[m["key"]] for m in ms], fontsize=7)
-    b.tick_params(axis="y", length=0)
-    b.spines["left"].set_visible(False)
-    b.xaxis.grid(True)
-    b.set_xlim(0, max(n50) * 1.25 + 1)
-    b.set_xlabel("Skill tasks scored 50 or more")
-    b.set_title("b   Skill tasks taught, per agent", loc="left")
-    save(fig, "skills")
+    b = card.axes(4.75, 0.78, 1.55, 1.3)
+    xb = np.arange(len(ms))
+    b.bar(xb, n50, width=0.68, color=[lab_color(m) for m in ms], zorder=2)
+    for xi, v in zip(xb, n50):
+        b.text(xi, v + 0.8, str(v), ha="center", va="bottom", fontsize=5.8, color=INK)
+    step = 10 if max(n50) > 20 else 5
+    bar_axes(b, step * (max(n50) // step + 2), step)
+    b.set_xlim(-0.6, len(ms) - 0.4)
+    b.set_xticks(xb, [m["short"] for m in ms], rotation=60, ha="right", rotation_mode="anchor", fontsize=5.8)
+    panel_title(b, "Tasks at 50+", TEAL)
+    card.save("skills")
+
+
+# ---------------------------------------------------------------- Figure: cost and time
+def place_labels(ax, pts, texts, fontsize=6.4, avoid=()):
+    """Label each point at the first of several positions around it that overlaps no other label, point or
+    `avoid` artist, and stays inside the axes; highest points first. Far positions get a leader line."""
+    from matplotlib.transforms import Bbox
+    fig = ax.figure
+    fig.canvas.draw()
+    r = fig.canvas.get_renderer()
+    axbox = ax.get_window_extent(r)
+    marks = []
+    for x, yv in pts:
+        px, py = ax.transData.transform((x, yv))
+        marks.append(Bbox.from_extents(px - 3.5, py - 3.5, px + 3.5, py + 3.5))
+    placed = [a.get_window_extent(r) for a in avoid]
+    cands = [(5, 0, "left", "center"), (-5, 0, "right", "center"), (0, 5, "center", "bottom"),
+             (0, -5, "center", "top"), (4, 4, "left", "bottom"), (4, -4, "left", "top"),
+             (-4, 4, "right", "bottom"), (-4, -4, "right", "top"),
+             (13, 8, "left", "bottom"), (13, -8, "left", "top"), (-13, 8, "right", "bottom"),
+             (-13, -8, "right", "top"), (0, 13, "center", "bottom"), (20, 0, "left", "center"),
+             (-20, 0, "right", "center")]
+    for i in sorted(range(len(pts)), key=lambda i: -pts[i][1]):
+        chosen = None
+        for dx, dy, ha, va in cands:
+            far = abs(dx) > 8 or abs(dy) > 8
+            t = ax.annotate(texts[i], pts[i], xytext=(dx, dy), textcoords="offset points", ha=ha, va=va,
+                            fontsize=fontsize, color=INK,
+                            arrowprops=dict(arrowstyle="-", color=FAINT, lw=0.45, shrinkA=1, shrinkB=3)
+                            if far else None)
+            bb = t.get_window_extent(r)
+            ok = (bb.x0 >= axbox.x0 and bb.x1 <= axbox.x1 and bb.y0 >= axbox.y0 and bb.y1 <= axbox.y1
+                  and not any(bb.overlaps(o) for o in placed)
+                  and not any(bb.overlaps(mk) for j, mk in enumerate(marks) if j != i))
+            if ok:
+                chosen = bb
+                break
+            t.remove()
+        if chosen is None:
+            dx, dy, ha, va = cands[0]
+            t = ax.annotate(texts[i], pts[i], xytext=(dx, dy), textcoords="offset points", ha=ha, va=va,
+                            fontsize=fontsize, color=INK)
+            chosen = t.get_window_extent(r)
+        placed.append(chosen)
+
+
+def pareto(points):
+    """Points (x, y) not beaten by any other on both lower x and higher y, sorted by x."""
+    out, best = [], -1
+    for x, yv in sorted(points):
+        if yv > best:
+            out.append((x, yv))
+            best = yv
+    return out
+
+
+def fig_efficiency():
+    c = Card(6.5, 3.52, "Index against cost and time",
+             "Cost: list price of one run · Time: wall-clock minutes of one run (open models on our own GPUs) "
+             "· Both on log scales", ORANGE,
+             legend=[("square", QUAD_GOOD, "Most attractive quadrant"), ("dotted", INK, "Pareto front")]
+             + lab_legend(M))
+    specs = (("cost_per_task", "Cost per task (USD, log scale)", "Index against cost", ORANGE, True),
+             ("minutes_per_task", "Minutes per task (log scale)", "Index against time", YELLOW, False))
+    for i, (field, xlabel, title, col, dollars) in enumerate(specs):
+        ax = c.axes(0.55 + i * 3.05, 0.5, 2.75, 1.9)
+        ms = [m for m in M if m.get(field)]
+        xs = np.array([m[field] for m in ms])
+        ys = np.array([m["index"] for m in ms])
+        lo, hi = xs.min() / 2.4, xs.max() * 3.2
+        xm, ym = float(np.exp(np.median(np.log(xs)))), float(np.median(ys))
+        ax.add_patch(Rectangle((lo, ym), xm - lo, 62 - ym, color=QUAD_GOOD, zorder=0, lw=0))
+        ax.add_patch(Rectangle((xm, -3), hi - xm, ym + 3, color=QUAD_BAD, zorder=0, lw=0))
+        fr = pareto(list(zip(xs, ys)))
+        ax.plot([p[0] for p in fr], [p[1] for p in fr], color=INK, lw=1.0, ls=(0, (1, 1.6)), zorder=2)
+        ax.set_xscale("log")
+        ax.set_xlim(lo, hi)
+        ax.set_ylim(-3, 62)
+        # agents whose points coincide (within 5 px) share one label; the later one is drawn as a smaller dot on
+        # top, so both lab colours stay visible
+        groups = []
+        for m in ms:
+            p = ax.transData.transform((m[field], m["index"]))
+            for g in groups:
+                if np.hypot(*(p - g["p"])) < 5:
+                    g["ms"].append(m)
+                    break
+            else:
+                groups.append({"p": p, "ms": [m]})
+        for g in groups:
+            for k, m in enumerate(g["ms"]):
+                ax.scatter(m[field], m["index"], s=24 if k == 0 else 9, color=lab_color(m), edgecolor="white",
+                           linewidth=0.6 if k == 0 else 0, zorder=3 + k)
+        ax.set_yticks(range(0, 61, 10))
+        ax.yaxis.grid(True, color=GRID, lw=0.7, ls=DASH)
+        ax.xaxis.grid(True, color=GRID, lw=0.7, ls=DASH, which="major")
+        for s in ("top", "right", "left"):
+            ax.spines[s].set_visible(False)
+        ax.tick_params(axis="y", length=0, pad=2)
+        ax.tick_params(axis="x", which="both", length=0, pad=3, colors=MUTED)
+        ax.xaxis.set_major_formatter(mpl.ticker.FuncFormatter(lambda v, _: f"${v:g}" if dollars else f"{v:g}"))
+        ax.set_xlabel(xlabel, fontsize=6.8, color=MUTED)
+        if i == 0:
+            ax.set_ylabel("Index")
+        else:
+            ax.set_yticklabels([])
+        panel_title(ax, title, col)
+        place_labels(ax, [(g["ms"][0][field], g["ms"][0]["index"]) for g in groups],
+                     [" / ".join(m["short"] for m in g["ms"]) for g in groups])
+    c.save("efficiency")
 
 
 # ---------------------------------------------------------------- Figure: pass 1 against pass 2
 def fig_passes():
-    two = [m for m in M if m["mean_of_passes"]["passes"] >= 2
+    two = [m for m in BY_INDEX if m["mean_of_passes"]["passes"] >= 2
            and sum(v[1] is not None for v in m["scores"].values()) >= 150]
     if not two:
         return []
-    fig, axes = plt.subplots(1, len(two), figsize=(W, W / len(two) + 0.35), sharey=True,
-                             gridspec_kw={"wspace": 0.12})
+    c = Card(6.5, 2.55, "Run-to-run variation",
+             "Cell scores on the first and second pass of the agents that ran twice · slight jitter shows "
+             "overlapping points", PURPLE)
     stats = []
-    for ax, m in zip(np.atleast_1d(axes), two):
+    for i, m in enumerate(two):
+        ax = c.axes(0.42 + i * 1.53, 0.38, 1.28, 1.28)
         pairs = [(v[0], v[1]) for v in m["scores"].values() if v[1] is not None]
         p1 = np.array([p[0] for p in pairs])
         p2 = np.array([p[1] for p in pairs])
         rng = np.random.default_rng(0)
-        j1, j2 = rng.uniform(-1.2, 1.2, len(p1)), rng.uniform(-1.2, 1.2, len(p2))
-        ax.plot([0, 100], [0, 100], color="#BDBDBD", lw=0.7, zorder=1)
-        ax.scatter(p1 + j1, p2 + j2, s=7, color=color(m), alpha=0.55, linewidth=0, zorder=2)
+        ax.plot([0, 100], [0, 100], color=GRID, lw=0.8, ls=DASH, zorder=1)
+        ax.scatter(p1 + rng.uniform(-1.2, 1.2, len(p1)), p2 + rng.uniform(-1.2, 1.2, len(p2)), s=6,
+                   color=lab_color(m), alpha=0.55, linewidth=0, zorder=2)
         far = float(np.mean(np.abs(p1 - p2) >= 50))
         stats.append((m, float(p1.mean()), float(p2.mean()), far, len(pairs)))
-        ax.set_title(SHORTNAME[m["key"]], loc="left", fontsize=7.8, pad=21)
-        ax.text(0, 1.025, f"index {p1.mean():.1f} vs {p2.mean():.1f}\n{100 * far:.0f}% of cells differ by 50+",
-                transform=ax.transAxes, ha="left", va="bottom", fontsize=6.2, color=MUTED, linespacing=1.25)
         ax.set_xlim(-4, 104)
         ax.set_ylim(-4, 104)
         ax.set_xticks([0, 50, 100])
         ax.set_yticks([0, 50, 100])
-        ax.set_aspect("equal")
-        ax.set_xlabel("Pass 1")
-    np.atleast_1d(axes)[0].set_ylabel("Pass 2")
-    save(fig, "passes")
+        if i:
+            ax.set_yticklabels([])
+        else:
+            ax.set_ylabel("Pass 2")
+        ax.set_xlabel("Pass 1", fontsize=6.8, color=MUTED)
+        ax.tick_params(length=0, pad=2, colors=MUTED)
+        ax.text(0, 1.22, m["short"], transform=ax.transAxes, family=SERIF, fontsize=9, va="center", ha="left")
+        ax.text(0, 1.08, f"index {p1.mean():.1f} vs {p2.mean():.1f} · {100 * far:.0f}% differ by 50+",
+                transform=ax.transAxes, fontsize=5.8, color=MUTED, va="center", ha="left")
+    c.save("passes")
     return stats
 
 
@@ -365,22 +503,27 @@ def fmt_cost(v):
 
 
 def table_leaderboard():
-    ms = sorted(M, key=lambda m: -m["index"])
-    lines = [r"\begin{tabular}{@{}lccrrrrrr@{}}", r"\toprule",
-             r"Agent & Open & Index [95\% CI] & Read & Edit & Skill & $\geq$50 (\%) & \$\,/\,task & Min\,/\,task \\",
-             r"\midrule"]
-    best = {f: max(m["sub"][f]["index"] for m in ms) for f in FAMILIES}
-    best_idx = max(m["index"] for m in ms)
+    """The results table in the Artificial Analysis style (macros \\aamodel etc. are defined in main.tex)."""
+    ms = BY_INDEX
+    sep = r"!{\color{aarule}\vrule}"
+    lines = [rf"\begin{{tabular}}{{@{{}}l c {sep} c c {sep} c c c {sep} c c@{{}}}}",
+             r"\multicolumn{2}{@{}l}{} & \multicolumn{2}{c" + sep + r"}{\aagroup{WSP-Bench Index}} & "
+             r"\multicolumn{3}{c" + sep + r"}{\aagroup{Index by family}} & \multicolumn{2}{c@{}}{\aagroup{Efficiency}} \\",
+             r"\aaheadl{Agent}{} & \aahead{Weights}{} & \aahead{Index}{95\% CI} & \aahead{Cells $\geq$50}{share} & "
+             r"\aahead{Read}{} & \aahead{Edit}{} & \aahead{Skill}{} & \aahead{Cost per task}{USD} & "
+             r"\aahead{Time per task}{minutes} \\",
+             r"\aarowsep"]
     for m in ms:
-        def b(v, top):
-            s = f"{v:.1f}"
-            return rf"\textbf{{{s}}}" if abs(v - top) < 1e-9 else s
-        sub = [b(m["sub"][f]["index"], best[f]) for f in FAMILIES]
-        idx = b(m["index"], best_idx)
-        lines.append(rf'{m["label"]} & {"\\checkmark" if m["open_weights"] else ""} & '
-                     rf'{idx} [{m["ci"][0]:.1f}, {m["ci"][1]:.1f}] & {" & ".join(sub)} & {m["pass_rate"]:.0f} & '
-                     rf'{fmt_cost(m["cost_per_task"])} & {m["minutes_per_task"]:.0f} \\')
-    lines += [r"\bottomrule", r"\end{tabular}"]
+        name = m["label"].split(" (")[0]
+        setting = m["setting"]
+        sub = " & ".join(f'{m["sub"][f]["index"]:.1f}' for f in FAMILIES)
+        lines.append(rf'\aamodel{{{LAB_TEX.get(m["lab"], "aamuted")}}}{{{name}}}{{{setting}}} & '
+                     rf'\aaweights{{{"Open" if m["open_weights"] else "Proprietary"}}} & '
+                     rf'\aaidx{{{m["index"]:.1f}}}{{{m["ci"][0]:.1f}}}{{{m["ci"][1]:.1f}}} & {m["pass_rate"]:.0f}\% & '
+                     rf'{sub} & {fmt_cost(m["cost_per_task"])} & {m["minutes_per_task"]:.0f} \\')
+        lines.append(r"\aarowsep")
+    lines[-1] = r"\aarowlast"
+    lines.append(r"\end{tabular}")
     (TAB / "leaderboard.tex").write_text("% Generated by scripts/make_figures.py from data/paper_v8.json; do not edit.\n"
                                          + "\n".join(lines) + "\n")
 
@@ -410,8 +553,8 @@ def macros(pass_stats):
         d(f"wsp@{k}@minutes", f'{m["minutes_per_task"]:.0f}')
         d(f"wsp@{k}@tokens", f'{(m["output_tokens_per_task"] or 0) / 1000:.0f}k')
         d(f"wsp@{k}@meanpasses", f'{m["mean_of_passes"]["index"]:.1f}')
-        for c, v in m["per_class"].items():
-            d(f"wspc@{k}@{c}", f"{v:.0f}")
+        for cl, v in m["per_class"].items():
+            d(f"wspc@{k}@{cl}", f"{v:.0f}")
     skill = [c for c in DATA["cells"] if c["group"] == "skill"]
     best = []
     for c in skill:
@@ -460,10 +603,8 @@ def macros(pass_stats):
     d("wspn@bestopenindex", f'{max(m["index"] for m in opens):.1f}' if opens else "--")
     edit_cls = DATA["groups"]["edit"]
     d("wspn@openeditmax", f'{max(m["per_class"].get(k, 0) for m in opens for k in edit_cls):.0f}' if opens else "--")
-    fam_low = sum(min(FAMILIES, key=lambda f: m["sub"][f]["index"]) == "skill" for m in M)
-    d("wspn@skilllowest", str(fam_low))
-    read_high = sum(max(FAMILIES, key=lambda f: m["sub"][f]["index"]) == "read" for m in M)
-    d("wspn@readhighest", str(read_high))
+    d("wspn@skilllowest", str(sum(min(FAMILIES, key=lambda f: m["sub"][f]["index"]) == "skill" for m in M)))
+    d("wspn@readhighest", str(sum(max(FAMILIES, key=lambda f: m["sub"][f]["index"]) == "read" for m in M)))
     for m, a, b, far, n in pass_stats:
         d(f"wsp@{m['key']}@pone", f"{a:.1f}")
         d(f"wsp@{m['key']}@ptwo", f"{b:.1f}")
@@ -474,11 +615,12 @@ def macros(pass_stats):
 
 
 if __name__ == "__main__":
-    fig_main()
+    fig_index()
+    fig_families()
     fig_classes()
-    fig_cost()
     fig_skills()
+    fig_efficiency()
     st = fig_passes()
     table_leaderboard()
     macros(st)
-    print(f"{len(M)} agents; data built {DATA['built']}; figures in {FIG}")
+    print(f"{len(M)} agents; data built {DATA['built']}; fonts {SANS} / {SERIF}; figures in {FIG}")

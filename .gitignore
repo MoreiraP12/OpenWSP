@@ -14,3 +14,5 @@ paper/figures/png/
 __pycache__/
 *.pyc
 .DS_Store
+# fonts converted to TrueType for the figures (scripts/otf2ttf.py)
+paper/.fontcache/
