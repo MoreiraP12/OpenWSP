@@ -76,7 +76,7 @@
 % =============================================================================
 \begin{abstract}
 % Numbers: macros from tables/numbers.tex (first pass of every agent, data/paper_v8.json). Claude models are at
-% default effort until the effort-high runs finish.
+% default effort; sec:analysis compares them at effort high (tab:effort).
 Large language models (LLMs) are improving quickly and now solve increasingly complex tasks.
 Much of this progress, however, is concentrated in domains that models are explicitly trained
 for and tested on, such as mathematics and programming in Python and other widely used
@@ -89,7 +89,8 @@ benchmark of 152 tasks that measures how well LLMs program weights. In each task
 gets the weights of a small open language model (360M--1.7B parameters) in a Python kernel
 and, without gradients, must work out how the model was trained or modified, change a
 specific behaviour, or make it better at a skill scored on hidden held-out prompts. We
-evaluate \wspnum{agents} frontier and open LLMs as WSP agents. On a 0--100 improvement index, the best
+evaluate \wspnum{llms} frontier and open LLMs as WSP agents, some at two reasoning settings (\wspnum{agents} agents in
+all). On a 0--100 improvement index, the best
 agent, GPT-6.1 Sol, scores \res{sol}{index}, followed by Claude Opus 5.5 at \res{opus}{index}; the best
 open-weights agent, Qwen3.8-27B with thinking, scores \res{qwenthink}{index}. Skill tasks are the hardest family
 for \wspnum{skilllowest} of the \wspnum{agents} agents. Still, on some tasks WSP substantially improves the small
@@ -155,10 +156,13 @@ everything else unchanged. In \emph{skill} tasks, it edits the model to make it 
 at a skill, from SQL and tool calling to answer set programming and more than 40 programming
 languages, scored on hidden held-out prompts.
 
-We evaluate \wspnum{agents} frontier and open LLMs in full. The best agent, GPT-6.1 Sol, scores
-\res{sol}{index} on our 0--100 improvement index, ahead of Claude Opus 5.5 (\res{opus}{index}) and GPT-6.1 Terra
-(\res{terra}{index}); no other agent scores above \res{sonnet}{index}, and the best open-weights agent scores
-\res{qwenthink}{index}. Skill tasks are the hardest family for \wspnum{skilllowest} of the \wspnum{agents} agents,
+We evaluate \wspnum{llms} frontier and open LLMs in full, some at two reasoning settings (\wspnum{agents} agents in
+all). The best agent, GPT-6.1 Sol, scores \res{sol}{index} on our 0--100 improvement index, ahead of Claude Opus 5.5
+(\res{opus}{index}, or \res{opushigh}{index} at high effort), Claude Sonnet 5.5 at high effort
+(\res{sonnethigh}{index}) and GPT-6.1 Terra (\res{terra}{index}); no other agent scores above \wspnum{restmax}, and
+the best open-weights agent scores \res{qwenthink}{index}. Reasoning effort matters for some models and not for
+others: at high effort Claude Sonnet 5.5 triples its index, mainly because it stops handing back the unedited model,
+while Claude Opus 5.5 and Claude Haiku 5.5 do not improve (\cref{sec:analysis}). Skill tasks are the hardest family for \wspnum{skilllowest} of the \wspnum{agents} agents,
 and \wspnum{skillfiftylow} agents bring at most one of the \wspnum{skilltasks} skill tasks to a score of 50; yet on
 a few skills, such as teaching new facts or writing SQL, the strongest agents close most of the gap to a perfect
 score.
@@ -173,8 +177,9 @@ Our contributions are:
   forward-pass budgets and no gradients, disguised weights, private answer keys, hidden
   held-out prompts, baselines that normalise every score, and an index with bootstrap
   confidence intervals (\cref{sec:environment,sec:scoring,sec:contamination}).
-  \item \textbf{Evaluation.} Results for \wspnum{agents} frontier and open LLMs, broken down by task
-  class, with an analysis of where agents succeed and fail (\cref{sec:experiments}).
+  \item \textbf{Evaluation.} Results for \wspnum{llms} frontier and open LLMs (\wspnum{agents} agents), broken
+  down by task class, with an analysis of where agents succeed and fail and of what reasoning effort changes
+  (\cref{sec:experiments}).
 \end{itemize}
 
 % =============================================================================
@@ -440,22 +445,26 @@ from the released version.
 \section{Experiments and Results}\label{sec:experiments}
 % Every number in this section is a macro from tables/numbers.tex, written by scripts/make_figures.py from
 % data/paper_v8.json (built by harness/paper_data.py in the development repo). Words that depend on the data
-% ("nearly doubles", "the only one ... off the Pareto front") are checked by hand: reread them after a data update.
+% ("Nine have closed weights", "matters a great deal ... little", "at either effort", "far better", "nearly doubles",
+% "about a third ... a seventh", "a similar cost", and in the introduction "triples") are checked by hand: reread them
+% after a data update.
 
 \subsection{Setup}\label{sec:setup}
 
-We evaluate \wspnum{agents} agents (\cref{tab:leaderboard}). Six have closed weights: GPT-6.1 Sol, GPT-6.1 Terra
+We evaluate \wspnum{agents} agents (\cref{tab:leaderboard}). Nine have closed weights: GPT-6.1 Sol, GPT-6.1 Terra
 and GPT-6 Luna, run through the Codex command-line interface at high reasoning effort, and Claude Opus 5.5, Claude
-Sonnet 5.5 and Claude Haiku 5.5, run through the Claude Code command-line interface at its default effort. Five have
+Sonnet 5.5 and Claude Haiku 5.5, each run through the Claude Code command-line interface twice, at its default effort
+and at high effort, the effort of the GPT agents. Five have
 open weights and run on our own GPUs, served with vLLM: Qwen3.8-27B, once with thinking and once without,
 DeepSeek-V4-Flash and Inkling 2 Mini with thinking at high effort, and MiniMax-M2.7, which always thinks. In every
 case, the interface's own tools and web access are switched off, so the agent acts only through the harness
-(\cref{sec:environment}). \TODO{Add the Claude models at effort high (running), and Claude Fable 5.1 and 5.2
-(partial).}
+(\cref{sec:environment}). \TODO{Add Claude Fable 5.1 and 5.2 (partial).}
 
 Each agent attempts every cell once, and we report this first pass throughout. Four agents also ran a second pass,
 which we use only to measure how much results vary between runs (\cref{sec:analysis}). A run that the provider's
-safety filter refuses scores 0; this happened twice, both for GPT-6 Luna. The cost of a task is the list price of the
+safety filter refuses scores 0 and is not repeated. This happened twice for GPT-6 Luna and, at high effort,
+\res{opus}{hirefused}, \res{sonnet}{hirefused} and \res{haiku}{hirefused} times for Claude Opus 5.5, Sonnet 5.5 and
+Haiku 5.5 (\cref{sec:analysis}). The cost of a task is the list price of the
 tokens its run used: as reported by Claude Code for Claude models, and computed from token counts at each provider's
 list prices for the other agents. Inkling 2 Mini has no published price, so it has no cost. Time is wall-clock time,
 which for the open-weights agents depends on our serving hardware.
@@ -484,16 +493,18 @@ which for the open-weights agents depends on our serving hardware.
   \caption{\textbf{Results on \bench (first pass).} Top: improvement index of each agent over the
   \wspnum{cells} scored cells, with 95\% bootstrap confidence intervals; 0 is the baseline and 100 a perfect
   solution on every cell. Bottom: the index within each task family. Bars take the colour of the agent's lab.
-  Claude models run at the default effort of Claude Code and GPT models at high effort. \TODO{Update with the
-  effort-high Claude runs.}}
+  GPT models run at high effort; Claude models appear twice, at the default effort of Claude Code and at high effort
+  (\emph{high}).}
   \label{fig:main}
 \end{figure}
 
 \Cref{fig:main} and \cref{tab:leaderboard} show the results. GPT-6.1 Sol leads with an index of \res{sol}{index}
-(95\% CI \res{sol}{cilo}--\res{sol}{cihi}), ahead of Claude Opus 5.5 at \res{opus}{index} and GPT-6.1 Terra at
-\res{terra}{index}. A wide gap separates these three agents from the rest, none of which scores above
-\res{sonnet}{index}: Claude Sonnet 5.5 scores \res{sonnet}{index}, Claude Haiku 5.5 \res{haiku}{index} and GPT-6
-Luna \res{luna}{index}. The open-weights agents trail the frontier ones. The best of them, Qwen3.8-27B with thinking,
+(95\% CI \res{sol}{cilo}--\res{sol}{cihi}), ahead of Claude Opus 5.5 at \res{opus}{index} (\res{opushigh}{index}
+at high effort), Claude Sonnet 5.5 at high effort at \res{sonnethigh}{index} and GPT-6.1 Terra at \res{terra}{index}.
+A wide gap separates these \wspnum{topword} agents from the rest, none of which scores above \wspnum{restmax}: Claude
+Sonnet 5.5 at its default effort scores \res{sonnet}{index}, Claude Haiku 5.5 \res{haiku}{index}
+(\res{haikuhigh}{index} at high effort) and GPT-6 Luna \res{luna}{index}. Reasoning effort thus matters a great deal
+for Claude Sonnet 5.5 and little for Claude Opus 5.5 and Claude Haiku 5.5 (\cref{sec:analysis}). The open-weights agents trail the frontier ones. The best of them, Qwen3.8-27B with thinking,
 scores \res{qwenthink}{index}, and the other \wspnum{openrestword} score between \wspnum{openrestlow} and
 \wspnum{openresthigh}.
 Thinking nearly doubles the index of Qwen3.8-27B, from \res{qwen}{index} to \res{qwenthink}{index}, but makes each
@@ -501,9 +512,10 @@ task about nine times slower (\res{qwen}{minutes} against \res{qwenthink}{minute
 
 The families differ in difficulty (bottom of \cref{fig:main}). Read tasks give the highest family index for
 \wspnum{readhighest} of the \wspnum{agents} agents, and Sol reaches \res{sol}{read} on them; Claude Sonnet 5.5 and
-Claude Haiku 5.5 instead do best on edit tasks. Skill tasks are the hardest family for \wspnum{skilllowest} agents:
-Sol scores \res{sol}{skill} on them and Claude Opus 5.5 \res{opus}{skill}, and no other agent scores above
-\res{terra}{skill}.
+Claude Haiku 5.5 instead do best on edit tasks, at either effort. Skill tasks are the hardest
+family for \wspnum{skilllowest} agents: Sol scores \res{sol}{skill} on them, Claude Sonnet 5.5 at high effort
+\res{sonnethigh}{skill} and Claude Opus 5.5 \res{opus}{skill} (\res{opushigh}{skill} at high effort), and no other
+agent scores above \res{terra}{skill}.
 
 \subsection{Results by Task Class}\label{sec:per-class}
 
@@ -515,17 +527,19 @@ Sol scores \res{sol}{skill} on them and Claude Opus 5.5 \res{opus}{skill}, and n
   \label{fig:classes}
 \end{figure}
 
-\Cref{fig:classes} breaks the index down by class. Among read tasks, the three leading agents find the transplanted
-layers in every P2 task (\cls{sol}{P2}) and identify the kind and layer of a hidden edit with scores of
-\cls{terra}{P3} to \cls{opus}{P3} (P3). Sol also names backdoor triggers (S6, \cls{sol}{S6}) and picks the
+\Cref{fig:classes} breaks the index down by class. Among read tasks, Sol, Terra and Claude Opus 5.5 find the
+transplanted layers in every P2 task (\cls{sol}{P2}), Opus at either effort, and identify the kind and layer of a
+hidden edit with scores of \cls{terra}{P3} to \cls{opus}{P3} (P3), against \cls{opushigh}{P3} for Opus at high
+effort. Sol also names backdoor triggers (S6, \cls{sol}{S6}) and picks the
 backdoored twin (S3, \cls{sol}{S3}) far better than any other agent. Telling how many epochs a model was fine-tuned
 for (O3) stays hard for every agent: the best score is \cls{luna}{O3}, by GPT-6 Luna.
 
 Edit tasks separate the agents more sharply. Sol makes the model predict a chosen word after another almost
 perfectly (W4, \cls{sol}{W4}), but its score falls to \cls{sol}{W4x} on the harder variants with several word
-pairs, late layers or word categories (W4x). Sol, Terra and Claude Haiku 5.5 remove the planted backdoor while keeping
-the model's math accuracy (W1: \cls{sol}{W1}, \cls{terra}{W1} and \cls{haiku}{W1}), whereas Claude Opus 5.5 does
-not (\cls{opus}{W1}). The W1, W2 and W3 classes hold one task each, so each of these scores rests on a single run.
+pairs, late layers or word categories (W4x). Sol, Terra and Claude Haiku 5.5 at its default effort remove the planted backdoor while keeping
+the model's math accuracy (W1: \cls{sol}{W1}, \cls{terra}{W1} and \cls{haiku}{W1}), and so do Claude Opus 5.5 and
+Claude Sonnet 5.5 at high effort (\cls{opushigh}{W1} and \cls{sonnethigh}{W1}), whereas Claude Opus 5.5 at its
+default effort and Claude Haiku 5.5 at high effort do not (\cls{opus}{W1} and \cls{haikuhigh}{W1}). The W1, W2 and W3 classes hold one task each, so each of these scores rests on a single run.
 
 All \wspnum{openword} open-weights agents score 0 on data mixtures (O2) and trigger phrases (S6), and at most
 \wspnum{openeditmax} on any edit class.
@@ -549,8 +563,9 @@ perfect score, and \wspnum{clingobestagent} closes \wspnum{clingobest}\% of it w
 a language rarely seen in training. No agent improves the model on \wspnum{skillzero} tasks. Coding is harder than
 the general skills: the best score on a whole-program task is \wspnum{skillbest@wholeprograms}, and on the
 \wspnum{skillcount@functioncompletion} function-completion tasks it is \wspnum{skillbest@functioncompletion}. Sol
-brings \res{sol}{skillfifty} skill tasks to 50 or more and Claude Opus 5.5 \res{opus}{skillfifty}, while
-\wspnum{skillfiftylow} agents manage at most one.
+brings \res{sol}{skillfifty} skill tasks to 50 or more, Claude Sonnet 5.5 at high effort \res{sonnethigh}{skillfifty}
+and Claude Opus 5.5 \res{opus}{skillfifty} (\res{opushigh}{skillfifty} at high effort), while \wspnum{skillfiftylow}
+agents manage at most one.
 
 \begin{figure}[tbp]
   \centering
@@ -565,8 +580,10 @@ brings \res{sol}{skillfifty} skill tasks to 50 or more and Claude Opus 5.5 \res{
 
 \paragraph{Cost and time.} \Cref{fig:cost} sets each agent's index against what a task costs and how long it takes.
 GPT-6.1 Terra reaches \res{terra}{index} at \$\res{terra}{cost} per task, and Sol \res{sol}{index} at
-\$\res{sol}{cost}. Claude Opus 5.5 is the only one of the three leading agents off the Pareto front: Sol scores
-higher at about a third of its cost (\$\res{opus}{cost} per task). The open-weights agents that think are the
+\$\res{sol}{cost}. The Claude agents among the leaders are all off the Pareto front of cost: Sol scores higher than
+Claude Opus 5.5 at about a third of its cost at the default effort (\$\res{opus}{cost} per task) and a seventh of its
+cost at high effort (\$\res{opushigh}{cost}), and Claude Opus 5.5 at its default effort scores higher than Claude
+Sonnet 5.5 at high effort for a similar cost (\$\res{sonnethigh}{cost}). The open-weights agents that think are the
 slowest, at \res{inkling}{minutes} (Inkling 2 Mini) to \res{qwenthink}{minutes} minutes per task on our hardware,
 without a matching gain in index.
 
@@ -577,7 +594,52 @@ of Claude Haiku 5.5, from \res{haiku}{pone} to \res{haiku}{ptwo}. Single cells, 
 Opus 5.5, \res{opus}{far}\% of cells differ by 50 points or more between the passes. The index over \wspnum{cells}
 cells is therefore stable to a few points across runs, while conclusions about a single task need several runs.
 
-\paragraph{Reasoning effort.} \TODO{Claude models at effort high against default effort, once the runs finish.}
+\begin{table}[tbp]
+  \caption{Claude models at high effort against their default effort, first pass, paired by cell. \emph{Index}: mean
+  score over the cells both runs have (their number follows each name), and the change with its 95\% bootstrap
+  confidence interval. \emph{Change by family}: the paired change within each family. \emph{Unedited submissions}:
+  share of edit and skill runs that hand back the unedited model, by the harness's count of changed tensors; such a
+  run scores 0, as does a run the provider refuses.}
+  \label{tab:effort}
+  \begin{aacardbox}
+    \aacardheader{aapurple}{Reasoning effort}{Claude models at default and high effort \textperiodcentered\ First
+      pass, paired by cell \textperiodcentered\ Higher index is better}
+    \renewcommand{\arraystretch}{1.55}%
+    \adjustbox{max width=\linewidth}{\input{tables/effort}}
+  \end{aacardbox}
+\end{table}
+
+% Words that depend on the data: "improves in every family", "does not improve", "nearly all-or-nothing", "often
+% stating ... gradient-based training" (about half of the unedited submissions at default effort, Nov 24), "still",
+% "none of the default-effort runs". Reread them after a data update.
+\paragraph{Reasoning effort.} \Cref{tab:effort} compares each Claude model at high effort, the effort of the GPT
+agents, with its default effort, cell by cell. The effect depends on the model. Claude Sonnet 5.5 gains \res{sonnet}{effgain} points (95\% CI
+\res{sonnet}{effdifflo} to \res{sonnet}{effdiffhi}), from \res{sonnet}{effdefault} to \res{sonnet}{effhigh}, and
+improves in every family. Claude Opus 5.5 does not improve: its index changes by \res{opus}{effdiff}
+(\res{opus}{effdifflo} to \res{opus}{effdiffhi}), as much as its second default-effort pass differs from the first
+(\res{opus}{noisediff}), while a task costs \res{opus}{hicostx} times as much. Its read index changes by
+\res{opus}{effread} (\res{opus}{effreadlo} to \res{opus}{effreadhi}), but read cells are nearly all-or-nothing:
+between its two default-effort passes, \res{opus}{noisereadfar}\% of them move by 50 points or more. Claude Haiku 5.5
+changes by \res{haiku}{effdiff} (\res{haiku}{effdifflo} to \res{haiku}{effdiffhi}): by \res{haiku}{effskill} on skill
+tasks and by \res{haiku}{effedit} on edit tasks, where Anthropic's safety filter refused \res{haiku}{hirefusededit}
+of its high-effort runs; on the \res{haiku}{effcellskept} cells with no refused run, it changes by
+\res{haiku}{effdiffkept}.
+
+Most of the difference lies in whether an agent keeps working, because a run that hands back the unedited model
+scores 0. At the default effort, Claude Sonnet 5.5 does so on \res{sonnet}{unedited}\% of its edit and skill runs,
+after a median of \res{sonnet}{uneditedreplies} replies, often stating that the task would need gradient-based
+training. At high effort it does so on \res{sonnet}{hiunedited}\%; its runs grow from \res{sonnet}{replies} to
+\res{sonnet}{hireplies} replies and from \res{sonnet}{fwd} to \res{sonnet}{hifwd} forward passes, and the share of
+skill tasks it improves at all rises from \res{sonnet}{progskill}\% to \res{sonnet}{hiprogskill}\%. Claude Haiku 5.5
+hands back the unedited model on \res{haiku}{unedited}\% of these runs at the default effort, after a median of
+\res{haiku}{uneditedreplies} replies, and still on \res{haiku}{hiunedited}\% at high effort. Claude Opus 5.5 does so on
+\res{opus}{unedited}\% of them at the default effort and \res{opus}{hiunedited}\% at high effort, the latter after a
+median of \res{opus}{hiuneditedreplies} replies; at high effort its runs grow from \res{opus}{replies} to
+\res{opus}{hireplies} replies without raising its index. Anthropic's safety filter refused \res{opus}{hirefused} of the
+effort-high runs of Opus, \res{sonnet}{hirefused} of Sonnet's and \res{haiku}{hirefused} of Haiku's,
+\res{haiku}{hirefusedskill} of the latter on skill tasks and \res{haiku}{hirefusededit} on edit tasks, and none of
+the default-effort runs; refused runs score 0 and
+are not repeated.
 
 \paragraph{Failure modes.} \TODO{From transcripts: how agents spend their turns, code runs and forward passes; common
 failures, such as giving up early, running out of budget or breaking the model while editing it.}
