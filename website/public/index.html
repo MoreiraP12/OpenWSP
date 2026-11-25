@@ -41,7 +41,7 @@
    "url": "__SITE__",
    "name": "OpenWSP",
    "inLanguage": "en",
-   "description": "Weight-space programming asks an LLM to edit a neural network's weights directly, as it would edit code. OpenWSP measures how well agents do it: it gives them the raw weights of small open language models and, with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new skill."
+   "description": "Weight-space programming asks an LLM to edit a neural network's weights directly, as it would edit code. OpenWSP is a benchmark that measures how well agents do it: it gives them the raw weights of small open language models and, with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new skill."
   },
   {
    "@type": "ScholarlyArticle",
@@ -60,7 +60,7 @@
    "inLanguage": "en",
    "url": "__SITE__",
    "image": "__SITE__og.png",
-   "description": "Weight-space programming asks an LLM to edit a neural network's weights directly, as it would edit code. OpenWSP measures how well agents do it: it gives them the raw weights of small open language models and, with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new skill.",
+   "description": "Weight-space programming asks an LLM to edit a neural network's weights directly, as it would edit code. OpenWSP is a benchmark that measures how well agents do it: it gives them the raw weights of small open language models and, with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new skill.",
    "keywords": [
     "weight-space programming",
     "WSP",
@@ -176,7 +176,9 @@
 <!-- /gen:jsonld -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"></noscript>
 <style>
   :root {
     --bg: #faf8f6;          /* off-white page */
@@ -253,7 +255,7 @@
   .comp { margin: 0 0 16px; }
   .comp .bar { display: flex; height: 38px; border-radius: 10px; overflow: hidden; gap: 2px; background: var(--bg); }
   .comp .seg { display: flex; align-items: center; padding: 0 12px; color: #fff; font-size: 0.86rem; font-weight: 600; white-space: nowrap; overflow: hidden; }
-  .comp .seg span { font-weight: 400; opacity: 0.85; margin-left: 6px; }
+  .comp .seg span { font-weight: 400; margin-left: 6px; }
   .comp .cap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; font-size: 0.84rem; color: var(--muted); margin-top: 8px; }
   .fam .c { display: flex; flex-direction: column; }
   .fam .tag { align-self: flex-start; }
@@ -473,8 +475,8 @@
     <h1>OpenWSP<span class="vh">: </span><span class="subtitle">Benchmarking Weight-Space Programming on Open Language Models</span></h1>
     <p class="authors"><a href="https://www.linkedin.com/in/pjfmoreira/" target="_blank" rel="noopener">Pedro Moreira</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/leonida-lumburovska/" target="_blank" rel="noopener">Leonida Lumburovska</a></p>
     <p class="lede">Weight-space programming asks an LLM to edit a neural network's weights directly, as it would edit
-      code. OpenWSP measures how well agents do it: it gives them the raw weights of small open language models and,
-      with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new
+      code. OpenWSP is a benchmark that measures how well agents do it: it gives them the raw weights of small open
+      language models and, with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new
       skill.</p>
     <div class="btns">
       <a class="btn primary" href="paper.pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Paper</a>
@@ -595,9 +597,9 @@
 </main>
 
 <div id="tip"></div>
-<script src="data.js"></script>
+<script src="data.js" defer></script>
 <script>
-(() => {
+document.addEventListener("DOMContentLoaded", () => {
   const D = window.OPENWSP;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const fmtPct = p => !p ? "none" : p < 0.01 ? p.toPrecision(2) + "%" : p < 1 ? p.toFixed(2) + "%" : p.toFixed(1) + "%";
@@ -770,12 +772,12 @@
         <line x1="${x(a.ci[0])}" x2="${x(a.ci[1])}" y1="17" y2="17" stroke="#221a26" stroke-width="1.4"/>
         <line x1="${x(a.ci[0])}" x2="${x(a.ci[0])}" y1="12" y2="22" stroke="#221a26" stroke-width="1.4"/>
         <line x1="${x(a.ci[1])}" x2="${x(a.ci[1])}" y1="12" y2="22" stroke="#221a26" stroke-width="1.4"/>
-        <text x="calc(${x(a.ci[1])} + 8px)" y="21.5" font-size="12.5" font-weight="700" fill="#221a26">${a.index.toFixed(1)}</text></svg>
+        <text x="0" y="21.5" font-size="12.5" font-weight="700" fill="#221a26">${a.index.toFixed(1)}</text></svg>
       <span class="fams"><span>${a.read.toFixed(1)}</span><span>${a.edit.toFixed(1)}</span><span>${a.skill.toFixed(1)}</span></span></div>`;
   });
   html += `<div class="axis"><span></span><svg>${[0, 10, 20, 30, 40, 50, 60].map(t => `<line x1="${x(t)}" x2="${x(t)}" y1="0" y2="5" stroke="#b9afb6"/><text x="${x(t)}" y="17" font-size="11" fill="#6b6170" text-anchor="middle">${t}</text>`).join("")}</svg><span class="sp2"></span></div>`;
   lb.innerHTML = `<svg width="0" height="0" style="position:absolute"><defs>${Object.entries(LAB).map(([k, c]) => `<pattern id="stripe-${k}" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="${c}"/><rect width="1.8" height="5" fill="#ffffff" fill-opacity="0.75"/></pattern>`).join("")}</defs></svg>` + html;
-  // SVG text cannot use calc(); place the value labels after layout
+  // place the value labels after layout, just right of each interval
   function placeLabels() {
     lb.querySelectorAll(".barsvg").forEach(svg => {
       const w = svg.getBoundingClientRect().width, t = svg.querySelector("text"), id = svg.parentNode.dataset.id;
@@ -803,9 +805,9 @@
 
   // ---------- task composition
   const C = D.composition;
-  const segs = [["Read", C.read.cells, "#c48bbc"], ["Edit", C.edit.cells, "#8f4f88"], ["Skill", C.skill.cells, "#4a2150"]];
-  document.getElementById("comp").innerHTML = `<div class="bar">${segs.map(([n, v, c]) =>
-      `<div class="seg" style="flex:${v};background:${c}">${n}<span>${v}</span></div>`).join("")}</div>
+  const segs = [["Read", C.read.cells, "#c48bbc", "#3a1840"], ["Edit", C.edit.cells, "#8f4f88", "#fff"], ["Skill", C.skill.cells, "#4a2150", "#fff"]];
+  document.getElementById("comp").innerHTML = `<div class="bar">${segs.map(([n, v, c, ink]) =>
+      `<div class="seg" style="flex:${v};background:${c};color:${ink}">${n}<span>${v}</span></div>`).join("")}</div>
     <div class="cap"><span>${C.cells} scored cells from ${C.tasks - C.practice} tasks; ${C.practice} more are run as practice but not scored</span><span>${C.subject_models} subject models from ${C.model_families} open families</span></div>`;
   const mini = (rows, max) => `<ul class="mini">${rows.map(([k, v]) =>
       `<li><span>${k}<div class="m" style="width:${100 * v / max}%"></div></span><b>${v}</b></li>`).join("")}</ul>`;
@@ -837,7 +839,7 @@
     catch { ev.target.textContent = "Select and copy"; }
     setTimeout(() => ev.target.textContent = "Copy", 1600);
   };
-})();
+});
 </script>
 </body>
 </html>
