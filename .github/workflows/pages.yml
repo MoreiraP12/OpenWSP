@@ -1,0 +1,57 @@
+# Publishes the OpenWSP project page (website/public) to GitHub Pages.
+# One-time setup by a repository admin: Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
+# Until then the workflow only leaves a notice and deploys nothing.
+name: Project page
+
+on:
+  push:
+    branches: [main]
+    paths: ["website/public/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.pages.outputs.enabled }}
+    steps:
+      - id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/${GITHUB_REPOSITORY}/pages" --silent 2>/dev/null; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=GitHub Pages is off::Nothing was deployed. A repository admin can turn it on (Settings -> Pages -> Source: GitHub Actions) and re-run this workflow."
+          fi
+
+  deploy:
+    needs: check
+    if: needs.check.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: pages
+        uses: actions/configure-pages@v5
+      - name: Fill in the site's address
+        env:
+          SITE: ${{ steps.pages.outputs.base_url }}/
+        run: grep -rlZ '__SITE__' website/public | xargs -0 -r sed -i "s|__SITE__|${SITE}|g"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: website/public
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,6 +1,8 @@
-# WSP-Bench
+# OpenWSP: Benchmarking Weight-Space Programming on Open Language Models
 
-**Can a language model program a neural network's weights the way it programs code?** WSP-Bench gives an LLM agent
+**Project page: [moreirap12.github.io/openwsp](https://moreirap12.github.io/openwsp/)** · Paper: [`paper/main.pdf`](paper/main.pdf)
+
+**Can a language model program a neural network's weights the way it programs code?** OpenWSP gives an LLM agent
 the weights of a small open language model (360M to 1.7B parameters) in a sandboxed Python kernel, with a limited
 budget of forward passes and no gradients. It must then do one of three things:
 
@@ -32,6 +34,7 @@ private test set built the same way, whose keys never leave the evaluators.
 | [`scoring/`](scoring) | The scorers. `harness/scoring.py` scores read answers against a key, in plain Python. `node/score_write.py` scores an edited model on hidden tests on a GPU, with the skill checkers in `node/skills.py` and the sandboxed checker images in `node/*_image/`. |
 | [`results/`](results) | Leaderboard aggregates (`v8_leaderboard.json`) and every agent's first-pass score on every cell (`paper_v8.json`). |
 | [`paper/`](paper) | The paper: LaTeX source, figures, the script that draws them from `results/`, and the PDF. |
+| [`website/`](website) | The project page, published to GitHub Pages from `website/public/`. |
 
 In `tasks/v8`, a subject model written `hf:<repo>` is a public Hugging Face checkpoint, and `local:.../organisms/<name>`
 is one of our fine-tunes. Before the agent sees a model, its weights are disguised: tensor names are canonicalised,

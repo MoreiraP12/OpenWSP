@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenWSP: Benchmarking Weight-Space Programming on Open Language Models</title>
+<meta name="description" content="OpenWSP is a benchmark for weight-space programming: 152 tasks in which LLM agents read, edit and teach skills to open language models through their weights.">
+<link rel="canonical" href="__SITE__">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="author" content="Pedro Moreira, Leonida Lumburovska">
+<meta name="theme-color" content="#3a1840">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OpenWSP">
+<meta property="og:title" content="OpenWSP: Benchmarking Weight-Space Programming on Open Language Models">
+<meta property="og:description" content="Can an LLM agent program a neural network through its weights? 152 tasks, 11 agents, and real before-and-after edits.">
+<meta property="og:url" content="__SITE__">
+<meta property="og:image" content="__SITE__og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="OpenWSP, a benchmark for weight-space programming, with the improvement index of the top LLM agents">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OpenWSP: Benchmarking Weight-Space Programming on Open Language Models">
+<meta name="twitter:description" content="Can an LLM agent program a neural network through its weights? 152 tasks, 11 agents, and real before-and-after edits.">
+<meta name="twitter:image" content="__SITE__og.png">
+<meta name="citation_title" content="OpenWSP: Benchmarking Weight-Space Programming on Open Language Models">
+<meta name="citation_author" content="Moreira, Pedro">
+<meta name="citation_author" content="Lumburovska, Leonida">
+<meta name="citation_publication_date" content="2026/11/25">
+<meta name="citation_pdf_url" content="__SITE__paper.pdf">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-96.png" sizes="96x96" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- gen:jsonld -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebSite",
+   "@id": "__SITE__#website",
+   "url": "__SITE__",
+   "name": "OpenWSP",
+   "inLanguage": "en",
+   "description": "Weight-space programming asks an LLM to edit a neural network's weights directly, as it would edit code. OpenWSP measures how well agents do it: it gives them the raw weights of small open language models and, with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new skill."
+  },
+  {
+   "@type": "ScholarlyArticle",
+   "@id": "__SITE__#paper",
+   "headline": "OpenWSP: Benchmarking Weight-Space Programming on Open Language Models",
+   "name": "OpenWSP: Benchmarking Weight-Space Programming on Open Language Models",
+   "author": [
+    {
+     "@id": "__SITE__#pedro"
+    },
+    {
+     "@id": "__SITE__#leonida"
+    }
+   ],
+   "datePublished": "2026-11-25",
+   "inLanguage": "en",
+   "url": "__SITE__",
+   "image": "__SITE__og.png",
+   "description": "Weight-space programming asks an LLM to edit a neural network's weights directly, as it would edit code. OpenWSP measures how well agents do it: it gives them the raw weights of small open language models and, with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new skill.",
+   "keywords": [
+    "weight-space programming",
+    "WSP",
+    "benchmark",
+    "LLM agents",
+    "model editing",
+    "interpretability",
+    "open language models"
+   ],
+   "about": {
+    "@type": "Thing",
+    "name": "Weight-space programming"
+   },
+   "encoding": {
+    "@type": "MediaObject",
+    "contentUrl": "__SITE__paper.pdf",
+    "encodingFormat": "application/pdf"
+   }
+  },
+  {
+   "@type": "Dataset",
+   "@id": "__SITE__#benchmark",
+   "name": "OpenWSP",
+   "alternateName": "OpenWSP weight-space programming benchmark",
+   "description": "OpenWSP is a benchmark for weight-space programming: 152 tasks in which an LLM agent gets the weights of a small open language model (360M–1.7B parameters; 14 subject models from 5 families) in a sandboxed Python kernel and, without gradients, must work out how the model was made (34 read tasks), change one of its behaviours (17 edit tasks) or teach it a skill (94 skill tasks covering 76 skills, scored on held-out prompts). 145 tasks are scored, as 168 cells; 7 are practice tasks.",
+   "url": "__SITE__",
+   "creator": [
+    {
+     "@id": "__SITE__#pedro"
+    },
+    {
+     "@id": "__SITE__#leonida"
+    }
+   ],
+   "keywords": [
+    "weight-space programming",
+    "WSP",
+    "benchmark",
+    "LLM agents",
+    "model editing",
+    "interpretability",
+    "open language models"
+   ],
+   "citation": "OpenWSP: Benchmarking Weight-Space Programming on Open Language Models",
+   "variableMeasured": "Improvement index (0–100)",
+   "measurementTechnique": "LLM agents edit or inspect model weights in a sandboxed Python kernel without gradients; answers and edited models are scored against hidden keys and held-out prompts"
+  },
+  {
+   "@type": "Person",
+   "@id": "__SITE__#pedro",
+   "name": "Pedro Moreira",
+   "sameAs": [
+    "https://www.linkedin.com/in/pjfmoreira/"
+   ]
+  },
+  {
+   "@type": "Person",
+   "@id": "__SITE__#leonida",
+   "name": "Leonida Lumburovska",
+   "sameAs": [
+    "https://www.linkedin.com/in/leonida-lumburovska/"
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "__SITE__#faq",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What is weight-space programming?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Weight-space programming (WSP) means changing what a neural network does by reading and editing its weights directly, as a programmer reads and edits code, instead of training it on data with gradients. Takehi et al. (2026) recently showed, as a proof of concept, that frontier LLMs can read and write neural-network weights this way."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What does OpenWSP measure?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "How well an LLM agent programs weights. In each of OpenWSP's 152 tasks, the agent gets the weights of a small open language model (360M–1.7B parameters) in a sandboxed Python kernel and, without gradients, must work out how the model was made (read tasks), change one of its behaviours and nothing else (edit tasks), or make it better at a skill, scored on held-out prompts it never sees (skill tasks)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Which LLM is best at weight-space programming?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "On OpenWSP's 0–100 improvement index, GPT-6.1 Sol scores highest, with 51.0, followed by Claude Opus 5.5 (37.6), Claude Sonnet 5.5 (33.7) and GPT-6.1 Terra (29.0). The best open-weights agent, Qwen3.8-27B with thinking, scores 7.5."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How is a task scored?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "From 0 to 100: 0 is the baseline and 100 a perfect solution. For edit and skill tasks, the baseline is the unedited model; for read tasks, it is a guess made from the task statement alone, without the weights. An agent's improvement index is its mean score over the 168 scored task cells, with a 95% bootstrap confidence interval."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How does OpenWSP differ from other weight-space programming benchmarks?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Three concurrent benchmarks also measure weight-space programming: WeightBench, IWIBench and WSPBench. OpenWSP is the only one of the four that asks agents to work out how a pretrained open language model was made from its weights, such as which data it was fine-tuned on or how it was merged from other models, and it measures skill teaching across 76 skills, each scored on held-out prompts."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+<!-- /gen:jsonld -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf8f6;          /* off-white page */
+    --card: #ffffff;
+    --ink: #221a26;
+    --muted: #6b6170;
+    --line: #e7e0e5;
+    --soft: #f3eef2;
+    --plum-900: #3a1840;    /* dark purple: headings, accents */
+    --plum-700: #5b2a63;    /* data: closed models, "after" */
+    --plum-400: #c48bbc;    /* data: open-weights models */
+    --plum-100: #f1e6ef;
+    --before: #a39aa6;      /* data: "before" (unedited model) */
+    --ok: #2f7a4f;
+    --bad: #b4443c;
+    --display: "Fraunces", Georgia, serif;
+    --sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    --maxw: 1040px;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: var(--plum-700); text-underline-offset: 3px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; }
+
+  /* nav */
+  nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; gap: 22px; height: 52px; }
+  nav .brand { font-family: var(--display); font-weight: 700; font-size: 1.15rem; color: var(--plum-900); text-decoration: none; margin-right: auto; }
+  nav a.l { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+  nav a.l:hover { color: var(--plum-900); }
+  @media (max-width: 560px) { nav a.l.opt { display: none; } }
+
+  /* hero */
+  .hero { padding: 56px 0 8px; }
+  .kicker { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--plum-700); margin: 0 0 14px; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.6rem, 7vw, 4.2rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 18px; color: var(--plum-900); }
+  h1 .subtitle { display: block; font-weight: 500; font-size: clamp(1.15rem, 2.6vw, 1.45rem); line-height: 1.3; letter-spacing: 0; margin-top: 14px; max-width: 840px; color: var(--ink); }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .lede { max-width: 720px; color: var(--muted); margin: 0 0 24px; font-size: 1.05rem; }
+  .authors { color: var(--muted); font-size: 0.92rem; margin: 0 0 22px; }
+  .authors a { color: var(--ink); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--plum-400); }
+  .authors a:hover { color: var(--plum-700); }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 36px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px; font-weight: 600; font-size: 0.92rem; text-decoration: none; border: 1px solid var(--plum-900); color: var(--plum-900); background: transparent; cursor: pointer; font-family: var(--sans); }
+  .btn.primary { background: var(--plum-900); color: #fff; }
+  .btn:hover { background: var(--plum-700); border-color: var(--plum-700); color: #fff; }
+  .btn svg { width: 16px; height: 16px; }
+  .btn.disabled { opacity: 0.5; pointer-events: none; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .stat { padding: 16px 4px; }
+  .stat + .stat { border-left: 1px solid var(--line); padding-left: 18px; }
+  .stat b { display: block; font-family: var(--display); font-size: 2rem; line-height: 1.05; color: var(--plum-900); font-weight: 600; }
+  .stat span { font-size: 0.85rem; color: var(--muted); }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } .stat:nth-child(3) { border-left: 0; padding-left: 4px; } .stat:nth-child(n+3) { border-top: 1px solid var(--line); } }
+
+  /* sections */
+  section { padding: 64px 0 0; scroll-margin-top: 56px; }
+  h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 3.6vw, 2.1rem); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 10px; color: var(--plum-900); }
+  .sec-lede { color: var(--muted); max-width: 720px; margin: 0 0 26px; }
+
+  /* families */
+  .fam { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .fam .c { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 18px 16px; }
+  .fam .tag { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--plum-700); background: var(--plum-100); border-radius: 999px; padding: 2px 10px; margin-bottom: 10px; }
+  .fam h3 { font-size: 1.05rem; margin: 0 0 6px; }
+  .fam p { margin: 0; font-size: 0.93rem; color: var(--muted); line-height: 1.5; }
+  .fam .n { font-family: var(--display); font-size: 1.5rem; font-weight: 600; color: var(--plum-900); float: right; line-height: 1; }
+  @media (max-width: 760px) { .fam { grid-template-columns: 1fr; } }
+
+  /* composition */
+  .comp { margin: 0 0 16px; }
+  .comp .bar { display: flex; height: 38px; border-radius: 10px; overflow: hidden; gap: 2px; background: var(--bg); }
+  .comp .seg { display: flex; align-items: center; padding: 0 12px; color: #fff; font-size: 0.86rem; font-weight: 600; white-space: nowrap; overflow: hidden; }
+  .comp .seg span { font-weight: 400; opacity: 0.85; margin-left: 6px; }
+  .comp .cap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; font-size: 0.84rem; color: var(--muted); margin-top: 8px; }
+  .fam .c { display: flex; flex-direction: column; }
+  .fam .tag { align-self: flex-start; }
+  .fam .foot { margin-top: auto; padding-top: 14px; }
+  .fam .big2 { font-family: var(--display); font-size: 1.35rem; font-weight: 600; color: var(--plum-900); line-height: 1.1; }
+  .fam .big2 small { font-family: var(--sans); font-size: 0.8rem; font-weight: 500; color: var(--muted); margin-left: 4px; }
+  .mini { list-style: none; padding: 0; margin: 8px 0 0; font-size: 0.82rem; }
+  .mini li { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 3px 0; border-top: 1px solid var(--soft); }
+  .mini li b { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .mini .m { height: 5px; border-radius: 3px; background: var(--plum-400); margin-top: 3px; }
+  .fam .c { padding-bottom: 14px; }
+
+  /* agent picker */
+  .pick { margin: 0 0 14px; }
+  .step { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  .agents { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ag { display: inline-flex; align-items: center; gap: 7px; font-family: var(--sans); font-size: 0.84rem; font-weight: 600; padding: 6px 12px 6px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  .ag .dot { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+  .ag .sc { font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 0.78rem; }
+  .ag[aria-pressed="true"] { border-color: var(--plum-900); box-shadow: inset 0 0 0 1px var(--plum-900); background: var(--plum-100); }
+  .ag:hover:not([aria-pressed="true"]) { border-color: var(--plum-400); }
+  .msg { border: 1px dashed var(--line); border-radius: 12px; padding: 14px 16px; color: var(--muted); font-size: 0.92rem; margin: 0 0 14px; background: var(--bg); }
+  .msg b { color: var(--ink); }
+  .verdict.unk { color: var(--muted); }
+  .seefail { margin-top: 16px; font-size: 0.86rem; color: var(--muted); }
+  .seefail button { font: inherit; color: var(--plum-700); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+
+  /* example tabs */
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 0; }
+  .tab { font-family: var(--sans); font-size: 0.9rem; font-weight: 600; padding: 8px 15px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  .tab[aria-selected="true"] { background: var(--plum-900); border-color: var(--plum-900); color: #fff; }
+  .tab:hover:not([aria-selected="true"]) { border-color: var(--plum-400); }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+  .ph { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px 24px; margin-bottom: 18px; }
+  .ph h3 { font-family: var(--display); font-size: 1.3rem; font-weight: 600; margin: 0 0 4px; color: var(--plum-900); }
+  .ph p { margin: 0; color: var(--muted); font-size: 0.93rem; max-width: 600px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-size: 0.8rem; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; line-height: 1.25; background: var(--bg); }
+  .chip b { display: block; font-size: 1.05rem; font-family: var(--display); font-weight: 600; color: var(--plum-900); }
+  .chip .arr { color: var(--muted); font-weight: 400; margin: 0 4px; }
+  .chip.big { border-color: var(--plum-400); background: var(--plum-100); }
+
+  .ba-head, .ba-row { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 14px; align-items: start; }
+  .ba-head { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .ba-head .a { color: var(--plum-700); }
+  .ba-row { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 0.93rem; }
+  .ba-row:last-child { border-bottom: 0; }
+  .ba-row .q { font-weight: 500; }
+  .sub2 { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+  .sub2 b { color: var(--ink); }
+  .out .res { display: block; margin-top: 4px; font-weight: 600; }
+  .out { font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; white-space: pre-wrap; word-break: break-word; border-radius: 8px; padding: 8px 10px; position: relative; }
+  .out.b { background: #f5f3f5; color: #4a434d; }
+  .out.a { background: var(--plum-100); color: var(--plum-900); }
+  .verdict { display: inline-flex; align-items: center; gap: 4px; font-family: var(--sans); font-size: 0.74rem; font-weight: 700; margin-top: 6px; }
+  .verdict.ok { color: var(--ok); } .verdict.bad { color: var(--bad); }
+  .verdict svg { width: 13px; height: 13px; }
+  @media (max-width: 720px) {
+    .ba-head { display: none; }
+    .ba-row { grid-template-columns: 1fr; gap: 8px; }
+    .ba-row .out::before { content: attr(data-l); display: block; font-family: var(--sans); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; margin-bottom: 2px; }
+  }
+
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 820px) { .grid3 { grid-template-columns: 1fr; } }
+  .case { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: var(--card); display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .case .q { font-weight: 600; font-size: 0.92rem; line-height: 1.4; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .lbl { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .lbl.a { color: var(--plum-700); }
+  .svgbox { aspect-ratio: 1; border: 1px solid var(--line); border-radius: 8px; background: #fff; display: grid; place-items: center; overflow: hidden; }
+  .svgbox img { width: 100%; height: 100%; object-fit: contain; }
+  .svgbox .none { font-size: 0.75rem; color: var(--muted); text-align: center; padding: 8px; }
+
+  .sheet { border-collapse: collapse; width: 100%; font-size: 0.78rem; font-family: var(--mono); }
+  .sheet th { font-weight: 500; color: var(--muted); background: var(--soft); padding: 2px 6px; border: 1px solid var(--line); }
+  .sheet td { padding: 2px 6px; border: 1px solid var(--line); text-align: right; }
+  .sheet td.t { text-align: left; }
+  .sheet td.ua { background: var(--plum-100); color: var(--plum-900); font-weight: 500; }
+  .sheet td.ub { box-shadow: inset 0 0 0 2px var(--before); }
+  .fm { font-family: var(--mono); font-size: 0.8rem; display: flex; justify-content: space-between; gap: 8px; padding: 6px 9px; border-radius: 8px; }
+  .fm.b { background: #f5f3f5; color: #4a434d; } .fm.a { background: var(--plum-100); color: var(--plum-900); }
+  .key { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.8rem; color: var(--muted); margin-top: 14px; }
+  .key i { display: inline-block; width: 14px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; }
+
+  .iso { width: 100%; height: 130px; display: block; }
+  .scadrow { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .scadrow:last-of-type { border-bottom: 0; }
+  .scadrow .q { font-weight: 600; font-size: 0.92rem; margin-bottom: 10px; }
+  .scad3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .scadbox { aspect-ratio: 4 / 3; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #f8f8f8; display: grid; place-items: center; }
+  .scadbox img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .scadbox .none { font-size: 0.8rem; color: var(--muted); text-align: center; padding: 10px; }
+  .scadbox .none span { display: block; font-family: var(--mono); font-size: 0.68rem; margin-top: 4px; }
+  .len { display: block; font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+  details { margin-top: 10px; font-size: 0.85rem; }
+  details summary { cursor: pointer; color: var(--plum-700); font-weight: 600; }
+  details .pair { margin-top: 8px; }
+  @media (max-width: 560px) { .scad3 { gap: 6px; } }
+  .code { font-family: var(--mono); font-size: 0.74rem; line-height: 1.45; white-space: pre-wrap; word-break: break-word; border-radius: 8px; padding: 8px 10px; margin: 0; max-height: 170px; overflow: auto; }
+  .code.b { background: #f5f3f5; color: #4a434d; } .code.a { background: var(--plum-100); color: var(--plum-900); }
+
+  .assoc { display: grid; grid-template-columns: 1.1fr 1fr; gap: 26px; align-items: center; }
+  @media (max-width: 760px) { .assoc { grid-template-columns: 1fr; } }
+  .sentence { font-family: var(--display); font-size: 1.35rem; line-height: 1.5; }
+  .sentence .cue { background: var(--soft); border-radius: 6px; padding: 0 6px; }
+  .sentence .tgt { background: var(--plum-700); color: #fff; border-radius: 6px; padding: 0 8px; }
+  .sentence .old { color: var(--before); text-decoration: line-through; text-decoration-thickness: 2px; }
+  .meter { margin: 0 0 14px; }
+  .meter .top { display: flex; justify-content: space-between; font-size: 0.86rem; margin-bottom: 4px; }
+  .meter .top span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .track { position: relative; height: 10px; background: var(--soft); border-radius: 99px; margin: 3px 0; }
+  .track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99px; }
+  .track.b i { background: var(--before); } .track.a i { background: var(--plum-700); }
+  .tiny { font-size: 0.7rem; color: var(--muted); display: flex; gap: 12px; }
+
+  .note { font-size: 0.84rem; color: var(--muted); margin: 14px 0 0; }
+  .fail { margin-top: 18px; border: 1px dashed #d9b9b5; background: #fdf8f7; border-radius: 12px; padding: 14px 16px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px 22px; align-items: start; }
+  .fail .fh { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bad); margin-bottom: 4px; }
+  .fail .who { font-weight: 600; font-size: 0.95rem; }
+  .fail .sub { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+  .fail .why { font-size: 0.88rem; margin-top: 8px; }
+  .fail .fq { font-size: 0.86rem; font-weight: 600; margin-bottom: 6px; }
+  .fail .out.b, .fail .code.b, .fail .fm.b { background: #fff; border: 1px solid #eadad8; }
+  .fail .row { display: flex; gap: 12px; align-items: flex-start; }
+  .fail .svgbox { width: 120px; flex: none; }
+  @media (max-width: 720px) { .fail { grid-template-columns: 1fr; } }
+  .flow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--display); font-size: 1.15rem; margin: 4px 0 18px; }
+  .tok { border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 3px 10px; }
+  .tok.cue { border-color: var(--plum-400); }
+  .tok.tgt { background: var(--plum-700); color: #fff; border-color: var(--plum-700); }
+  .flow .ar { color: var(--muted); font-family: var(--sans); font-size: 0.9rem; }
+  .cmp { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .cmp th { text-align: right; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: bottom; }
+  .cmp th:first-child, .cmp td:first-child { text-align: left; }
+  .cmp th.good { color: var(--plum-700); } .cmp th.badh { color: var(--bad); }
+  .cmp td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: right; font-variant-numeric: tabular-nums; }
+  .cmp td.good { background: var(--plum-100); color: var(--plum-900); font-weight: 600; }
+  .cmp td.badc { background: #fbefed; color: var(--bad); font-weight: 600; }
+  .cmp td small { display: block; color: var(--muted); font-size: 0.76rem; font-weight: 400; }
+  .cmp tr:last-child td { border-bottom: 0; font-weight: 700; }
+  .how { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; font-size: 0.88rem; }
+  .how div { border-radius: 10px; padding: 10px 12px; }
+  .how .g { background: var(--plum-100); } .how .bd { background: #fdf8f7; border: 1px dashed #d9b9b5; }
+  .how b { display: block; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+  @media (max-width: 720px) { .how { grid-template-columns: 1fr; } .cmp { font-size: 0.8rem; } .cmp th, .cmp td { padding: 6px; } }
+
+  /* leaderboard */
+  .lb { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px 14px; }
+  .lb-row { display: grid; grid-template-columns: 190px 1fr 150px; gap: 14px; align-items: center; height: 42px; padding: 0 6px; margin: 0 -6px; }
+  .lb-row .nm { font-size: 0.9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lb-row .nm small { display: block; font-weight: 500; color: var(--muted); font-size: 0.72rem; line-height: 1.1; }
+  .lb-row .fams { display: grid; grid-template-columns: repeat(3, 1fr); font-size: 0.8rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+  .lb-head { height: 26px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .lb-head .fams { color: var(--muted); font-size: 0.72rem; }
+  .tier { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--plum-700); padding: 12px 0 2px; border-top: 1px solid var(--line); margin-top: 6px; }
+  .tier:first-of-type { border-top: 0; margin-top: 0; padding-top: 4px; }
+  .barsvg { width: 100%; height: 34px; display: block; overflow: visible; }
+  .lb-row:hover { background: var(--soft); border-radius: 8px; }
+  .axis { display: grid; grid-template-columns: 190px 1fr 150px; gap: 14px; }
+  .axis svg { width: 100%; height: 22px; overflow: visible; }
+  @media (max-width: 720px) {
+    .lb-row, .axis { grid-template-columns: 112px 1fr 24px; }
+    .lb-row .fams, .axis .sp2, .lb-head .fams { display: none; }
+    .lb-row .nm { font-size: 0.8rem; }
+  }
+  #tip { position: fixed; pointer-events: none; z-index: 30; background: var(--plum-900); color: #fff; font-size: 0.8rem; line-height: 1.45; border-radius: 10px; padding: 9px 12px; opacity: 0; transition: opacity .12s; max-width: 240px; }
+  #tip b { font-size: 0.86rem; }
+
+  .db { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px 14px; margin-top: 18px; }
+  .db h3 { font-family: var(--display); font-size: 1.25rem; font-weight: 600; color: var(--plum-900); margin: 0 0 4px; }
+  .db p { margin: 0 0 12px; color: var(--muted); font-size: 0.9rem; max-width: 720px; }
+  .db-row { display: grid; grid-template-columns: 190px 1fr 110px; gap: 14px; align-items: center; height: 30px; }
+  .db-row .nm { font-size: 0.86rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .db-row .v { font-size: 0.82rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .db-row .v b { color: var(--ink); }
+  .db-row svg { width: 100%; height: 30px; overflow: visible; }
+  @media (max-width: 720px) { .db-row { grid-template-columns: 104px 1fr 78px; gap: 8px; } .db-row .nm { font-size: 0.76rem; } .db-row .v { font-size: 0.74rem; } }
+  .findings { list-style: none; padding: 0; margin: 26px 0 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .findings li { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; font-size: 0.93rem; line-height: 1.5; }
+  .findings li b { display: block; font-family: var(--display); font-size: 1.08rem; font-weight: 600; color: var(--plum-900); margin-bottom: 4px; }
+  @media (max-width: 760px) { .findings { grid-template-columns: 1fr; } }
+
+  .tablev { margin-top: 14px; }
+  .tablewrap { overflow-x: auto; }
+  .lbt { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-top: 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .lbt th { text-align: right; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--line); }
+  .lbt td { text-align: right; padding: 7px 8px; border-bottom: 1px solid var(--line); }
+  .lbt th:nth-child(-n+3), .lbt td:nth-child(-n+3) { text-align: left; }
+  .lbt td small { color: var(--muted); }
+  .faq { border-top: 1px solid var(--line); max-width: 820px; }
+  details.qa { margin: 0; border-bottom: 1px solid var(--line); font-size: 1rem; }
+  details.qa summary { list-style: none; cursor: pointer; padding: 15px 36px 15px 0; position: relative; color: var(--ink); font-weight: 600; }
+  details.qa summary::-webkit-details-marker { display: none; }
+  details.qa summary::after { content: "+"; position: absolute; right: 6px; top: 10px; font-size: 1.4rem; font-weight: 400; color: var(--plum-700); }
+  details.qa[open] summary::after { content: "–"; }
+  details.qa .ans { padding: 0 0 18px; color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
+  pre.bib { background: var(--plum-900); color: #f1e6ef; border-radius: 14px; padding: 18px 20px; font-family: var(--mono); font-size: 0.8rem; line-height: 1.55; overflow-x: auto; margin: 0; }
+  .bibwrap { position: relative; }
+  .bibwrap .btn { position: absolute; top: 12px; right: 12px; border-color: #f1e6ef55; color: #f1e6ef; padding: 5px 12px; font-size: 0.8rem; }
+  footer { margin: 72px 0 0; padding: 22px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top">OpenWSP</a>
+  <a class="l opt" href="#tasks">Tasks</a>
+  <a class="l" href="#examples">Examples</a>
+  <a class="l" href="#results">Results</a>
+  <a class="l opt" href="#cite">Cite</a>
+</div></nav>
+
+<main class="wrap" id="top">
+  <header class="hero">
+    <p class="kicker">Benchmark · 2026</p>
+    <h1>OpenWSP<span class="vh">: </span><span class="subtitle">Benchmarking Weight-Space Programming on Open Language Models</span></h1>
+    <p class="authors"><a href="https://www.linkedin.com/in/pjfmoreira/" target="_blank" rel="noopener">Pedro Moreira</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/leonida-lumburovska/" target="_blank" rel="noopener">Leonida Lumburovska</a></p>
+    <p class="lede">Weight-space programming asks an LLM to edit a neural network's weights directly, as it would edit
+      code. OpenWSP measures how well agents do it: it gives them the raw weights of small open language models and,
+      with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new
+      skill.</p>
+    <div class="btns">
+      <a class="btn primary" href="paper.pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Paper</a>
+      <!-- TODO: link the code repository once it is public -->
+      <a class="btn disabled" href="#" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg>Code (soon)</a>
+      <a class="btn" href="#cite">Cite</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>152</b><span>tasks</span></div>
+      <div class="stat"><b>76</b><span>skills, incl. 48 programming languages</span></div>
+      <div class="stat"><b>11</b><span>LLM agents evaluated</span></div>
+      <div class="stat"><b>51.0</b><span>best score, out of 100</span></div>
+    </div>
+  </header>
+
+  <section id="tasks">
+    <h2>Three kinds of tasks</h2>
+    <p class="sec-lede">Every task hands the agent the weights of a 360M–1.7B model in a sandboxed Python kernel. Some
+      tasks also allow a small budget of forward passes. Scores run from 0 (baseline) to 100 (perfect).</p>
+    <div class="comp" id="comp"></div>
+    <div class="fam">
+      <div class="c"><span class="tag">Read</span><h3>How was this model made?</h3>
+        <p>Find which data it was fine-tuned on, how it was merged from other models, which layers were transplanted, or which of two twins is backdoored.</p><div class="foot" id="foot-read"></div></div>
+      <div class="c"><span class="tag">Edit</span><h3>Change one behaviour</h3>
+        <p>Remove a backdoor, raise math accuracy, or make one word predict another, while changing nothing else.</p><div class="foot" id="foot-edit"></div></div>
+      <div class="c"><span class="tag">Skill</span><h3>Teach it a skill</h3>
+        <p>From SQL and tool calling to OpenSCAD and COBOL, scored on held-out prompts the agent never sees.</p><div class="foot" id="foot-skill"></div></div>
+    </div>
+  </section>
+
+  <section id="examples">
+    <h2>Before and after</h2>
+    <p class="sec-lede">Real edits from the benchmark runs. <!-- gen:example -->For example, GPT-6.1 Sol changed one tensor of SmolLM2-360M, 0.00026% of its weights, and its accuracy on held-out SQL questions rose from 34% to 96.7%.<!-- /gen:example --> Pick an agent and
+      a task to see the unedited model and that agent's edited model answer the same practice prompts. The score is
+      measured on hidden held-out prompts.</p>
+    <div class="pick"><div class="step">1 · Choose an agent</div><div class="agents" id="agentpick"></div></div>
+    <div class="pick"><div class="step">2 · Choose a task</div><div class="tabs" role="tablist" id="tabs"></div></div>
+    <div id="panel"></div>
+  </section>
+
+  <section id="results">
+    <h2>Results</h2>
+    <p class="sec-lede">The leaderboard ranks each agent by its improvement index: its mean score over the 168 scored task
+      cells, with a 95% bootstrap confidence interval.</p>
+    <div class="lb" id="lb"></div>
+    <div class="key" style="margin-top:12px" id="lbkey"></div>
+    <details class="tablev"><summary>Show the results as a table</summary><!-- gen:lbtable -->
+<div class="tablewrap"><table class="lbt">
+<thead><tr><th>#</th><th>Agent</th><th>Lab</th><th>Index [95% CI]</th><th>Read</th><th>Edit</th><th>Skill</th><th>Perfect cells</th><th>$ per run</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>GPT-6.1 Sol</td><td>OpenAI</td><td><b>51.0</b> <small>[45.2, 57.1]</small></td><td>74.1</td><td>65.2</td><td>35.8</td><td>26</td><td>0.61</td></tr>
+<tr><td>2</td><td>Claude Opus 5.5</td><td>Anthropic</td><td><b>37.6</b> <small>[32.1, 43.3]</small></td><td>53.0</td><td>51.4</td><td>26.0</td><td>13</td><td>4.41</td></tr>
+<tr><td>3</td><td>Claude Sonnet 5.5</td><td>Anthropic</td><td><b>33.7</b> <small>[28.3, 39.3]</small></td><td>28.8</td><td>49.0</td><td>31.0</td><td>8</td><td>1.89</td></tr>
+<tr><td>4</td><td>GPT-6.1 Terra</td><td>OpenAI</td><td><b>29.0</b> <small>[23.5, 34.6]</small></td><td>53.3</td><td>38.9</td><td>14.5</td><td>14</td><td>0.12</td></tr>
+<tr><td>5</td><td>Claude Haiku 5.5</td><td>Anthropic</td><td><b>8.9</b> <small>[5.5, 12.4]</small></td><td>13.0</td><td>19.8</td><td>3.5</td><td>1</td><td>0.03</td></tr>
+<tr><td>6</td><td>Qwen3.8-27B (thinking)</td><td>Qwen · open weights</td><td><b>7.5</b> <small>[4.6, 10.8]</small></td><td>17.1</td><td>8.3</td><td>2.9</td><td>1</td><td>0.83</td></tr>
+<tr><td>7</td><td>GPT-6 Luna</td><td>OpenAI</td><td><b>6.8</b> <small>[3.9, 10.1]</small></td><td>16.5</td><td>10.3</td><td>1.1</td><td>1</td><td>0.01</td></tr>
+<tr><td>8</td><td>MiniMax-M2.7</td><td>MiniMax · open weights</td><td><b>4.5</b> <small>[2.1, 7.1]</small></td><td>13.8</td><td>0.2</td><td>1.6</td><td>2</td><td>0.18</td></tr>
+<tr><td>9</td><td>DeepSeek-V4-Flash</td><td>DeepSeek · open weights</td><td><b>4.4</b> <small>[2.5, 6.5]</small></td><td>8.5</td><td>3.9</td><td>2.6</td><td>0</td><td>0.06</td></tr>
+<tr><td>10</td><td>Inkling 2 Mini</td><td>Inkling · open weights</td><td><b>4.1</b> <small>[2.2, 6.4]</small></td><td>7.8</td><td>6.6</td><td>1.6</td><td>0</td><td>–</td></tr>
+<tr><td>11</td><td>Qwen3.8-27B (no thinking)</td><td>Qwen · open weights</td><td><b>4.1</b> <small>[2.2, 6.6]</small></td><td>9.6</td><td>3.0</td><td>2.0</td><td>0</td><td>0.18</td></tr>
+</tbody></table></div>
+<!-- /gen:lbtable --></details>
+    <div class="db" id="db"></div>
+    <ul class="findings">
+      <li><b>One clear leader</b>GPT-6.1 Sol leads alone at 51.0, followed by Claude Opus 5.5, Claude Sonnet 5.5 and
+        GPT-6.1 Terra (29–38). The other seven agents stay near the baseline.</li>
+      <li><b>Reading is easiest, skills are hardest</b>Read tasks are the easiest family for nine of the eleven agents,
+        and skill tasks the hardest for nine. Yet on some skills, such as new facts, the strongest agents reach a perfect score.</li>
+      <li><b>Skills are taught by testing edits</b>The strongest agents succeed mainly by trying candidate edits with
+        forward passes. When they must design an edit by hand, their scores drop sharply.</li>
+      <li><b>Room for open models</b>The open-weights agents edit often but rarely with success; the best, Qwen3.8-27B
+        with thinking, scores 7.5.</li>
+    </ul>
+  </section>
+
+  <section id="faq">
+    <h2>FAQ</h2>
+    <div class="faq">
+      <details class="qa"><summary>What is weight-space programming?</summary><div class="ans">Weight-space programming
+        (WSP) means changing what a neural network does by reading and editing its weights directly, as a programmer
+        reads and edits code, instead of training it on data with gradients. <a href="https://rikiyat.github.io/blog/weight-space-programming/">Takehi
+        et al. (2026)</a> recently showed, as a proof of concept, that frontier LLMs can read and write neural-network
+        weights this way.</div></details>
+      <details class="qa"><summary>What does OpenWSP measure?</summary><div class="ans">How well an LLM agent programs
+        weights. In each of OpenWSP's 152 tasks, the agent gets the weights of a small open language model (360M–1.7B
+        parameters) in a sandboxed Python kernel and, without gradients, must work out how the model was made (read
+        tasks), change one of its behaviours and nothing else (edit tasks), or make it better at a skill, scored on
+        held-out prompts it never sees (skill tasks).</div></details>
+      <details class="qa"><summary>Which LLM is best at weight-space programming?</summary><div class="ans"><!-- gen:faq-best -->On OpenWSP's 0–100 improvement index, GPT-6.1 Sol scores highest, with 51.0, followed by Claude Opus 5.5 (37.6), Claude Sonnet 5.5 (33.7) and GPT-6.1 Terra (29.0). The best open-weights agent, Qwen3.8-27B with thinking, scores 7.5.<!-- /gen:faq-best --></div></details>
+      <details class="qa"><summary>How is a task scored?</summary><div class="ans">From 0 to 100: 0 is the baseline and
+        100 a perfect solution. For edit and skill tasks, the baseline is the unedited model; for read tasks, it is a
+        guess made from the task statement alone, without the weights. An agent's improvement index is its mean score
+        over the 168 scored task cells, with a 95% bootstrap confidence interval.</div></details>
+      <details class="qa"><summary>How does OpenWSP differ from other weight-space programming benchmarks?</summary><div class="ans">Three
+        concurrent benchmarks also measure weight-space programming: WeightBench, IWIBench and WSPBench. OpenWSP is
+        the only one of the four that asks agents to work out how a pretrained open language model was made from its
+        weights, such as which data it was fine-tuned on or how it was merged from other models, and it measures
+        skill teaching across 76 skills, each scored on held-out prompts.</div></details>
+    </div>
+  </section>
+
+  <section id="cite">
+    <h2>Cite</h2>
+    <div class="bibwrap">
+      <button class="btn" id="copy">Copy</button>
+<pre class="bib" id="bib"><!-- gen:bibtex -->@misc{moreira2026openwsp,
+  title  = {{OpenWSP}: Benchmarking Weight-Space Programming on Open Language Models},
+  author = {Moreira, Pedro and Lumburovska, Leonida},
+  year   = {2026},
+  url    = {__SITE__},
+}<!-- /gen:bibtex --></pre>
+    </div>
+  </section>
+
+  <footer>OpenWSP · 2026 · <a href="paper.pdf">Paper (PDF)</a> · <a href="llms.txt">llms.txt</a>. The examples are
+    taken from the benchmark runs; held-out prompts and answer keys are not published.</footer>
+</main>
+
+<div id="tip"></div>
+<script src="data.js"></script>
+<script>
+(() => {
+  const D = window.OPENWSP;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const fmtPct = p => !p ? "none" : p < 0.01 ? p.toPrecision(2) + "%" : p < 1 ? p.toFixed(2) + "%" : p.toFixed(1) + "%";
+  const OK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8.5 3.2 3L13 4.5"/></svg>';
+  const BAD = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m4 4 8 8M12 4l-8 8"/></svg>';
+  const verdict = ok => ok ? `<span class="verdict ok">${OK}correct</span>` : `<span class="verdict bad">${BAD}wrong</span>`;
+
+  const LAB = { OpenAI: "#75c59b", Anthropic: "#fb906a", Qwen: "#cc97f3", MiniMax: "#c26c96", DeepSeek: "#4e90d2", Inkling: "#b28324" };
+  const AG = Object.fromEntries(D.agents.map(a => [a.id, a]));
+  const swatch = a => a.open ? `repeating-linear-gradient(135deg, ${LAB[a.lab]} 0 3px, #ffffffaa 3px 5px)` : LAB[a.lab];
+  const verdictU = ok => ok == null ? `<span class="verdict unk">not checked here</span>` : verdict(ok);
+  const head = (title, desc, chipsHtml) => `<div class="ph"><div><h3>${title}</h3><p>${desc}</p></div><div class="chips">${chipsHtml}</div></div>`;
+  const chipsFor = (e, a) => a.heldout == null ? "" :
+    `<div class="chip big">held-out accuracy, unedited → edited<b>${e.base_heldout}<span class="arr">→</span>${a.heldout}</b></div>
+     <div class="chip">score<b>${a.score}</b></div>
+     <div class="chip">weights changed<b>${fmtPct(a.changed_pct || 0)}</b></div>`;
+  const res = t => t === "" ? "no rows" : t === "error" ? "error" : t;
+  const svgBox = o => o && o.svg
+    ? `<div class="svgbox"><img alt="SVG drawing written by the model" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(o.svg)}"></div>`
+    : `<div class="svgbox"><div class="none">${o && o.cut ? "Output cut off in the run log" : "No complete SVG"}</div></div>`;
+
+  // what to say when there is no edited output to show
+  function statusMsg(a, name, e) {
+    if (a.status === "no_edit") return `<b>${esc(name)}</b> handed back the unedited model, so it answers exactly as before (score ${a.score}).`;
+    if (a.status === "refused") return `The provider's safety filter stopped <b>${esc(name)}</b>'s run, which scores 0.`;
+    if (a.status !== "ok") return `No finished run for <b>${esc(name)}</b> on this task.`;
+    const ended = a.end === "turn_limit" ? `<b>${esc(name)}</b> ran out of replies before submitting, so the run scores 0. The outputs below come from the last edit it tested.`
+      : a.end && !["ok", "refused", "error"].includes(a.end) ? `<b>${esc(name)}</b>'s run broke the task's rules (${esc(a.end)}), so it scores 0.` : "";
+    if (ended) return ended;
+    if (!a.after) return `<b>${esc(name)}</b> submitted an edit without testing it on the practice prompts, so there are no outputs to show. Its held-out accuracy is ${a.heldout} (score ${a.score}).`;
+    return "";
+  }
+
+  const T = {};
+  T.sql = { title: "Answering questions in SQL", desc: (n, e) => `The task: edit ${e.model} so that it turns a question about a small table into an SQL query. Each query is run on the table; only the right result counts.`,
+    body: (e, A) => `<div class="ba-head"><span>Question</span><span>Before</span><span class="a">After</span></div>` +
+      e.prompts.map((p, i) => { const b = e.before[i], x = A && A[i];
+        return `<div class="ba-row"><div><div class="q">${esc(p.question)}</div><div class="sub2">table t (${p.cols.map(esc).join(", ")}) · answer: <b>${esc(p.truth)}</b></div></div>
+        <div><div class="out b" data-l="Before">${esc(b.sql)}<span class="res">→ ${esc(res(b.result))}</span></div>${verdictU(b.ok)}</div>
+        <div>${x ? `<div class="out a" data-l="After">${esc(x.sql)}<span class="res">→ ${esc(res(x.result))}</span></div>${verdictU(x.ok)}` : ""}</div></div>`; }).join("") };
+  T.svg = { title: "Drawing in SVG", desc: (n, e) => `The task: edit ${e.model} so that it draws two coloured shapes in a given arrangement. The drawings are the models' SVG code, rendered as is.`,
+    body: (e, A) => `<div class="grid3">` + e.prompts.map((p, i) => { const b = e.before[i], x = A && A[i];
+        return `<div class="case"><div class="q">“${esc(p.prompt)}”</div><div class="pair">
+        <div><div class="lbl">Before</div>${svgBox(b)}${verdictU(b.ok)}</div>
+        <div>${x ? `<div class="lbl a">After</div>` + svgBox(x) + verdictU(x.ok) : ""}</div></div></div>`; }).join("") + `</div>` };
+  T.excel = { title: "Writing spreadsheet formulas", desc: (n, e) => `The task: edit ${e.model} so that it answers questions about a small table with one Excel formula.`,
+    body: (e, A) => {
+      const sheet = (p, b, x) => { const ua = new Set(x ? x.used : []), ub = new Set(b.used);
+        return `<table class="sheet"><tr><th></th><th>A</th><th>B</th><th>C</th></tr>` + p.data.map((row, i) => `<tr><th>${i + 2}</th>` + row.map((v, j) => {
+          const id = "ABC"[j] + (i + 2); return `<td class="${j === 0 ? "t" : ""} ${ua.has(id) ? "ua" : ""} ${ub.has(id) ? "ub" : ""}">${esc(v)}</td>`; }).join("") + `</tr>`).join("") + `</table>`; };
+      const fm = (o, cls) => `<div class="fm ${cls}"><span>${esc(o.formula)}</span><span>${o.value == null ? "" : o.value}</span></div>${verdictU(o.ok)}`;
+      return `<div class="grid3">` + e.prompts.map((p, i) => { const b = e.before[i], x = A && A[i];
+        return `<div class="case"><div class="q">Compute ${esc(p.task)}. <span style="color:var(--muted);font-weight:500">Answer: ${p.truth}</span></div>
+          ${sheet(p, b, x)}<div>${fm(b, "b")}</div><div>${x ? fm(x, "a") : ""}</div></div>`; }).join("") + `</div>
+        <div class="key"><span><i style="box-shadow:inset 0 0 0 2px var(--before)"></i>cells the unedited model's formula reads</span><span><i style="background:var(--plum-100)"></i>cells the edited model's formula reads</span></div>`; } };
+  const scadPic = (o, label, cls) => {
+    let inner;
+    if (!o) inner = "";
+    else if (o.img) inner = `<img alt="OpenSCAD render: ${label === "Requested" ? "the requested part" : label === "Before" ? "the unedited model's program" : "the edited model's program"}" src="${o.img}" loading="lazy">`;
+    else if (o.cut) inner = `<div class="none">Output cut off in the run log</div>`;
+    else inner = `<div class="none">Does not render<br><span>${esc((o.error || "").replace(/ in file m\.scad/, ""))}</span></div>`;
+    return `<div><div class="lbl ${cls}">${label}</div><div class="scadbox">${inner}</div>${o && label !== "Requested" ? verdictU(o.ok) + (o.lenient ? `<span class="len">passes only because the check allows 4% volume error</span>` : "") : ""}</div>`;
+  };
+  T.scad = { title: "Modelling 3D parts in OpenSCAD", desc: (n, e) => `The task: edit ${e.model} so that it writes OpenSCAD programs for parts given in millimetres. A program counts if its rendered volume is within 4% of the reference part's and its bounding box and centre within 0.6 mm.`,
+    body: (e, A, a) => e.prompts.map((p, i) => { const b = e.before[i], x = A && A[i];
+        return `<div class="scadrow"><div class="q">${esc(p.prompt)}</div>
+          <div class="scad3">${scadPic({ img: p.ref_img }, "Requested", "")}${scadPic(b, "Before", "")}${x ? scadPic(x, "After", "a") : "<div></div>"}</div>
+          <details><summary>Show the programs</summary><div class="pair">
+            <div><div class="lbl">Before</div><pre class="code b">${esc(b.code)}</pre></div>
+            <div>${x ? `<div class="lbl a">After</div><pre class="code a">${esc(x.code)}</pre>` : ""}</div></div></details></div>`; }).join("") +
+      `<p class="note">Rendered with OpenSCAD from the models' own programs, from the same viewpoint as the requested part.</p>` };
+
+  // isometric drawing of the requested part: x to the lower right, y to the lower left, z up
+  function iso(s) {
+    const c = Math.cos(Math.PI / 6), sn = 0.5;
+    const W = s.kind === "cylinder" ? 2 * s.r : s.w, Dp = s.kind === "cylinder" ? 2 * s.r : s.d, H = s.h;
+    const P = (x, y, z) => [(x - y) * c, (x + y) * sn - z];
+    const pts = [P(0, 0, 0), P(W, 0, 0), P(0, Dp, 0), P(W, Dp, 0), P(0, 0, H), P(W, Dp, H), P(W, 0, H), P(0, Dp, H)];
+    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+    const pad = 4, vb = [Math.min(...xs) - pad, Math.min(...ys) - pad, Math.max(...xs) - Math.min(...xs) + 2 * pad, Math.max(...ys) - Math.min(...ys) + 2 * pad];
+    const poly = (ps, f) => `<polygon points="${ps.map(p => p.join(",")).join(" ")}" fill="${f}" stroke="#3a1840" stroke-width="${vb[2] / 160}" stroke-linejoin="round"/>`;
+    let g = "";
+    if (s.kind === "cylinder") {
+      const [cx, cy0] = P(s.r, s.r, 0), cyT = cy0 - H, rx = s.r * Math.SQRT2 * c, ry = s.r * Math.SQRT2 * sn, sw = vb[2] / 160;
+      g = `<path d="M${cx - rx},${cy0} L${cx - rx},${cyT} A${rx},${ry} 0 0 1 ${cx + rx},${cyT} L${cx + rx},${cy0} A${rx},${ry} 0 0 1 ${cx - rx},${cy0}Z" fill="#a26b9a" stroke="#3a1840" stroke-width="${sw}"/>
+           <ellipse cx="${cx}" cy="${cyT}" rx="${rx}" ry="${ry}" fill="#e7cfe2" stroke="#3a1840" stroke-width="${sw}"/>`;
+    } else {
+      g = poly([P(0, Dp, 0), P(W, Dp, 0), P(W, Dp, H), P(0, Dp, H)], "#a26b9a") +
+          poly([P(W, 0, 0), P(W, Dp, 0), P(W, Dp, H), P(W, 0, H)], "#7b4776") +
+          poly([P(0, 0, H), P(W, 0, H), P(W, Dp, H), P(0, Dp, H)], "#e7cfe2");
+      if (s.kind === "boxhole") {
+        const [hx, hy] = P(W / 2, Dp / 2, H);
+        g += `<ellipse cx="${hx}" cy="${hy}" rx="${s.r * Math.SQRT2 * c}" ry="${s.r * Math.SQRT2 * sn}" fill="#3a1840"/>`;
+      }
+    }
+    return `<svg class="iso" viewBox="${vb.join(" ")}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="the requested part">${g}</svg>`;
+  }
+
+  function skillPanel(k, sid) {
+    const e = D.examples[k], a = e.agents[sid], name = AG[sid].name, t = T[k];
+    const m = statusMsg(a, name, e);
+    return head(t.title, t.desc(name, e), chipsFor(e, a)) + (m ? `<div class="msg">${m}</div>` : "") + t.body(e, a.after, a);
+  }
+
+  function assocPanel(sid) {
+    const e = D.examples.assoc, a = e.agents[sid], name = AG[sid].name, pct = x => Math.round(100 * x) + "%";
+    const good = a.score >= 50, cls = good ? "good" : "badc";
+    const chip = a.changed_pct == null ? "" : `<div class="chip big">score<b>0<span class="arr">→</span>${a.score}</b></div><div class="chip">weights changed<b>${fmtPct(a.changed_pct)}</b></div><div class="chip">forward passes<b>0</b></div>`;
+    const m = a.status !== "ok" || (a.end && a.end !== "ok") ? statusMsg(a, name, e) : "";
+    const col = v => a.hit == null ? `<td>–</td>` : `<td class="${cls}">${v}</td>`;
+    return head("Making one word predict another",
+        `The task: edit ${e.model} so that whenever a text ends with the word “${e.cue}”, its most likely next word is “${e.target}”, and change nothing else. The agent gets the weights only: no forward passes, so it never runs the model.`, chip) +
+      (m ? `<div class="msg">${m}</div>` : "") +
+      `<div class="flow"><span class="tok">…</span><span class="tok">the</span><span class="tok cue">${e.cue}</span><span class="ar">next word →</span><span class="tok tgt">${e.target}</span></div>
+      <table class="cmp">
+        <tr><th>Measured on test texts</th><th>Unedited model</th><th class="${good ? "good" : "badh"}">${esc(name)}</th></tr>
+        <tr><td>Texts ending in “${e.cue}” whose next word is “${e.target}”<small>should be 100%</small></td><td>${pct(e.base.hit)}</td>${col(pct(a.hit))}</tr>
+        <tr><td>Texts ending in other words whose next word is “${e.target}”<small>should stay 0%</small></td><td>${pct(e.base.fp)}</td>${col(pct(a.fp))}</tr>
+        <tr><td>Loss on ordinary text, nats per token<small>should stay the same</small></td><td>${e.base.nll.toFixed(2)}</td>${col(a.nll == null ? "" : a.nll.toFixed(2))}</tr>
+        <tr><td>Score</td><td>0</td><td class="${cls}">${a.score}</td></tr>
+      </table>` + (a.note ? `<div class="how"><div class="${good ? "g" : "bd"}"><b>How ${esc(name)} did it</b>${esc(a.note)}</div></div>` : "");
+  }
+
+  const FAIL = { sql: "minimax-m2.7", svg: "gpt-6.1-terra", excel: "claude-haiku-5-5-high", scad: "inkling-2-mini", assoc: "minimax-m2.7" };
+  const TABS = [["sql", "SQL"], ["svg", "SVG drawing"], ["excel", "Spreadsheets"], ["scad", "3D parts"], ["assoc", "Word association"]];
+  const tabs = document.getElementById("tabs"), panel = document.getElementById("panel"), pick = document.getElementById("agentpick");
+  let cur = { task: "sql", agent: "gpt-6.1-sol" };
+  function render() {
+    [...tabs.children].forEach(b => b.setAttribute("aria-selected", b.dataset.k === cur.task));
+    [...pick.children].forEach(b => {
+      b.setAttribute("aria-pressed", b.dataset.id === cur.agent);
+      b.querySelector(".sc").textContent = D.examples[cur.task].agents[b.dataset.id].score.toFixed(0);
+    });
+    const f = FAIL[cur.task];
+    const tail = cur.agent === f ? "" : `<div class="seefail">Not every edit works: <button data-f="${f}">see ${esc(AG[f].name)}'s attempt</button>.</div>`;
+    panel.innerHTML = `<div class="panel" role="tabpanel">${cur.task === "assoc" ? assocPanel(cur.agent) : skillPanel(cur.task, cur.agent)}${tail}</div>`;
+    const btn = panel.querySelector("[data-f]");
+    if (btn) btn.onclick = () => { cur.agent = btn.dataset.f; render(); };
+    history.replaceState(null, "", `#ex-${cur.task}-${cur.agent}`);
+  }
+  D.agents.forEach(a => {
+    const b = document.createElement("button");
+    b.className = "ag"; b.dataset.id = a.id;
+    b.innerHTML = `<span class="dot" style="background:${swatch(a)}"></span>${esc(a.name)}<span class="sc"></span>`;
+    b.title = "score on the selected task";
+    b.onclick = () => { cur.agent = a.id; render(); };
+    pick.appendChild(b);
+  });
+  TABS.forEach(([k, label]) => {
+    const b = document.createElement("button");
+    b.className = "tab"; b.role = "tab"; b.dataset.k = k; b.textContent = label;
+    b.onclick = () => { cur.task = k; render(); };
+    tabs.appendChild(b);
+  });
+  const hm = location.hash.match(/^#ex-([a-z]+)(?:-(.+))?$/);
+  if (hm && D.examples[hm[1]]) { cur.task = hm[1]; if (hm[2] && AG[hm[2]]) cur.agent = hm[2]; }
+  render();
+  if (hm) document.getElementById("examples").scrollIntoView();
+
+  // ---------- leaderboard
+  const L = D.leaderboard.agents.slice().sort((a, b) => b.index - a.index);
+  const MAX = 60;
+  const x = v => (100 * v / MAX).toFixed(2) + "%";
+  const lb = document.getElementById("lb");
+  let html = `<div class="lb-row lb-head"><span>Agent</span><span>Improvement index</span><span class="fams"><span>Read</span><span>Edit</span><span>Skill</span></span></div>`;
+  L.forEach(a => {
+    const fill = a.open ? `url(#stripe-${a.lab})` : LAB[a.lab];
+    html += `<div class="lb-row" data-id="${a.id}"><span class="nm">${esc(a.name)}<small>${a.lab}${a.open ? " · open weights" : ""}</small></span>
+      <svg class="barsvg"><rect x="0" y="9" height="16" rx="4" width="${x(a.index)}" fill="${fill}"/>
+        <line x1="${x(a.ci[0])}" x2="${x(a.ci[1])}" y1="17" y2="17" stroke="#221a26" stroke-width="1.4"/>
+        <line x1="${x(a.ci[0])}" x2="${x(a.ci[0])}" y1="12" y2="22" stroke="#221a26" stroke-width="1.4"/>
+        <line x1="${x(a.ci[1])}" x2="${x(a.ci[1])}" y1="12" y2="22" stroke="#221a26" stroke-width="1.4"/>
+        <text x="calc(${x(a.ci[1])} + 8px)" y="21.5" font-size="12.5" font-weight="700" fill="#221a26">${a.index.toFixed(1)}</text></svg>
+      <span class="fams"><span>${a.read.toFixed(1)}</span><span>${a.edit.toFixed(1)}</span><span>${a.skill.toFixed(1)}</span></span></div>`;
+  });
+  html += `<div class="axis"><span></span><svg>${[0, 10, 20, 30, 40, 50, 60].map(t => `<line x1="${x(t)}" x2="${x(t)}" y1="0" y2="5" stroke="#b9afb6"/><text x="${x(t)}" y="17" font-size="11" fill="#6b6170" text-anchor="middle">${t}</text>`).join("")}</svg><span class="sp2"></span></div>`;
+  lb.innerHTML = `<svg width="0" height="0" style="position:absolute"><defs>${Object.entries(LAB).map(([k, c]) => `<pattern id="stripe-${k}" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="${c}"/><rect width="1.8" height="5" fill="#ffffff" fill-opacity="0.75"/></pattern>`).join("")}</defs></svg>` + html;
+  // SVG text cannot use calc(); place the value labels after layout
+  function placeLabels() {
+    lb.querySelectorAll(".barsvg").forEach(svg => {
+      const w = svg.getBoundingClientRect().width, t = svg.querySelector("text"), id = svg.parentNode.dataset.id;
+      const a = L.find(z => z.id === id);
+      t.setAttribute("x", w * a.ci[1] / MAX + 7);
+    });
+  }
+  placeLabels(); addEventListener("resize", placeLabels);
+
+  const tip = document.getElementById("tip");
+  lb.addEventListener("mousemove", ev => {
+    const row = ev.target.closest(".lb-row[data-id]");
+    if (!row) { tip.style.opacity = 0; return; }
+    const a = L.find(z => z.id === row.dataset.id);
+    tip.innerHTML = `<b>${esc(a.name)}</b><br>Index ${a.index.toFixed(1)} [${a.ci[0].toFixed(1)}, ${a.ci[1].toFixed(1)}]<br>Read ${a.read.toFixed(1)} · Edit ${a.edit.toFixed(1)} · Skill ${a.skill.toFixed(1)}<br>Perfect on ${a.solved} of ${D.leaderboard.cells} cells<br>${a.cost == null ? "No published price" : "$" + a.cost.toFixed(2) + " per run"} · ${a.minutes.toFixed(0)} min per run`;
+    tip.style.opacity = 1;
+    const r = tip.getBoundingClientRect();
+    tip.style.left = Math.min(ev.clientX + 14, innerWidth - r.width - 8) + "px";
+    tip.style.top = Math.min(ev.clientY + 14, innerHeight - r.height - 8) + "px";
+  });
+  lb.addEventListener("mouseleave", () => tip.style.opacity = 0);
+
+  document.getElementById("lbkey").innerHTML = Object.entries(LAB).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join("") +
+    `<span><i style="background:repeating-linear-gradient(135deg,#9a919c 0 3px,#fff 3px 5px)"></i>striped: open weights</span><span>Hover a row for details.</span>`;
+
+  // ---------- task composition
+  const C = D.composition;
+  const segs = [["Read", C.read.cells, "#c48bbc"], ["Edit", C.edit.cells, "#8f4f88"], ["Skill", C.skill.cells, "#4a2150"]];
+  document.getElementById("comp").innerHTML = `<div class="bar">${segs.map(([n, v, c]) =>
+      `<div class="seg" style="flex:${v};background:${c}">${n}<span>${v}</span></div>`).join("")}</div>
+    <div class="cap"><span>${C.cells} scored cells from ${C.tasks - C.practice} tasks; ${C.practice} more are run as practice but not scored</span><span>${C.subject_models} subject models from ${C.model_families} open families</span></div>`;
+  const mini = (rows, max) => `<ul class="mini">${rows.map(([k, v]) =>
+      `<li><span>${k}<div class="m" style="width:${100 * v / max}%"></div></span><b>${v}</b></li>`).join("")}</ul>`;
+  document.getElementById("foot-read").innerHTML = `<div class="big2">${C.read.tasks} tasks<small>${C.read.cells} scored cells</small></div>` +
+    mini([["Weights only", C.read.weights], ["Attention patterns", C.read.internals], ["Forward passes", C.read.full]], C.read.cells);
+  document.getElementById("foot-edit").innerHTML = `<div class="big2">${C.edit.tasks} tasks<small>${C.edit.cells} scored cells</small></div>` +
+    mini([["With forward passes", C.edit.full], ["Weights only", C.edit.weights]], C.edit.cells);
+  document.getElementById("foot-skill").innerHTML = `<div class="big2">${C.skill.tasks} tasks<small>${C.skill.skills} skills</small></div>` +
+    mini([["General skills", C.skill.general], ["Coding skills", C.skill.coding], ["Variants with stricter rules or help", C.skill.variants]], C.skill.tasks);
+
+  // ---------- weights only vs forward passes
+  const FW = D.forward;
+  const X = v => (100 * v / 100).toFixed(2) + "%";
+  document.getElementById("db").innerHTML = `<h3>Forward passes make edits much easier</h3>
+    <p>Mean score on the ${FW.n} edit tasks posed twice: once with the weights only (hollow) and once with a budget of forward passes (filled).</p>` +
+    FW.agents.map(a => {
+      const col = LAB[AG[a.id].lab];
+      return `<div class="db-row"><span class="nm">${esc(a.name)}</span><svg>
+        <line x1="0" x2="100%" y1="15" y2="15" stroke="#f0eaee" stroke-width="1"/>
+        <line x1="${X(a.weights)}" x2="${X(a.forward)}" y1="15" y2="15" stroke="${col}" stroke-opacity="0.5" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="${X(a.weights)}" cy="15" r="5" fill="#fff" stroke="${col}" stroke-width="2"/>
+        <circle cx="${X(a.forward)}" cy="15" r="6" fill="${col}" stroke="#fff" stroke-width="1.5"/></svg>
+        <span class="v">${a.weights.toFixed(1)} → <b>${a.forward.toFixed(1)}</b></span></div>`;
+    }).join("") +
+    `<div class="db-row" style="height:22px"><span></span><svg style="height:22px">${[0, 25, 50, 75, 100].map(t => `<text x="${X(t)}" y="14" font-size="11" fill="#6b6170" text-anchor="middle">${t}</text>`).join("")}</svg><span></span></div>`;
+
+  document.getElementById("copy").onclick = async ev => {
+    try { await navigator.clipboard.writeText(document.getElementById("bib").textContent); ev.target.textContent = "Copied"; }
+    catch { ev.target.textContent = "Select and copy"; }
+    setTimeout(() => ev.target.textContent = "Copy", 1600);
+  };
+})();
+</script>
+</body>
+</html>
