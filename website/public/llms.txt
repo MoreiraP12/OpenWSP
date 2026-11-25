@@ -1,0 +1,68 @@
+# OpenWSP
+
+> Weight-space programming asks an LLM to edit a neural network's weights directly, as it would edit code. OpenWSP measures how well agents do it: it gives them the raw weights of small open language models and, with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new skill.
+
+OpenWSP: Benchmarking Weight-Space Programming on Open Language Models. Pedro Moreira and Leonida Lumburovska, 2026.
+
+## Key facts
+
+- 152 tasks: 34 read, 17 edit and 94 skill tasks, scored as 168 cells, and 7 practice tasks. The skill tasks cover 76 skills: 18 general and 58 coding skills, including 48 programming languages.
+- Read tasks: work out how a model was made, for example which data it was fine-tuned on, how it was merged from other models, or which of two near-identical models hides a backdoor.
+- Edit tasks: change one behaviour, such as removing a backdoor or making one word predict another, and change nothing else.
+- Skill tasks: make the model better at a skill, from SQL and tool calling to OpenSCAD and COBOL, scored on held-out prompts the agent never sees.
+- Subject models: 14 small open language models (360M–1.7B parameters) from 5 families. Agents get the weights in a sandboxed Python kernel, with no gradients; some tasks allow a small budget of forward passes.
+- Scores run from 0 (baseline) to 100 (perfect). An agent's improvement index is its mean score over the 168 cells, with a 95% bootstrap confidence interval.
+
+## Leaderboard
+
+| Rank | Agent | Lab | Index [95% CI] | Read | Edit | Skill |
+|---|---|---|---|---|---|---|
+| 1 | GPT-6.1 Sol | OpenAI | 51.0 [45.2, 57.1] | 74.1 | 65.2 | 35.8 |
+| 2 | Claude Opus 5.5 | Anthropic | 37.6 [32.1, 43.3] | 53.0 | 51.4 | 26.0 |
+| 3 | Claude Sonnet 5.5 | Anthropic | 33.7 [28.3, 39.3] | 28.8 | 49.0 | 31.0 |
+| 4 | GPT-6.1 Terra | OpenAI | 29.0 [23.5, 34.6] | 53.3 | 38.9 | 14.5 |
+| 5 | Claude Haiku 5.5 | Anthropic | 8.9 [5.5, 12.4] | 13.0 | 19.8 | 3.5 |
+| 6 | Qwen3.8-27B (thinking) | Qwen (open weights) | 7.5 [4.6, 10.8] | 17.1 | 8.3 | 2.9 |
+| 7 | GPT-6 Luna | OpenAI | 6.8 [3.9, 10.1] | 16.5 | 10.3 | 1.1 |
+| 8 | MiniMax-M2.7 | MiniMax (open weights) | 4.5 [2.1, 7.1] | 13.8 | 0.2 | 1.6 |
+| 9 | DeepSeek-V4-Flash | DeepSeek (open weights) | 4.4 [2.5, 6.5] | 8.5 | 3.9 | 2.6 |
+| 10 | Inkling 2 Mini | Inkling (open weights) | 4.1 [2.2, 6.4] | 7.8 | 6.6 | 1.6 |
+| 11 | Qwen3.8-27B (no thinking) | Qwen (open weights) | 4.1 [2.2, 6.6] | 9.6 | 3.0 | 2.0 |
+
+## FAQ
+
+### What is weight-space programming?
+
+Weight-space programming (WSP) means changing what a neural network does by reading and editing its weights directly, as a programmer reads and edits code, instead of training it on data with gradients. Takehi et al. (2026) recently showed, as a proof of concept, that frontier LLMs can read and write neural-network weights this way.
+
+### What does OpenWSP measure?
+
+How well an LLM agent programs weights. In each of OpenWSP's 152 tasks, the agent gets the weights of a small open language model (360M–1.7B parameters) in a sandboxed Python kernel and, without gradients, must work out how the model was made (read tasks), change one of its behaviours and nothing else (edit tasks), or make it better at a skill, scored on held-out prompts it never sees (skill tasks).
+
+### Which LLM is best at weight-space programming?
+
+On OpenWSP's 0–100 improvement index, GPT-6.1 Sol scores highest, with 51.0, followed by Claude Opus 5.5 (37.6), Claude Sonnet 5.5 (33.7) and GPT-6.1 Terra (29.0). The best open-weights agent, Qwen3.8-27B with thinking, scores 7.5.
+
+### How is a task scored?
+
+From 0 to 100: 0 is the baseline and 100 a perfect solution. For edit and skill tasks, the baseline is the unedited model; for read tasks, it is a guess made from the task statement alone, without the weights. An agent's improvement index is its mean score over the 168 scored task cells, with a 95% bootstrap confidence interval.
+
+### How does OpenWSP differ from other weight-space programming benchmarks?
+
+Three concurrent benchmarks also measure weight-space programming: WeightBench, IWIBench and WSPBench. OpenWSP is the only one of the four that asks agents to work out how a pretrained open language model was made from its weights, such as which data it was fine-tuned on or how it was merged from other models, and it measures skill teaching across 76 skills, each scored on held-out prompts.
+
+## Links
+
+- [Project page](__SITE__): interactive before-and-after examples and the full results
+- [Paper (PDF)](__SITE__paper.pdf): OpenWSP: Benchmarking Weight-Space Programming on Open Language Models
+
+## Citation
+
+```bibtex
+@misc{moreira2026openwsp,
+  title  = {{OpenWSP}: Benchmarking Weight-Space Programming on Open Language Models},
+  author = {Moreira, Pedro and Lumburovska, Leonida},
+  year   = {2026},
+  url    = {__SITE__},
+}
+```
