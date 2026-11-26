@@ -1,4 +1,4 @@
-% WSP-Bench paper: plain arXiv preprint layout (article class), no conference style.
+% OpenWSP paper (formerly WSP-Bench; renamed to avoid a clash with WSPBench, wspbench.com): plain arXiv preprint layout (article class), no conference style.
 % Build:  latexmk -pdf main.tex      (TeX Live / MacTeX; arXiv also compiles with pdflatex)
 %    or:  tectonic main.tex
 \documentclass[11pt]{article}
@@ -22,52 +22,38 @@
 \usepackage{xspace}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,calc}
-% let a page hold more and larger floats (results figures come in a run)
-\renewcommand{\topfraction}{0.9}
-\renewcommand{\bottomfraction}{0.6}
-\renewcommand{\textfraction}{0.1}
-\renewcommand{\floatpagefraction}{0.75}
-\setcounter{topnumber}{3}
-\setcounter{bottomnumber}{2}
-\setcounter{totalnumber}{4}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\fontsize{6.2}{7.0}\selectfont, columns=fixed, basewidth=0.5em, keepspaces=true,
+  showstringspaces=false, breaklines=true, breakindent=1.5em, upquote=true, escapeinside={(*@}{@*)},
+  backgroundcolor=\color{black!3}, xleftmargin=2pt, xrightmargin=2pt, aboveskip=0pt, belowskip=0pt}
+
 
 % ---- references (natbib before hyperref, cleveref last) ---------------------
 \usepackage[round]{natbib}
 \usepackage{url}
 \usepackage{hyperref}
-\hypersetup{colorlinks=true, linkcolor=blue!60!black, citecolor=blue!60!black, urlcolor=blue!60!black}
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, citecolor=blue!60!black, urlcolor=blue!60!black,
+  pdftitle={How Much Weight Can Your LLM Bench? Benchmarking Weight-Space Programming on Open Language Models},
+  pdfauthor={Pedro Moreira, Leonida Lumburovska},
+  pdfsubject={A benchmark of 152 tasks that measures how well LLM agents program the weights of open language models},
+  pdfkeywords={weight-space programming, WSP, benchmark, LLM agents, model editing, interpretability, OpenWSP}}
 \usepackage[capitalise,noabbrev]{cleveref}
 
-% ---- design layer: fonts, palette, headings, captions, tables, title block (Artificial Analysis style)
-\input{style}
-% after style.tex: placeins wraps the \section that titlesec defines
-\usepackage[section]{placeins}  % floats stay in their section
-\usepackage{flafter}           % and never come before the text that places them
-
 % ---- macros -----------------------------------------------------------------
-\newcommand{\bench}{WSP-Bench\xspace}
+\newcommand{\bench}{OpenWSP\xspace}
 % Draft notes, visible in the PDF while \drafttrue; switch to \draftfalse for the arXiv upload.
 \newif\ifdraft
 \drafttrue
 \newcommand{\TODO}[1]{\ifdraft{\color{red}[TODO: #1]}\fi}
-% Every result quoted in the text: \res{agent}{field}, \cls{agent}{class}, \wspnum{name}. Generated from
-% data/paper_v8.json by scripts/make_figures.py; an undefined one prints a bold ??.
-\input{tables/numbers}
 
 % ---- front matter -----------------------------------------------------------
-\title{How Much Weight Can Your LLM Bench?}
-\newcommand{\wspsubtitle}{Benchmarking Weight-Space Programming on Open Language Models}
-\author{Pedro Moreira and Leonida Lumburovska}
-% the title block (style.tex) prints this author block
-\newcommand{\wspauthorblock}{{\sffamily\small
-  \begin{minipage}[t]{0.42\linewidth}\raggedright
-    \textbf{Pedro Moreira}\\ {\color{aamuted}Massachusetts Institute of Technology}\\
-    {\footnotesize\texttt{pedrojfm@mit.edu}}
-  \end{minipage}\hfill
-  \begin{minipage}[t]{0.54\linewidth}\raggedright
-    \textbf{Leonida Lumburovska}\\ {\color{aamuted}University of Zurich, ZHAW Center for AI}\\
-    {\footnotesize\texttt{leonida.lumburovska@uzh.ch}}
-  \end{minipage}}}
+\title{How Much Weight Can Your LLM Bench?\\
+  Benchmarking Weight-Space Programming\\ on Open Language Models}
+\author{
+  Pedro Moreira \\ Massachusetts Institute of Technology \\ \texttt{pedrojfm@mit.edu}
+  \and
+  Leonida Lumburovska \\ University of Zurich, ZHAW Center for AI \\ \texttt{leonida.lumburovska@uzh.ch}
+}
 \date{\today}
 
 \begin{document}
@@ -75,40 +61,108 @@
 
 % =============================================================================
 \begin{abstract}
-% Numbers: macros from tables/numbers.tex (first pass of every agent, data/paper_v8.json). Claude models are at
-% default effort; sec:analysis compares them at effort high (tab:effort).
-Large language models (LLMs) are improving quickly and now solve increasingly complex tasks.
-Much of this progress, however, is concentrated in domains that models are explicitly trained
+% Numbers: results/paper_v8.json in the main checkout (python3 harness/paper_data.py v8, built Nov 25 2026):
+% pass 1 only, provider refusals scored 0, Claude models at effort high. Tables: tables/make_tables.py.
+Large language models (LLMs) are improving rapidly and now solve increasingly complex tasks.
+However, much of this progress is concentrated in domains that models are explicitly trained
 for and tested on, such as mathematics and programming in Python and other widely used
 languages. On
-less explored tasks, such as rare programming languages, niche formats, and problems seldom
+less explored tasks, such as rare programming languages, niche formats, and problems rarely
 seen in benchmarks, general-purpose LLMs are noticeably weaker. Weight-space programming
-(WSP), recently demonstrated as a proof of concept, suggests a different route: an LLM reads
-and writes a neural network's weights directly, as it would code. We introduce \bench, a
-benchmark of 152 tasks that measures how well LLMs program weights. In each task, an agent
-gets the weights of a small open language model (360M--1.7B parameters) in a Python kernel
+(WSP) suggests a different route: an LLM reads
+and writes a neural network's weights directly, leveraging only forward passes, to achieve a desired behaviour. We introduce \bench, a
+benchmark of 152 tasks that measures how well LLMs program weights (with an upcoming evaluation-only version of 500 tasks that will be kept private to prevent benchmaxing).
+In each task, an agent gets the weights of a small open language model (360M--1.7B parameters) in a Python kernel
 and, without gradients, must work out how the model was trained or modified, change a
 specific behaviour, or make it better at a skill scored on hidden held-out prompts. We
-evaluate \wspnum{llms} frontier and open LLMs as WSP agents, some at two reasoning settings (\wspnum{agents} agents in
-all). On a 0--100 improvement index, the best
-agent, GPT-6.1 Sol, scores \res{sol}{index}, followed by Claude Opus 5.5 at \res{opus}{index}; the best
-open-weights agent, Qwen3.8-27B with thinking, scores \res{qwenthink}{index}. Skill tasks are the hardest family
-for \wspnum{skilllowest} of the \wspnum{agents} agents. Still, on some tasks WSP substantially improves the small
-models: when teaching a model new facts, \wspnum{factsoverhalf} of the \wspnum{agents} agents close more than half
-of the gap between the unedited model and a perfect score, and \wspnum{clingobestagent} closes
-\wspnum{clingobest}\% of it when teaching answer set programming, a language rarely seen in training. As future work, we propose an experiment in which a model applies WSP to its own
-weights.
+evaluate ten frontier and open LLMs as WSP agents, one of them with and without thinking. On
+a 0--100 improvement index, the best
+agent tested, GPT-6.1 Sol, scores 51.0, and the best open-weights agent, Qwen3.8-27B, scores 7.5.
+Skill tasks are the hardest family for most agents. Still, on some tasks WSP manages to
+substantially improve the small models: when teaching a model new facts, six of the eleven
+agents close more than half of the gap between the unedited model and a perfect score, and
+when teaching answer set programming, a language rarely seen in training, two agents close
+more than 90\% of it. As future work, we propose extending the benchmark to other architectures and modalities, from
+world models and vision-language-action models to audio and image flow-matching models.
 \end{abstract}
 
 % =============================================================================
 \section{Introduction}\label{sec:intro}
 
-The field of large language models (LLMs) is moving at an extremely fast pace, from solving extremely complicated tasks to writing proofs and reasoning over complicated problems. However, their strength is not well distributed accross tasks. Models are trained and tested most heavily on a
-few domains, such as mathematics and programming in Python and other popular languages, but
+The field of large language models (LLMs) is moving at an extremely fast pace, from solving complex tasks to writing proofs and reasoning over hard problems. However, their strength is not well distributed across tasks. Models are trained and tested most heavily on a
+few domains, such as mathematics and the most common programming languages, but
 their accuracy drops on tasks that are rare in their training data \citep{mccoy2024embers},
 such as code in less widely used programming languages \citep{cassano2023multipl}. Closing
 such a gap usually means collecting examples and fine-tuning the model, which needs a lot of data and
 compute.
+
+Weight-space programming (WSP) offers an alternative approach. \citet{takehi2026sparks} recently showed,
+as a proof of concept, that frontier LLMs can read and write the weights of neural networks
+natively, with tools such as a Python kernel or from the
+raw weights alone. If this ability could be scaled, an LLM could inspect a model to find out how it
+was trained, find and remove a hidden backdoor, or teach a model a new skill by editing its
+weights directly, without training data or gradients.
+
+Measuring this ability has only just begun, with three concurrent benchmarks appearing so far.
+WeightBench \citep{marasini2026weightbench} evaluates agents on 42
+tasks that read, fix, write and compress weights, on networks ranging from 2K-parameter
+control policies to 7B-parameter language models. IWIBench \citep{vonCsefalvay2026iwibench}
+evaluates gradient-free edits of a single 4B-parameter model towards ten text-editing
+objectives. \citet{wspbench2026} asks
+agents to read, repair and write the weights of small constructed networks that compute Boolean
+functions, with about 4,000 parameters each. None of them asks the agent to reconstruct the history of a
+pretrained open language model from its weights, for example which data it was fine-tuned on,
+how it was merged from other models, or where it was edited. None measures skill teaching at
+this breadth either: \bench covers 76 skills, each scored on held-out prompts the agent never
+sees.
+
+We introduce \bench, a benchmark that tests LLMs as weight-space programmers. Each task gives
+an agent the weights of a small open language model (360M--1.7B parameters) in a sandboxed
+Python kernel, with a limited budget of forward passes and with gradients disabled. The
+weights are disguised with random, function-preserving permutations, so the agent cannot
+identify a model by matching it against public checkpoints. The agent then does one of three
+things. \emph{Read} tasks test how well the agent understands a model from its weights: how
+the model was made and what hidden behaviour it has. The agent must work out, for example,
+which datasets a model was fine-tuned on, how it was merged from other models, or which of two
+near-identical models hides a backdoor and what its trigger is. In \emph{edit} tasks, it
+changes the weights to produce a specified behaviour, such as removing a backdoor or making
+the model predict a chosen word after another (``violin'' after ``ladder'') while leaving
+everything else unchanged. In \emph{skill} tasks, it edits the model to make it better
+at a skill, from SQL and tool calling to answer set programming and more than 40 programming
+languages, scored on hidden held-out prompts.
+
+We evaluate ten LLMs, six closed and four with open weights, on every task, one of the open
+models with and without thinking. The best agent,
+GPT-6.1 Sol, scores 51.0 on our 0--100 improvement index, followed by Claude Opus 5.5 (37.6)
+and Claude Sonnet 5.5 (33.7); the best open-weights agent, Qwen3.8-27B, scores 7.5.
+
+Our contributions are as follows.
+\begin{itemize}
+  \item We introduce 152 tasks on small open language models in three families: read, edit
+  and skill (\cref{sec:tasks}).
+  \item We provide a harness and scoring protocol for WSP, with a sandboxed kernel,
+  forward-pass budgets and no gradients, disguised weights, private answer keys, hidden
+  held-out prompts, baselines that normalise every score, and an index with bootstrap
+  confidence intervals (\cref{sec:environment,sec:scoring,sec:contamination}).
+  \item We evaluate ten frontier and open LLMs, break the results down by task class, and
+  analyse where agents succeed and fail (\cref{sec:experiments}).
+\end{itemize}
+
+% =============================================================================
+\section{The \bench Benchmark}\label{sec:benchmark}
+
+Every task in \bench has the same shape (\cref{fig:overview}). The agent receives a written
+instruction and the weights of one or more small open language models, loaded into a
+sandboxed Python kernel. It then works in turns: it runs code over the weights and, when the
+task allows, queries the models through a forward-pass tool with a fixed budget of passes.
+Gradients are disabled throughout all experiments. The agent finishes with an answer in read tasks, or with the
+tensors it has replaced in edit and skill tasks. The harness scores the answer against a
+private key, or runs the edited model on hidden tests, and normalises the result so that 0 is
+the baseline and 100 is a perfect solution. The rest of this section describes the subject models
+(\cref{sec:dataset}), how the tasks of each family are built and scored (\cref{sec:tasks}), the
+environment (\cref{sec:environment}), scoring (\cref{sec:scoring}), the safeguards against
+leakage and lookup (\cref{sec:contamination}), and how we validate tasks and scorers
+(\cref{sec:validation}).
 
 \begin{figure}[t]
   \centering
@@ -123,85 +177,8 @@ compute.
   \label{fig:overview}
 \end{figure}
 
-Weight-space programming (WSP) offers another route. \citet{takehi2026sparks} recently showed,
-as a proof of concept, that frontier LLMs can read and write the weights of neural networks
-natively like code, with tools such as a Python kernel or from the
-raw weights alone. If this ability can be scaled, an LLM could inspect a model to find out how it
-was trained, find and remove a hidden backdoor, or teach a model a new skill by editing its
-weights directly, without training data or gradients.
-
-Measuring this ability has only just begun, with two concurrent benchmarks appearing so far. 
-WeightBench \citep{marasini2026weightbench} evaluates agents on 42
-tasks that read, fix, write and compress weights, on networks ranging from 2K-parameter
-control policies to 7B-parameter language models. IWIBench \citep{vonCsefalvay2026iwibench}
-evaluates gradient-free edits of a single 4B-parameter model towards ten text-editing
-objectives. Neither asks the agent to reconstruct the history of a pretrained open language
-model from its weights, for example which data it was fine-tuned on, how it was merged from
-other models, or where it was edited. Neither measures skill teaching at this breadth either:
-\bench covers 76 skills, each scored on held-out prompts the agent never sees
-(\cref{sec:related}).
-
-We introduce \bench, a benchmark that tests LLMs as weight-space programmers. Each task gives
-an agent the weights of a small open language model (360M--1.7B parameters) in a sandboxed
-Python kernel, with a limited budget of forward passes and with gradients disabled. The
-weights are disguised with random, function-preserving permutations, so the agent cannot
-identify a model by matching it against public checkpoints. The agent then does one of three
-things. \emph{Read} tasks test how well the agent understands a model from its weights: how
-the model was made and what hidden behaviour it has. The agent must work out, for example,
-which datasets a model was fine-tuned on, how it was merged from other models, or which of two
-near-identical models hides a backdoor and what its trigger is. In \emph{edit} tasks, it
-changes the weights to produce a specified behaviour, such as removing a backdoor or making
-the model predict a chosen word after another (``violin'' after ``orchestra'') while leaving
-everything else unchanged. In \emph{skill} tasks, it edits the model to make it better
-at a skill, from SQL and tool calling to answer set programming and more than 40 programming
-languages, scored on hidden held-out prompts.
-
-We evaluate \wspnum{llms} frontier and open LLMs in full, some at two reasoning settings (\wspnum{agents} agents in
-all). The best agent, GPT-6.1 Sol, scores \res{sol}{index} on our 0--100 improvement index, ahead of Claude Opus 5.5
-(\res{opus}{index}, or \res{opushigh}{index} at high effort), Claude Sonnet 5.5 at high effort
-(\res{sonnethigh}{index}) and GPT-6.1 Terra (\res{terra}{index}); no other agent scores above \wspnum{restmax}, and
-the best open-weights agent scores \res{qwenthink}{index}. Reasoning effort matters for some models and not for
-others: at high effort Claude Sonnet 5.5 triples its index, mainly because it stops handing back the unedited model,
-while Claude Opus 5.5 and Claude Haiku 5.5 do not improve (\cref{sec:analysis}). Skill tasks are the hardest family for \wspnum{skilllowest} of the \wspnum{agents} agents,
-and \wspnum{skillfiftylow} agents bring at most one of the \wspnum{skilltasks} skill tasks to a score of 50; yet on
-a few skills, such as teaching new facts or writing SQL, the strongest agents close most of the gap to a perfect
-score.
-
-Our contributions are:
-\begin{itemize}
-  \item \textbf{Tasks.} 152 tasks on small open language models in three families: read
-  tasks that ask how a model was trained or modified, edit tasks that ask for a specified
-  behaviour, and skill tasks that span 76 skills, including more than 40 programming
-  languages (\cref{sec:tasks}).
-  \item \textbf{Benchmark.} A harness and scoring protocol for WSP: a sandboxed kernel with
-  forward-pass budgets and no gradients, disguised weights, private answer keys, hidden
-  held-out prompts, baselines that normalise every score, and an index with bootstrap
-  confidence intervals (\cref{sec:environment,sec:scoring,sec:contamination}).
-  \item \textbf{Evaluation.} Results for \wspnum{llms} frontier and open LLMs (\wspnum{agents} agents), broken
-  down by task class, with an analysis of where agents succeed and fail and of what reasoning effort changes
-  (\cref{sec:experiments}).
-\end{itemize}
-
-% =============================================================================
-\section{The \bench Benchmark}\label{sec:benchmark}
-
-Every task in \bench has the same shape (\cref{fig:overview}). The agent receives a written
-instruction and the weights of one or more small open language models, loaded into a
-sandboxed Python kernel. It then works in turns: it runs code over the weights and, when the
-task allows, queries the models through a forward-pass tool with a fixed budget of passes.
-Gradients are disabled throughout all experiments. The agent finishes with an answer in read tasks, or with the
-tensors it has replaced in edit and skill tasks. The harness scores the answer against a
-private key, or runs the edited model on hidden tests, and normalises the result so that 0 is
-the baseline and 100 is a perfect solution. The rest of this section describes the models and
-how tasks are built (\cref{sec:dataset}), the task classes (\cref{sec:tasks}), the
-environment (\cref{sec:environment}), scoring (\cref{sec:scoring}), the safeguards against
-leakage and lookup (\cref{sec:contamination}), and how we validate tasks and scorers
-(\cref{sec:validation}).
-
 \subsection{Dataset and Subject Models}\label{sec:dataset}
 % Source of every number: items/v8 specs (152 items), harness/make_items.py, results/v8_leaderboard.json.
-% Decided Nov 23 2026: v8 (these 152 tasks) is released as the public practice set, with answer keys and scorers;
-% official results move to a larger private test set (v9). The text below still describes v8 alone.
 
 The \emph{subject model} is the small model whose weights the agent works on, and the \emph{agent} is the LLM
 being evaluated. Every task is built on one or more of 14 public checkpoints from five open
@@ -213,51 +190,18 @@ from 360M to 1.7B parameters, small enough to load and analyse on a CPU.
 \bench has 152 tasks (\cref{tab:composition}). Some read and edit tasks are
 posed twice, once with the weights only and once with forward passes or attention patterns as
 well, and each variant is scored on its own. We call each scored variant a \emph{cell}; the 145
-scored tasks give 168 cells. The remaining seven proved too easy: every agent solved them
+scored tasks give 168 cells. The remaining seven tasks proved too easy: every agent solved them
 during development, or a single statistic of the weights answers them. We keep them as practice
-tasks, which we run and report but leave out of the index.
+tasks, which we run but leave out of the index.
 
 Before the agent sees any model, its weights are disguised: tensor names are replaced with
 canonical ones, the configuration is stripped, and MLP neurons and attention heads are
-permuted at random, which leaves the model's function unchanged (\cref{fig:disguise}). When a task involves
-several models, each can be permuted independently, so the agent must align them before comparing
+permuted at random, which leaves the model's function unchanged. When a task involves several
+models, each can be permuted independently, so the agent must align them before comparing
 them (\cref{sec:contamination}).
 
-\begin{figure}[t]
-  \centering
-  \resizebox{\linewidth}{!}{\input{figures/disguise}}
-  \caption{How a subject model is disguised. Permuting the hidden neurons of an MLP reorders the rows of its input
-  matrix and the columns of its output matrix together, so the model computes exactly the same function; attention
-  heads are permuted the same way. With canonical tensor names and no configuration, the agent cannot identify the
-  checkpoint by matching tensors against public files.}
-  \label{fig:disguise}
-\end{figure}
-
-A script generates every task deterministically, so the task set can be rebuilt exactly. How a
-task is built depends on its family.
-
-\paragraph{Read tasks.} Each starts from a model whose history we know because we created it.
-Some subject models are our own fine-tunes of public checkpoints, 27 in total: six models,
-each fine-tuned on a known mix of two datasets drawn from a pool of five; three models
-fine-tuned on the same
-dataset for 1, 3 and 10 epochs; and eight pairs of near-identical twins, in which one twin has
-a planted backdoor (six pairs) or is sycophantic (two pairs). Two more, one fully fine-tuned
-and one fine-tuned with LoRA, appear only in practice tasks. The other subject models are
-public checkpoints that we change when the task is built:
-we merge two or three of them with known coefficients, transplant layers from one into
-another, or apply a hidden edit, such as scaling a group of neurons, a rank-one update,
-swapping two layers or zeroing attention heads. The private key stores the answer, for example
-the dataset mixture or the edited layer.
-
-\paragraph{Edit tasks.} Each starts from an unmodified public checkpoint, except backdoor removal,
-which starts from one of our backdoored fine-tunes. The instruction states the behaviour to produce, and
-hidden tests check whether the edited model shows it and, where the instruction asks for it,
-whether the rest of its behaviour is unchanged.
-
-\paragraph{Skill tasks.} Each also starts from an unmodified public checkpoint. For each skill, we
-generate two disjoint prompt sets, from different random seeds or from disjoint parts of a
-source dataset: a practice set on which the agent can evaluate the model while it works, and a
-held-out set kept hidden for scoring.
+A script generates every task deterministically, so the task set can be rebuilt exactly;
+\cref{sec:tasks} describes how each family is built and scored.
 
 \begin{table}[t]
   \centering
@@ -279,10 +223,10 @@ held-out set kept hidden for scoring.
   \end{tabular}
 \end{table}
 
-\subsection{Task Classes}\label{sec:tasks}
+\subsection{Task Families}\label{sec:tasks}
 % Source: question text and scorer of every item (items/v8, harness/scoring.py, node/score_write.py).
 
-\Cref{tab:classes} describes each class and how it is scored.
+\Cref{tab:classes} lists the classes of each family and how each is scored.
 
 \begin{table}[!htbp]
   \centering
@@ -307,7 +251,7 @@ held-out set kept hidden for scoring.
     \midrule
     \multicolumn{3}{@{}l}{\textit{Edit}} \\
     W1  & remove a backdoor without harming the model & fall in trigger rate, times math accuracy kept \\
-    W2  & bring a base model's math accuracy towards that of its instruction-tuned version, changing at most 1\% of the weights & share of the accuracy gap closed \\
+    W2  & bring a base model's math accuracy towards that of its instruction-tuned version, given both models' weights and changing at most 1\% of the weights & share of the accuracy gap closed \\
     W3  & improve a base model's math accuracy, with no other model given & share of the gap to the instruction-tuned version closed \\
     W4  & make the model predict a chosen word after another, and change nothing else & hits, times no false hits, times no loss on ordinary text \\
     W4x & the same for several word pairs, in late layers, or for a category of words & as W4 \\
@@ -320,29 +264,46 @@ held-out set kept hidden for scoring.
   \end{tabularx}
 \end{table}
 
-\paragraph{Read tasks.} When the answer is a choice, the agent gives a probability for each option,
-and the task scores the probability it gave to the true one, so a confident wrong answer scores
-lowest. Numerical answers, such as merge coefficients, are scored by their error, and answers
-naming layers or words by their overlap with the truth.
+\emph{Read tasks} ask how a subject model was made or what hidden behaviour it has, so each task starts from
+a model whose history we know because we created it. Some are our own fine-tunes of public
+checkpoints, 27 in total. Scored tasks use 25 of them: six models, each fine-tuned on a known mix
+of two datasets drawn from a pool of five; three models fine-tuned on the same dataset for 1, 3
+and 10 epochs; and eight pairs of near-identical twins, in which one twin has a planted backdoor
+(six pairs) or is sycophantic (two pairs). The other two, one fully fine-tuned and one fine-tuned
+with LoRA, appear only in practice tasks. The remaining read tasks use public checkpoints that we
+change when the task is built: we merge two or three of them with known coefficients, transplant
+layers from one into another, or apply a hidden edit, such as scaling a group of neurons, adding a
+rank-one update, swapping two layers or zeroing attention heads. A private key stores the answer,
+for example the dataset mixture or the edited layer.
 
-\paragraph{Edit tasks.} Each edit task scores the target behaviour and, where it matters, the
-damage to everything else. Removing a backdoor counts only as far as the model's math accuracy
-is kept, and a word association counts only if other words are unaffected and the loss on
-ordinary text does not rise. The two math tasks measure the share of the accuracy gap between
-the base model and its instruction-tuned version that the edit closes; in W2 the agent may
-read the instruction-tuned weights but change at most 1\% of the base model's.
+When the answer is a choice, the agent gives a probability for each option, and the task scores
+the probability it gave to the true one, so a confident wrong answer scores lowest. Numerical
+answers, such as merge coefficients, are scored by their error, and answers naming layers or
+words by their overlap with the truth.
 
-\paragraph{Skill tasks.} The 76 skills fall into two categories. Eighteen are general skills,
-such as writing SQL, calling tools, answer set programming, modelling 3D parts in OpenSCAD and
-playing Connect-4 (full list in Appendix~\ref{app:tasks}). The other 58 are coding skills: writing correct functions or programs in 48
-programming languages, from Python and Java to COBOL, Fortran and Shakespeare. Every skill has
-an automatic checker, such as running unit tests, executing a query, or rendering a slide deck.
+\emph{Edit tasks} ask for a specified behaviour. Each starts from an unmodified public checkpoint, except
+backdoor removal, which starts from one of our backdoored fine-tunes. Hidden tests check the
+target behaviour and, where it matters, the damage to everything else. Removing a backdoor counts
+only as far as the model's math accuracy is kept, and a word association counts only if other
+words are unaffected and the loss on ordinary text does not rise. The two math tasks score how far
+the edit raises a base model's math accuracy towards that of its instruction-tuned version: 0
+means no gain, and 100 means the same accuracy.
+
+\emph{Skill tasks} ask the agent to make a subject model better at a skill, starting from an unmodified
+public checkpoint. The 76 skills fall into two categories. Eighteen are general skills, such as
+writing SQL, calling tools, answer set programming, modelling 3D parts in OpenSCAD and playing
+Connect-4 (full list in \cref{app:tasks}). The other 58 are coding skills: writing correct
+functions or programs in 48 programming languages, from Python and Java to COBOL, Fortran and
+Shakespeare. Every skill has an automatic checker, such as running unit tests, executing a query,
+or rendering a slide deck. For each skill we generate two disjoint prompt sets, from different
+random seeds or from disjoint parts of a source dataset: a practice set on which the agent can
+evaluate the model while it works, and a held-out set kept hidden for scoring. The edited model is
+scored on the held-out set, on the same 0--100 scale as the math tasks.
 
 Each skill is posed once as a main task, without extra help and allowing any computation except
 gradients. The one exception is instruction following, which is posed on two different subject
 models, so there are 77 main tasks. In addition, we pose 17 variants of existing skills: 12
-apply stricter rules that limit the method (four skills under three rule sets each;
-\cref{sec:environment}), three add worked examples of the skill, and two add a second model,
+apply stricter rules that limit the method, three add worked examples of the skill, and two add a second model,
 Qwen3-0.6B, that already has the skill. The agent may study and run this second model to borrow
 from it, but only the subject model is scored, and because the two models have different
 architectures, weights cannot simply be copied across. Together, the main tasks and the variants
@@ -354,39 +315,34 @@ make up the 94 skill tasks.
 
 The agent works with the harness in plain text, turn by turn. Each reply must contain exactly
 one block: a \texttt{python} block, which the harness runs in the kernel; a \texttt{forward}
-block, which is a request to the forward-pass tool; or an \texttt{answer} block, which ends the
-run. The harness returns the result as the next message. The tools of the agent's own
-interface, such as the shell and web search, are switched off, so these three blocks are its
-only way to act.
+block, which requests forward passes; or an \texttt{answer} block, which ends the run. The harness
+returns the result as the next message. These three blocks are the agent's only way to act
+(\cref{sec:setup}).
 
-\paragraph{Python kernel.} Each run gets a persistent Python kernel in a container with no
-network access, running on CPU. Helper functions list each model's tensors, load any tensor,
-describe the architecture and return the tokenizer's vocabulary, and the usual scientific
-libraries are installed, including NumPy, SciPy, scikit-learn and PyTorch. Gradients are
-disabled. One execution may take up to 270 seconds, and its printed output is cut at 10,000
-characters. In edit and skill tasks, a further helper replaces a tensor of the subject model;
-the replaced tensors form the submitted edit.
+The kernel is a persistent Python session in a container without network access. Helper
+functions load the models' tensors, describe the architecture and return the vocabulary; NumPy,
+SciPy, scikit-learn and PyTorch are installed, and gradients are disabled. In edit and skill
+tasks, a further helper replaces a tensor of the subject model, and the replaced tensors form the
+submitted edit.
 
-\paragraph{Forward passes.} When a task allows it, the agent can run the models on inputs of its
-choice. A request can generate text (up to 512 generations at once), return the
-log-probabilities of given texts, return activations and attention patterns, or, in edit and
-skill tasks, score the current edit on the practice set. Each request uses one pass from the
-task's budget, and failed requests are free. A read task is posed with the weights only, with
-attention patterns but not the model's outputs, or with full forward passes.
+When a task allows forward passes, the agent can run the models on inputs of its choice: generate
+text, get log-probabilities, read activations and attention patterns, or, in edit and skill
+tasks, score the current edit on the practice set. Each request uses one pass from the task's
+budget. A read task gives one of three kinds of access: the weights alone; the weights plus the
+model's attention patterns, but not its outputs; or full forward passes.
 
-\paragraph{Limits and rules.} Read and edit tasks allow 60 replies, 40 code executions and up
-to 25 forward passes. In read and edit tasks the agent may not train the model in any way: no
-gradients and no iterative fitting of weights to a loss. In every task, it may not reimplement
-the model's forward computation in the kernel, which would bypass the pass budget, and it has
-no internet access. The main skill tasks allow 150 replies, 100 code executions and 50 forward
-passes, and any computation except gradients, including search over candidate edits judged by
-forward passes. The stricter skill variants (\cref{sec:tasks}) use three rule sets: \emph{hand
-design}, where the agent designs the edit by reasoning about the weights and uses at most 10
-passes to inspect behaviour and check the edit; \emph{one-step}, where it computes the edit in
-one step from activations, for example as a steering vector or a least-squares solution, with
-25 passes; and \emph{search}, where it may try candidate edits and keep the best, with 50
-passes. The harness enforces budgets and allowed request types itself. A rule check and an LLM
-judge audit every run under the stricter rule sets, and a run that breaks its rules scores 0.
+Read and edit tasks allow 60 replies, 40 code executions and up to 25 forward passes, and forbid
+any training: no gradients and no iterative fitting of weights to a loss. The main skill tasks
+allow 150 replies, 100 code executions and 50 forward passes, and any computation except
+gradients, including search over candidate edits judged by forward passes. No task allows
+reimplementing the model's forward computation in the kernel, which would bypass the pass budget.
+Twelve of the skill variants (\cref{sec:tasks}) use three stricter rule sets: \emph{hand design}, where the
+agent designs the edit by reasoning about the weights, with at most 10 passes to inspect and check
+it; \emph{one-step}, where it computes the edit in one step from activations, for example as a
+steering vector or a least-squares solution, with 25 passes; and \emph{search}, where it may try
+candidate edits and keep the best, with 50 passes. The harness enforces budgets and request types
+itself; a rule check and an LLM judge audit every run under the stricter rule sets, and a run that
+breaks its rules scores 0. Further limits are listed in \cref{app:prompts}.
 
 \subsection{Scoring}\label{sec:scoring}
 % Source: harness/report.py and site/build_data.py (normalisation, cells, bootstrap);
@@ -394,35 +350,31 @@ judge audit every run under the stricter rule sets, and a run that breaks its ru
 
 Each run receives a raw quality $q \in [0, 1]$ from the scorer of its class
 (\cref{tab:classes}). The edit and skill scorers are built so that the unedited model scores 0
-and a perfect edit scores 1, and we report $s = 100\,q$. For read tasks, we normalise against a
-baseline $b$, the mean quality of the answers agents give when they cannot see the weights:
+and a perfect edit scores 1, and we report $s = 100\,q$. For read tasks, the baseline $b$ is a
+guess made without the model: each agent receives only the task statement, with no weights and
+no tools, and answers in a single reply, and $b$ is the mean quality of these answers over all
+agents (\cref{sec:contamination}). We normalise against it:
 \[
   s = 100 \cdot \max\!\left(0, \frac{q - b}{1 - b}\right).
 \]
-On every task, 0 thus means no better than the baseline, either the unedited model or a guess
-made without the weights, and 100 means a perfect result. A cell's score is the mean over an
-agent's runs on it, and the \emph{improvement index} is the mean score over all 168 cells; we
-also report it for each family. Confidence intervals are 95\% percentile intervals from 2,000
+On every task, 0 thus means no better than the baseline and 100 means a perfect result. Each agent runs each cell once, and
+if the provider's safety filter refuses to answer, the run scores 0 (\cref{sec:setup}). The
+\emph{improvement index} is the mean score over all 168 cells; we also report it for each
+family. Confidence intervals are 95\% percentile intervals from 2,000
 bootstrap resamples of the cells.
 
-\subsection{Leakage and Contamination Controls}\label{sec:contamination}
+\subsection{Preventing Shortcuts}\label{sec:contamination}
 % Source: harness/make_items.py (disguise text, INDEP, opaque ids), node/session.py (only
 % items/<opaque>/public is mounted, read-only), DESIGN.md (anti-lookup rule), harness/report.py.
-% Decided Nov 23 2026: v8 is public with its keys (practice set); describe the private v9 test set here once built.
 
-We guard against four shortcuts. First, the agent cannot look up the answer. Every read answer
-is chosen at random by us and our fine-tunes are unpublished, so identifying the underlying
-public checkpoint does not reveal it, and tasks whose answer could be looked up are kept only as
-practice; the disguise (\cref{sec:dataset}) also prevents identifying a model by matching its
-tensors against public files. Second, the agent cannot read the answer from its environment:
+We guard against four shortcuts. First, the agent cannot look up the answer: every read answer
+is chosen at random by us, our fine-tunes are unpublished, and disguised weights cannot be matched against public
+checkpoints. Second, the agent cannot read the answer from its environment:
 its container has no network access and holds only the disguised weights and the vocabulary,
 while answer keys, held-out prompts and scorers never enter it. Third, the agent cannot tune
 its edit to the test prompts, because skills are scored only on held-out prompts it never sees.
-Most are generated at random, but the HumanEval coding skills and grade-school math use public
-problems, which an agent could in principle write into the model (\cref{sec:limitations}).
-Lastly, we check how much of each read task can be answered from general knowledge alone: we
-also run every read task with the weights withheld and normalise scores against those answers
-(\cref{sec:scoring}).
+Lastly, an answer from general knowledge alone scores 0, because read scores are normalised
+against the guess made without the weights (\cref{sec:scoring}).
 
 \subsection{Validation}\label{sec:validation}
 % Source: DESIGN.md version log (v1-v8), harness/polyglot_check.py, node/ref_edit.py,
@@ -443,233 +395,238 @@ from the released version.
 
 % =============================================================================
 \section{Experiments and Results}\label{sec:experiments}
-% Every number in this section is a macro from tables/numbers.tex, written by scripts/make_figures.py from
-% data/paper_v8.json (built by harness/paper_data.py in the development repo). Words that depend on the data
-% ("Nine have closed weights", "matters a great deal ... little", "at either effort", "far better", "nearly doubles",
-% "about a third ... a seventh", "a similar cost", and in the introduction "triples") are checked by hand: reread them
-% after a data update.
 
 \subsection{Setup}\label{sec:setup}
+% Source: harness/solvers.py (flags, efforts, OSS entries), results/STATUS.md (serving, refusals),
+% harness/leaderboard.py (prices), harness/paper_data.py (pass 1, refusals = 0).
+% Only the high-effort runs are reported. Also in paper_v8.json but left out of the paper: Claude
+% Opus/Sonnet/Haiku 5.5 at the CLI's default effort (medium; two passes each; "effort" block has the
+% paired comparison) and Claude Fable 5.1 (29 of 168 cells only; left out, Nov 25).
 
-We evaluate \wspnum{agents} agents (\cref{tab:leaderboard}). Nine have closed weights: GPT-6.1 Sol, GPT-6.1 Terra
-and GPT-6 Luna, run through the Codex command-line interface at high reasoning effort, and Claude Opus 5.5, Claude
-Sonnet 5.5 and Claude Haiku 5.5, each run through the Claude Code command-line interface twice, at its default effort
-and at high effort, the effort of the GPT agents. Five have
-open weights and run on our own GPUs, served with vLLM: Qwen3.8-27B, once with thinking and once without,
-DeepSeek-V4-Flash and Inkling 2 Mini with thinking at high effort, and MiniMax-M2.7, which always thinks. In every
-case, the interface's own tools and web access are switched off, so the agent acts only through the harness
-(\cref{sec:environment}). \TODO{Add Claude Fable 5.1 and 5.2 (partial).}
+We evaluate ten models as agents, one of them in two settings. Six are closed models: Claude Opus 5.5, Claude Sonnet 5.5 and Claude
+Haiku 5.5, run through the Claude Code command-line interface, and GPT-6.1 Sol, GPT-6.1 Terra
+and GPT-6 Luna, run through the Codex command-line interface. Four have open weights:
+Qwen3.8-27B, MiniMax-M2.7, DeepSeek-V4-Flash and Inkling 2 Mini, which we serve with vLLM on
+one to four H100 GPUs each. The GPT and Claude models run at
+high reasoning effort. The open models run with thinking on, DeepSeek-V4-Flash
+and Inkling 2 Mini at reasoning effort high, and Qwen3.8-27B and MiniMax-M2.7 at their chat
+templates' defaults. We also run Qwen3.8-27B with thinking off, to measure what thinking adds,
+which makes eleven agents in total. For the closed models, the command-line
+interfaces set their own reply limits and shorten long conversations automatically. For the open
+models, we cap each reply at 32,768 tokens, and when a conversation outgrows the context window,
+the harness drops the oldest turns after the task statement and adds a note saying so. In both
+cases, the variables and files in the kernel are kept.
 
-Each agent attempts every cell once, and we report this first pass throughout. Four agents also ran a second pass,
-which we use only to measure how much results vary between runs (\cref{sec:analysis}). A run that the provider's
-safety filter refuses scores 0 and is not repeated. This happened twice for GPT-6 Luna and, at high effort,
-\res{opus}{hirefused}, \res{sonnet}{hirefused} and \res{haiku}{hirefused} times for Claude Opus 5.5, Sonnet 5.5 and
-Haiku 5.5 (\cref{sec:analysis}). The cost of a task is the list price of the
-tokens its run used: as reported by Claude Code for Claude models, and computed from token counts at each provider's
-list prices for the other agents. Inkling 2 Mini has no published price, so it has no cost. Time is wall-clock time,
-which for the open-weights agents depends on our serving hardware.
+The interfaces' own tools, web access and user settings are switched off, and the harness checks
+every turn to confirm that no tool was used. The kernels run on CPU; forward passes and
+scoring run on an H100 GPU.
+
+Each agent runs each of the 168 cells once. For the read-task
+baseline, each agent also runs every read task once more with the weights withheld
+(\cref{sec:scoring}). The providers' safety filters refused some
+runs partway: 28 of Claude Haiku 5.5's (16 skill, 11 edit and one read), three of Claude Sonnet
+5.5's, two of Claude Opus 5.5's and two of GPT-6 Luna's. We keep these runs as final and score
+them 0. If we left the refused cells out instead, Claude Haiku 5.5's index, averaged over its 140
+remaining cells, would rise from 8.9 to 10.7. No other agent's index would rise by more than 0.7.
 
 \subsection{Main Results}\label{sec:main-results}
-
-\begin{table}[t]
-  \caption{Results of every agent on its first pass. \emph{Index}: mean score over the \wspnum{cells} cells, with
-  its 95\% bootstrap confidence interval. \emph{Read}, \emph{Edit} and \emph{Skill}: the index within each family.
-  \emph{Cells $\geq$50}: share of cells scored 50 or more. Cost is the list price of one run (Inkling 2 Mini has no
-  published price) and time its wall-clock duration; the stripe before each name is the lab's colour, as in the
-  figures.}
-  \label{tab:leaderboard}
-  \begin{aacardbox}
-    \aacardheader{aapurple}{Leaderboard}{First pass of every agent on the \wspnum{cells} cells of release v8
-      \textperiodcentered\ Higher index is better}
-    \renewcommand{\arraystretch}{1.55}%
-    \adjustbox{max width=\linewidth}{\input{tables/leaderboard}}
-  \end{aacardbox}
-\end{table}
+% Source: paper_v8.json; the exact values are in tables/main_results.tex (Appendix C, tab:main).
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{index_overall}\\[6pt]
-  \includegraphics[width=\linewidth]{index_families}
-  \caption{\textbf{Results on \bench (first pass).} Top: improvement index of each agent over the
-  \wspnum{cells} scored cells, with 95\% bootstrap confidence intervals; 0 is the baseline and 100 a perfect
-  solution on every cell. Bottom: the index within each task family. Bars take the colour of the agent's lab.
-  GPT models run at high effort; Claude models appear twice, at the default effort of Claude Code and at high effort
-  (\emph{high}).}
-  \label{fig:main}
+  \includegraphics[width=\linewidth]{fig_index}
+  \caption{Improvement index of every agent with its 95\% bootstrap confidence interval (left),
+  and its mean score on each family (right). Colour marks the lab; open-weights models are
+  striped. The tiers follow the confidence intervals.}
+  \label{fig:index}
 \end{figure}
 
-\Cref{fig:main} and \cref{tab:leaderboard} show the results. GPT-6.1 Sol leads with an index of \res{sol}{index}
-(95\% CI \res{sol}{cilo}--\res{sol}{cihi}), ahead of Claude Opus 5.5 at \res{opus}{index} (\res{opushigh}{index}
-at high effort), Claude Sonnet 5.5 at high effort at \res{sonnethigh}{index} and GPT-6.1 Terra at \res{terra}{index}.
-A wide gap separates these \wspnum{topword} agents from the rest, none of which scores above \wspnum{restmax}: Claude
-Sonnet 5.5 at its default effort scores \res{sonnet}{index}, Claude Haiku 5.5 \res{haiku}{index}
-(\res{haikuhigh}{index} at high effort) and GPT-6 Luna \res{luna}{index}. Reasoning effort thus matters a great deal
-for Claude Sonnet 5.5 and little for Claude Opus 5.5 and Claude Haiku 5.5 (\cref{sec:analysis}). The open-weights agents trail the frontier ones. The best of them, Qwen3.8-27B with thinking,
-scores \res{qwenthink}{index}, and the other \wspnum{openrestword} score between \wspnum{openrestlow} and
-\wspnum{openresthigh}.
-Thinking nearly doubles the index of Qwen3.8-27B, from \res{qwen}{index} to \res{qwenthink}{index}, but makes each
-task about nine times slower (\res{qwen}{minutes} against \res{qwenthink}{minutes} minutes).
+\Cref{fig:index} shows the main results; \cref{tab:main} (\cref{app:results}) gives the full
+numbers, including confidence bounds, perfect scores and cost. The agents fall into three tiers. GPT-6.1 Sol
+leads alone with an index of 51.0, and its confidence interval lies above every other agent's.
+It reaches a perfect score on 26 of the 168 cells and at least half of a perfect score on 84.
+Claude Opus 5.5 (37.6), Claude Sonnet 5.5 (33.7) and GPT-6.1 Terra (29.0) form a middle tier
+with overlapping intervals; each is perfect on 8 to 14 cells and reaches half of a perfect score
+on 48 to 62. The other seven agents, including all the open-weights ones, score between 4.1 and
+8.9, more than 20 points below the middle tier. Their intervals all lie above 0, so they improve
+on the baseline, but each is perfect on at most two cells. Within this tier, the best open model,
+Qwen3.8-27B with thinking (7.5), lies between the two smallest closed models, Claude Haiku 5.5
+(8.9) and GPT-6 Luna (6.8).
 
-The families differ in difficulty (bottom of \cref{fig:main}). Read tasks give the highest family index for
-\wspnum{readhighest} of the \wspnum{agents} agents, and Sol reaches \res{sol}{read} on them; Claude Sonnet 5.5 and
-Claude Haiku 5.5 instead do best on edit tasks, at either effort. Skill tasks are the hardest
-family for \wspnum{skilllowest} agents: Sol scores \res{sol}{skill} on them, Claude Sonnet 5.5 at high effort
-\res{sonnethigh}{skill} and Claude Opus 5.5 \res{opus}{skill} (\res{opushigh}{skill} at high effort), and no other
-agent scores above \res{terra}{skill}.
+Thinking helps Qwen3.8-27B modestly: with thinking off it scores 4.1, a paired difference of 3.4
+points whose confidence interval just reaches zero. The gain comes mostly from read (+7.5) and
+edit (+5.4) tasks rather than skill tasks (+0.9).
 
-\subsection{Results by Task Class}\label{sec:per-class}
+\subsection{Cost and Speed}\label{sec:cost}
+% Source: paper_v8.json (cost_per_task, output_tokens_per_task, minutes_per_task).
 
-\begin{figure}[tbp]
+\begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{per_class}
-  \caption{Mean score of each agent on each task class (first pass), from 0 (baseline) to 100 (solved). The number
-  of cells in each class is in brackets; \cref{tab:classes} describes the classes.}
-  \label{fig:classes}
-\end{figure}
-
-\Cref{fig:classes} breaks the index down by class. Among read tasks, Sol, Terra and Claude Opus 5.5 find the
-transplanted layers in every P2 task (\cls{sol}{P2}), Opus at either effort, and identify the kind and layer of a
-hidden edit with scores of \cls{terra}{P3} to \cls{opus}{P3} (P3), against \cls{opushigh}{P3} for Opus at high
-effort. Sol also names backdoor triggers (S6, \cls{sol}{S6}) and picks the
-backdoored twin (S3, \cls{sol}{S3}) far better than any other agent. Telling how many epochs a model was fine-tuned
-for (O3) stays hard for every agent: the best score is \cls{luna}{O3}, by GPT-6 Luna.
-
-Edit tasks separate the agents more sharply. Sol makes the model predict a chosen word after another almost
-perfectly (W4, \cls{sol}{W4}), but its score falls to \cls{sol}{W4x} on the harder variants with several word
-pairs, late layers or word categories (W4x). Sol, Terra and Claude Haiku 5.5 at its default effort remove the planted backdoor while keeping
-the model's math accuracy (W1: \cls{sol}{W1}, \cls{terra}{W1} and \cls{haiku}{W1}), and so do Claude Opus 5.5 and
-Claude Sonnet 5.5 at high effort (\cls{opushigh}{W1} and \cls{sonnethigh}{W1}), whereas Claude Opus 5.5 at its
-default effort and Claude Haiku 5.5 at high effort do not (\cls{opus}{W1} and \cls{haikuhigh}{W1}). The W1, W2 and W3 classes hold one task each, so each of these scores rests on a single run.
-
-All \wspnum{openword} open-weights agents score 0 on data mixtures (O2) and trigger phrases (S6), and at most
-\wspnum{openeditmax} on any edit class.
-
-\subsection{Analysis}\label{sec:analysis}
-
-\begin{figure}[tbp]
-  \centering
-  \includegraphics[width=\linewidth]{skills}
-  \caption{\textbf{Skill tasks.} Left: the best score any agent reaches on each of the \wspnum{skilltasks} skill
-  tasks, ranked and shaded by skill group; the dotted line marks 50. Right: the number of skill tasks each agent
-  brings to 50 or more.}
-  \label{fig:skills}
-\end{figure}
-
-\paragraph{Which skills agents can teach.} Skill tasks are hard, but not uniformly so (\cref{fig:skills}). At least
-one agent scores 50 or more on \wspnum{skillhalf} of the \wspnum{skilltasks} skill tasks, and \wspnum{skillninetyfive}
-tasks, in \wspnum{skilltopn} skills, reach 95 or more: \wspnum{skilltopnames}. When teaching a model new facts,
-\wspnum{factsoverhalf} of the \wspnum{agents} agents close more than half of the gap between the unedited model and a
-perfect score, and \wspnum{clingobestagent} closes \wspnum{clingobest}\% of it when teaching answer set programming,
-a language rarely seen in training. No agent improves the model on \wspnum{skillzero} tasks. Coding is harder than
-the general skills: the best score on a whole-program task is \wspnum{skillbest@wholeprograms}, and on the
-\wspnum{skillcount@functioncompletion} function-completion tasks it is \wspnum{skillbest@functioncompletion}. Sol
-brings \res{sol}{skillfifty} skill tasks to 50 or more, Claude Sonnet 5.5 at high effort \res{sonnethigh}{skillfifty}
-and Claude Opus 5.5 \res{opus}{skillfifty} (\res{opushigh}{skillfifty} at high effort), while \wspnum{skillfiftylow}
-agents manage at most one.
-
-\begin{figure}[tbp]
-  \centering
-  \includegraphics[width=\linewidth]{efficiency}
-  \caption{Index against the list-price cost of one run (left) and its wall-clock time (right), both on log scales.
-  The dotted line joins the agents that no other agent beats on both axes; the shaded quadrants split each axis at
-  the agents' median, and the green one holds agents both better and cheaper (or faster) than the median. The times
-  of open-weights agents depend on our serving hardware; Inkling 2 Mini has no published price and appears in the
-  time plot only.}
+  \includegraphics[width=\linewidth]{fig_cost}
+  \caption{Improvement index against the mean cost (left) and wall-clock time (right) of one run,
+  both on log scales. The dashed line is the cost frontier: no agent scores higher for less.
+  Inkling 2 Mini has no published price and appears only on the right; MiniMax-M2.7 and
+  Qwen3.8-27B without thinking overlap on the left (\$0.18, 4.5 and 4.1). The open models run on
+  our own GPUs, so their times depend on our hardware.}
   \label{fig:cost}
 \end{figure}
 
-\paragraph{Cost and time.} \Cref{fig:cost} sets each agent's index against what a task costs and how long it takes.
-GPT-6.1 Terra reaches \res{terra}{index} at \$\res{terra}{cost} per task, and Sol \res{sol}{index} at
-\$\res{sol}{cost}. The Claude agents among the leaders are all off the Pareto front of cost: Sol scores higher than
-Claude Opus 5.5 at about a third of its cost at the default effort (\$\res{opus}{cost} per task) and a seventh of its
-cost at high effort (\$\res{opushigh}{cost}), and Claude Opus 5.5 at its default effort scores higher than Claude
-Sonnet 5.5 at high effort for a similar cost (\$\res{sonnethigh}{cost}). The open-weights agents that think are the
-slowest, at \res{inkling}{minutes} (Inkling 2 Mini) to \res{qwenthink}{minutes} minutes per task on our hardware,
-without a matching gain in index.
+We price each run's tokens at the provider's API list prices; Inkling 2 Mini has no published
+price, so we report no cost for it. Score is not proportional to cost (\cref{fig:cost}, left). GPT-6.1 Sol costs \$0.61 per run,
+against \$4.41 for Claude Opus 5.5 and \$1.89 for Claude Sonnet 5.5, and GPT-6.1 Terra reaches
+29.0 at \$0.12. The open models have low token prices but long replies: Qwen3.8-27B with thinking
+writes 234k output tokens per run, about ten times as many as GPT-6.1 Sol, so its runs cost more
+(\$0.83). Without thinking, it writes 23k tokens and costs \$0.18 per run.
 
+A run of a closed model takes 8 to 39 minutes on average (\cref{fig:cost}, right). GPT-6.1 Sol
+and Claude Opus 5.5 take longest (39 and 36 minutes); Claude Haiku 5.5 and GPT-6 Luna, which
+often stop early (\cref{sec:analysis}), are the fastest (8 and 9 minutes). The open models take 26
+to 225 minutes on our H100s, the longest being Qwen3.8-27B with thinking, which takes almost
+nine times as long as without it. These times depend on our serving setup, so they compare only
+loosely with those of the API models.
 
-\paragraph{Variation between runs.} \Cref{fig:passes} in \cref{app:results} compares the two passes of the four agents that ran twice.
-The index barely moves: Claude Opus 5.5 scores \res{opus}{pone} and \res{opus}{ptwo}, and the largest change is that
-of Claude Haiku 5.5, from \res{haiku}{pone} to \res{haiku}{ptwo}. Single cells, however, often change: for Claude
-Opus 5.5, \res{opus}{far}\% of cells differ by 50 points or more between the passes. The index over \wspnum{cells}
-cells is therefore stable to a few points across runs, while conclusions about a single task need several runs.
+\subsection{Results by Task Class}\label{sec:per-class}
+% Source: paper_v8.json (sub, per_class, scores); tables/skill_breakdown.tex and
+% tables/per_class.tex (generated). Variant vs main comparisons pair each variant with the main
+% task of the same skill (4 cells per rule set, one run each: keep the wording cautious).
 
-\begin{table}[tbp]
-  \caption{Claude models at high effort against their default effort, first pass, paired by cell. \emph{Index}: mean
-  score over the cells both runs have (their number follows each name), and the change with its 95\% bootstrap
-  confidence interval. \emph{Change by family}: the paired change within each family. \emph{Unedited submissions}:
-  share of edit and skill runs that hand back the unedited model, by the harness's count of changed tensors; such a
-  run scores 0, as does a run the provider refuses.}
-  \label{tab:effort}
-  \begin{aacardbox}
-    \aacardheader{aapurple}{Reasoning effort}{Claude models at default and high effort \textperiodcentered\ First
-      pass, paired by cell \textperiodcentered\ Higher index is better}
-    \renewcommand{\arraystretch}{1.55}%
-    \adjustbox{max width=\linewidth}{\input{tables/effort}}
-  \end{aacardbox}
+Read tasks are the easiest family for nine of the eleven agents and skill
+tasks the hardest for nine (\cref{fig:index}). Claude Sonnet 5.5 is the exception to both: it
+scores highest on edit tasks and lowest on read tasks (28.8, against 53.0 for Claude Opus 5.5).
+Claude Haiku 5.5 also scores highest on edit tasks, and MiniMax-M2.7 lowest, at 0.2.
+\Cref{fig:classes} breaks every family down by class; the exact values are in
+\cref{tab:per-class} (\cref{app:results}). Among read tasks, finding transplanted layers (P2) is all or nothing: GPT-6.1 Sol,
+Claude Opus 5.5 and GPT-6.1 Terra solve all three tasks, and no other agent scores above 16.
+Recovering a fine-tuning mixture (O2) separates the same way: the four strongest agents score
+above 50, the other seven score 0.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig_classes}
+  \caption{Mean score per read and edit class and per group of skill tasks. Darker cells score
+  higher; the bar under each agent's name marks its lab, striped for open weights. Exact values for every class
+  are in \cref{tab:per-class}, and for the skill groups in \cref{tab:skills}.}
+  \label{fig:classes}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig_forward}
+  \caption{The 14 edit tasks posed twice: mean score with the weights only (hollow) and with a
+  budget of forward passes (filled). The numbers on the right give both scores.}
+  \label{fig:forward}
+\end{figure}
+
+Forward passes make edits much easier (\cref{fig:forward}). Fourteen edit tasks are posed twice,
+with the weights only and with forward passes. Forward passes raise the score of every closed
+agent, most for Claude Sonnet 5.5 (25.4 to 74.7) and GPT-6.1 Sol (55.0 to 77.9). With the weights
+only, five of the seven agents near the baseline score at most 0.5; with forward passes, most of
+them gain, up to 21.8 for GPT-6 Luna. The easiest edit is a word association (W4), which GPT-6.1 Sol solves
+almost perfectly (98.4). A phrase association (W5) is much harder: only GPT-6.1 Sol (56.8) and Claude
+Sonnet 5.5 (46.9) score above 10. Improving a base model's math without a reference model (W3) stays below 26
+for every agent.
+
+\begin{table}[t]
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{2.7pt}
+  \caption{Mean score over each group of skill tasks. Variants restrict the
+  method (hand design, one-step, search) or add help (worked examples, a second model that has
+  the skill) on four, three and two skills respectively. Qwen-T and Qwen-N are Qwen3.8-27B with
+  thinking on and off.}
+  \label{tab:skills}
+  \input{tables/skill_breakdown}
 \end{table}
 
-% Words that depend on the data: "improves in every family", "does not improve", "nearly all-or-nothing", "often
-% stating ... gradient-based training" (about half of the unedited submissions at default effort, Nov 24), "still",
-% "none of the default-effort runs". Reread them after a data update.
-\paragraph{Reasoning effort.} \Cref{tab:effort} compares each Claude model at high effort, the effort of the GPT
-agents, with its default effort, cell by cell. The effect depends on the model. Claude Sonnet 5.5 gains \res{sonnet}{effgain} points (95\% CI
-\res{sonnet}{effdifflo} to \res{sonnet}{effdiffhi}), from \res{sonnet}{effdefault} to \res{sonnet}{effhigh}, and
-improves in every family. Claude Opus 5.5 does not improve: its index changes by \res{opus}{effdiff}
-(\res{opus}{effdifflo} to \res{opus}{effdiffhi}), as much as its second default-effort pass differs from the first
-(\res{opus}{noisediff}), while a task costs \res{opus}{hicostx} times as much. Its read index changes by
-\res{opus}{effread} (\res{opus}{effreadlo} to \res{opus}{effreadhi}), but read cells are nearly all-or-nothing:
-between its two default-effort passes, \res{opus}{noisereadfar}\% of them move by 50 points or more. Claude Haiku 5.5
-changes by \res{haiku}{effdiff} (\res{haiku}{effdifflo} to \res{haiku}{effdiffhi}): by \res{haiku}{effskill} on skill
-tasks and by \res{haiku}{effedit} on edit tasks, where Anthropic's safety filter refused \res{haiku}{hirefusededit}
-of its high-effort runs; on the \res{haiku}{effcellskept} cells with no refused run, it changes by
-\res{haiku}{effdiffkept}.
+\Cref{tab:skills} splits the skill tasks into groups. The general skills
+are the most tractable: GPT-6.1 Sol, Claude Opus 5.5 and Claude Sonnet 5.5 average above 50
+on them, and several skills are close to solved. On new facts, ffmpeg commands and OpenSCAD
+models, the three strongest agents each score at least 95, and on SQL, two reach 94.9. Other
+skills resist every agent: no agent scores above 16 on the number puzzles, 33 on grade-school
+math or 43 on calculus. Writing whole programs in 35 languages lies in between, with GPT-6.1 Sol
+(36.3) and Claude Sonnet 5.5 (35.4) well ahead of the rest. On completing functions, in the 20
+MultiPL-E languages and the three HumanEval tasks, no agent averages more than 3.2. Only four of the 94 skill tasks
+leave every agent at 0, and on 42 the best agent reaches at least 50.
 
-Most of the difference lies in whether an agent keeps working, because a run that hands back the unedited model
-scores 0. At the default effort, Claude Sonnet 5.5 does so on \res{sonnet}{unedited}\% of its edit and skill runs,
-after a median of \res{sonnet}{uneditedreplies} replies, often stating that the task would need gradient-based
-training. At high effort it does so on \res{sonnet}{hiunedited}\%; its runs grow from \res{sonnet}{replies} to
-\res{sonnet}{hireplies} replies and from \res{sonnet}{fwd} to \res{sonnet}{hifwd} forward passes, and the share of
-skill tasks it improves at all rises from \res{sonnet}{progskill}\% to \res{sonnet}{hiprogskill}\%. Claude Haiku 5.5
-hands back the unedited model on \res{haiku}{unedited}\% of these runs at the default effort, after a median of
-\res{haiku}{uneditedreplies} replies, and still on \res{haiku}{hiunedited}\% at high effort. Claude Opus 5.5 does so on
-\res{opus}{unedited}\% of them at the default effort and \res{opus}{hiunedited}\% at high effort, the latter after a
-median of \res{opus}{hiuneditedreplies} replies; at high effort its runs grow from \res{opus}{replies} to
-\res{opus}{hireplies} replies without raising its index. Anthropic's safety filter refused \res{opus}{hirefused} of the
-effort-high runs of Opus, \res{sonnet}{hirefused} of Sonnet's and \res{haiku}{hirefused} of Haiku's,
-\res{haiku}{hirefusedskill} of the latter on skill tasks and \res{haiku}{hirefusededit} on edit tasks, and none of
-the default-effort runs; refused runs score 0 and
-are not repeated.
+The skill variants show how stricter rules and extra help change the scores (\cref{tab:skills});
+we compare each variant with the main tasks of the same skills. The three rule sets are posed on
+four skills: instruction following, SQL, tool calling and tic-tac-toe. Under the hand-design
+rules, the four strongest agents score much lower: GPT-6.1 Sol falls from 73.4 on the main tasks
+to 37.2, Claude Opus 5.5 from 48.9 to 14.6, Claude Sonnet 5.5 from 46.0 to 6.6 and GPT-6.1 Terra
+from 26.8 to 0.4. One-step edits computed from activations also score lower for all four. Under
+the search rules, which allow trial and error over candidate edits, they score about as well as
+on the main tasks or better (GPT-6.1 Sol 72.2, Claude Opus 5.5 69.0). The strongest agents thus
+succeed mainly by testing candidate edits with forward passes, rather than by designing an edit
+from the weights alone. Of the two kinds of help, giving the agent worked examples raises the
+scores of three of the four strongest agents, but not GPT-6.1 Sol's. A second model that already has the skill helps none of the four; Claude Opus 5.5 even
+scores lower with it (45.5, against 76.6 on the main tasks). With one run per cell and four or
+fewer cells per variant, these comparisons are indicative only.
 
-\paragraph{Failure modes.} \TODO{From transcripts: how agents spend their turns, code runs and forward passes; common
-failures, such as giving up early, running out of budget or breaking the model while editing it.}
+\subsection{Interpreting Scores}\label{sec:analysis}
+% Source: pass-1 runs in runs/v8 (result.json: turns = replies; the harness's final score record:
+% edited_tensors, via harness/paper_data.py submitted_edit), refused runs excluded; scores from
+% paper_v8.json. Example: W4_assoc_0, weights level, GPT-6.1 Sol and MiniMax-M2.7.
+{\widowpenalty=10000  % no single line of this paragraph alone on the next page
+A low score can mean two things: the agent did not edit the model, or its edit did not work. The
+harness records how many tensors each submitted model changed, which separates the two. Leaving
+out the runs that providers refused, GPT-6.1 Sol edits the model in every edit and skill run, and
+Claude Opus 5.5, Claude Sonnet 5.5 and GPT-6.1 Terra hand back the unedited model in at most 7\%
+of them. Claude Haiku 5.5 hands it back in 67\% of its runs and GPT-6 Luna in 34\%, and both stop
+early, after 15 and 16 replies on average, against 44 to 77 for the four strongest agents. The open
+models use as many replies as the strongest agents or more (71 to 91), and MiniMax-M2.7 edits the
+model in 98\% of its runs, but 84\% of its edits score 0. Their low scores come from edits that do
+not work, not from too few attempts or too small a budget. Thinking matters here too: without it,
+Qwen3.8-27B hands back the unedited model in 38\% of its runs instead of 20\%. In short, the weaker closed models
+often stop without editing, while the open models edit persistently but rarely in a way that
+works: the former most need to attempt an edit, and the latter to make their edits work.
+Examples of successful edits by GPT-6.1 Sol are in \cref{fig:sol}; the project page shows before-and-after
+examples for every agent on five tasks.\footnote{\url{https://moreirap12.github.io/OpenWSP/}}\par}
 
-% =============================================================================
-\section{Related Work}\label{sec:related}
+\begin{figure}[!tb]
+  \centering
+  % Source: figures/make_examples.py (pass-1 runs in runs/v8; practice prompts only, never held-out prompts or keys).
+  \includegraphics[width=\linewidth]{fig_sol}
+  \caption{Replies to a practice prompt before and after an edit by GPT-6.1 Sol, for two skills. The header of each
+  panel gives the subject model, the size of the edit and the held-out accuracy of the unedited and the edited model.
+  \textbf{(a)} The SVG replies, rendered. \textbf{(b)} The SQL queries and the counts they return on table t.}
+  \label{fig:sol}
+\end{figure}
 
-\paragraph{Weight-space programming.}
-% \citet{takehi2026sparks}; concurrent benchmarks \citet{marasini2026weightbench} and
-% \citet{vonCsefalvay2026iwibench}: compare task by task (the intro promises this).
-% Candidates and comparison notes: related_work_notes.md.
-
-\paragraph{Interpretability and weight-space learning.}
-
-\paragraph{Model editing.}
-
-\paragraph{Agent and coding benchmarks.}
+% Commented out for now (too much detail); numbers verified against runs/v8.
+% The word-association task from \cref{sec:intro} shows the difference. With the weights only and
+% no forward passes, the agent must make the model predict ``violin'' whenever a text ends with
+% ``ladder'', and change nothing else. GPT-6.1 Sol solves it in 12 replies. It edits the first
+% layer so that, when the input word is ``ladder'', the layer pushes the prediction towards
+% ``violin''. The edit changes 0.14\% of the weights, leaves the loss on ordinary text unchanged and
+% scores 100. MiniMax-M2.7 takes 39 replies and edits one MLP in layer 23, adding the same change to
+% all of its neurons. The edited model predicts ``violin'' after ``ladder'' in 67\% of the test
+% contexts, but also after other words in 27\% of them, and its loss on ordinary text rises by 23
+% nats per token, so the run scores 0.
 
 % =============================================================================
 \section{Conclusion}\label{sec:conclusion}
-% Summary of findings and what they mean.
-% Future work (promised in the abstract): the proposed experiment where a model applies WSP to
-% its own weights.
+We introduced \bench, a benchmark of 152 tasks that measures how well LLMs program the weights of
+small open language models: working out how a model was made, editing a specified behaviour, and
+teaching a skill, all without gradients. Across the eleven agents we evaluated, the index ranges
+from 4.1 to 51.0. The strongest agents already solve tasks that require understanding the weights,
+such as finding transplanted layers or removing a backdoor, and on some skills, such as teaching
+new facts or answer set programming, they close most of the gap to a perfect score. Two areas leave
+clear room for progress: completing functions, where no agent averages more than 3.2, and the open
+models, which edit often but rarely with success. As future work, we propose an
+experiment in which a model applies WSP to its own weights, for example to improve a skill on
+which it is weak; \bench's skill tasks give a way to score the result. We also propose extending \bench to other
+architectures and modalities, from world models and vision-language-action models to audio and image flow-matching
+models.
 
 \subsection{Limitations}\label{sec:limitations}
-% Scale of the base models, coverage of task classes, number of runs, cost.
-% Promised in 2.5: held-out problems of the HumanEval coding skills and grade-school math come from
-% public datasets, so an agent could in principle write their answers into the model.
-% Also: v8 task randomness is seeded from the version string in the code, so releasing the code would
-% expose the hidden answers (the v9 plan adds a secret master seed).
+The subject models are small (360M--1.7B parameters), and we do not know how the results change
+with model size. Each agent runs each cell once, so the numbers for single classes and variants
+rest on few runs. When a provider's safety filter refused to answer, the run scored 0; this affects 28 of Claude
+Haiku 5.5's runs, so its index partly reflects the filter (\cref{sec:setup}). The agents run
+through different interfaces (Claude Code, Codex and a plain chat endpoint for the open models),
+so each result describes a model together with its interface. Finally, the held-out problems of
+the HumanEval coding skills and grade-school math come from public datasets, so an agent could in
+principle write their answers into the model.
 
 % =============================================================================
 \bibliographystyle{plainnat}
@@ -679,6 +636,7 @@ failures, such as giving up early, running out of budget or breaking the model w
 % Appendix (optional): delete from here to \end{document} if unused.
 \clearpage
 \appendix
+\crefalias{section}{appendix}  % references to these sections read "Appendix A", not "Section A"
 
 \section{Task Details}\label{app:tasks}
 % Source: skill descriptions in harness/make_items.py and the subject model of every K item in items/v8.
@@ -736,17 +694,35 @@ model's replies to the held-out prompts.
   \end{tabularx}
 \end{table}
 
-\section{Prompts and Tool Specifications}\label{app:prompts}
+\section{Tool Limits}\label{app:prompts}
+% TODO: full task prompt and tool text (harness/driver.py).
+One code execution may take up to 270 seconds, and its printed output is cut at 10,000
+characters. A forward-pass request can ask for up to 512 generations at once, and a request that
+fails does not use the budget.
 
 \section{Additional Results}\label{app:results}
 
-\begin{figure}[h]
+\Cref{tab:main} gives the main results in full, and \cref{tab:per-class} gives every agent's mean score in each task class (\cref{tab:classes}).
+
+\begin{table}[!htbp]
   \centering
-  \includegraphics[width=\linewidth]{passes}
-  \caption{Cell scores on the first and second pass of the four agents that ran twice, jittered slightly so that
-  overlapping points show. Each panel gives the index of both passes and the share of cells whose scores differ by 50
-  or more.}
-  \label{fig:passes}
-\end{figure}
+  \small
+  \caption{Each agent's index is its mean score over the 168 cells (0 = baseline, 100 = perfect), with a 95\% bootstrap confidence interval; Read, Edit and Skill are the same mean
+  over each family's cells. \emph{Solved} counts cells with a perfect score (100 after rounding), and \$/task is the
+  mean API list price of one run. Each agent ran each cell once; refused runs score 0.}
+  \label{tab:main}
+  \input{tables/main_results}
+\end{table}
+
+\begin{table}[!htbp]
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{3.5pt}
+  \caption{Mean score per task class, with the number of cells in each class. Agents are
+  ordered as in \cref{tab:main}; Qwen-T and Qwen-N are Qwen3.8-27B with
+  thinking on and off.}
+  \label{tab:per-class}
+  \input{tables/per_class}
+\end{table}
 
 \end{document}

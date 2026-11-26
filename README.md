@@ -33,7 +33,7 @@ private test set built the same way, whose keys never leave the evaluators.
 | [`keys/organisms/`](keys/organisms) | The 27 fine-tuned subject models the read tasks use, and how each was trained (data mixture, epochs, backdoor trigger, sycophancy). |
 | [`scoring/`](scoring) | The scorers. `harness/scoring.py` scores read answers against a key, in plain Python. `node/score_write.py` scores an edited model on hidden tests on a GPU, with the skill checkers in `node/skills.py` and the sandboxed checker images in `node/*_image/`. |
 | [`results/`](results) | Leaderboard aggregates (`v8_leaderboard.json`) and every agent's first-pass score on every cell (`paper_v8.json`). |
-| [`paper/`](paper) | The paper: LaTeX source, figures, the script that draws them from `results/`, and the PDF. |
+| [`paper/`](paper) | The paper: LaTeX source, the PDF, and the scripts that draw its results figures and tables from `results/`. |
 | [`website/`](website) | The project page, published to GitHub Pages from `website/public/`. |
 
 In `tasks/v8`, a subject model written `hf:<repo>` is a public Hugging Face checkpoint, and `local:.../organisms/<name>`

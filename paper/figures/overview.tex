@@ -1,86 +1,84 @@
-% Overview of one task (Figure 1). Input from main.tex; needs tikz with arrows.meta. Drawn in the paper's design
-% language (style.tex): white cards with a light border, serif panel titles behind a numbered square, Inter labels,
-% and the family colours of the figures: read = purple, edit = orange, skill = teal.
-\providecolor{cread}{HTML}{7F4BF3}
-\providecolor{cedit}{HTML}{F2754C}
-\providecolor{cskill}{HTML}{30C695}
-\providecolor{aaink}{HTML}{111111}
-\providecolor{aamuted}{HTML}{6B6B6B}
-\providecolor{aarule}{HTML}{E3E3E3}
-\providecolor{aacard}{HTML}{F5F5F5}
+% Overview of one task (Figure 1). Input from main.tex; needs tikz with arrows.meta.
+% Family colours (Okabe-Ito, colour-blind safe): read = blue, edit = vermillion, skill = green.
+\definecolor{cread}{HTML}{0072B2}
+\definecolor{cedit}{HTML}{D55E00}
+\definecolor{cskill}{HTML}{009E73}
+\definecolor{cink}{HTML}{2B2B2B}
+\definecolor{cpanel}{HTML}{F3F4F6}
 \begin{tikzpicture}[
-    font=\sffamily\footnotesize, text=aaink, >={Stealth[length=1.8mm]},
-    card/.style={draw=aarule, fill=white, line width=0.6pt, rounded corners=7pt},
-    box/.style={draw=aarule, fill=white, rounded corners=5pt, line width=0.6pt, align=center},
-    tag/.style={fill=#1!9, rounded corners=5pt, text width=3.55cm, minimum height=0.82cm, align=left,
-                inner sep=5pt, font=\sffamily\scriptsize},
-    chip/.style={fill=#1!10, rounded corners=5pt, align=center, minimum width=2.15cm, minimum height=0.85cm},
-    num/.style={rectangle, fill=aaink, text=white, font=\sffamily\bfseries\scriptsize, minimum size=0.34cm,
-                inner sep=0pt},
-    head/.style={font=\rmfamily\normalsize, anchor=west, text=aaink},
-    note/.style={font=\sffamily\scriptsize, text=aamuted, align=center},
-    link/.style={<->, line width=0.6pt, draw=aamuted},
-    go/.style={-{Stealth[length=2.2mm, width=2.4mm]}, line width=1.1pt, draw=aamuted!60},
+    font=\sffamily\footnotesize, text=cink, >={Stealth[length=2mm]},
+    panel/.style={fill=cpanel, rounded corners=6pt},
+    box/.style={draw=black!30, fill=white, rounded corners=3pt, line width=0.5pt, align=center},
+    tag/.style={draw=#1, fill=#1!7, rounded corners=3pt, line width=0.7pt, text width=3.5cm,
+                minimum height=0.8cm, align=left, inner sep=4pt},
+    chip/.style={draw=#1, fill=#1!7, rounded corners=3pt, line width=0.7pt, align=center,
+                 minimum width=2.1cm, minimum height=0.85cm},
+    num/.style={circle, fill=cink, text=white, font=\sffamily\bfseries\scriptsize, inner sep=1.3pt},
+    head/.style={font=\sffamily\bfseries\small, anchor=west},
+    note/.style={font=\sffamily\scriptsize, text=black!55, align=center},
+    link/.style={<->, line width=0.7pt, draw=black!55},
+    go/.style={->, line width=1.6pt, draw=black!35},
   ]
 
-  % cards and the flow between them
-  \draw[card] (0, 0) rectangle (4.2, 5.7);
-  \draw[card] (4.7, 0) rectangle (10.3, 5.7);
-  \draw[card] (10.8, 0) rectangle (16, 5.7);
-  \draw[go] (4.24, 2.85) -- (4.66, 2.85);
-  \draw[go] (10.34, 2.85) -- (10.76, 2.85);
+  % panels and the flow between them
+  \fill[panel] (0, 0) rectangle (4.2, 5.7);
+  \fill[panel] (4.7, 0) rectangle (10.3, 5.7);
+  \fill[panel] (10.8, 0) rectangle (16, 5.7);
+  \draw[go] (4.22, 2.85) -- (4.68, 2.85);
+  \draw[go] (10.32, 2.85) -- (10.78, 2.85);
 
   % ---------------------------------------------------------------- 1. the task
-  \node[num] (n1) at (0.4, 5.28) {1};
-  \node[head] at ([xshift=2pt]n1.east) {The task};
+  \node[num] (n1) at (0.35, 5.3) {1};
+  \node[head] at (n1.east) {The task};
 
   % a weight matrix, drawn as a heatmap
   \foreach \i in {0,...,10} {
     \foreach \j in {0,...,3} {
-      \pgfmathtruncatemacro{\v}{8 + mod(37*\i + 23*\j + 11*\i*\j + 7*\j*\j, 62)}
-      \fill[cread!\v!white, rounded corners=0.6pt] (0.45 + 0.3*\i, 4.05 + 0.2*\j) rectangle ++(0.27, 0.17);
+      \pgfmathtruncatemacro{\v}{10 + mod(37*\i + 23*\j + 11*\i*\j + 7*\j*\j, 60)}
+      \fill[cread!\v!white] (0.45 + 0.3*\i, 4.05 + 0.2*\j) rectangle ++(0.28, 0.18);
     }
   }
-  \node[note, anchor=north] at (2.1, 3.95) {weights of small open LMs\\(360M--1.7B), disguised};
+  \node[note, text=cink, anchor=north] at (2.1, 3.95)
+    {weights of small open LMs\\(360M--1.7B), disguised};
 
   \node[tag=cread] at (2.1, 2.55)
-    {{\color{cread}\rule{0.5em}{0.5em}}\hspace{0.35em}{\scriptsize\bfseries\color{cread}READ}\\What was M1 tuned on?};
+    {{\scriptsize\bfseries\color{cread}READ}\\What was M1 tuned on?};
   \node[tag=cedit] at (2.1, 1.55)
-    {{\color{cedit}\rule{0.5em}{0.5em}}\hspace{0.35em}{\scriptsize\bfseries\color{cedit}EDIT}\\Remove M1's backdoor.};
+    {{\scriptsize\bfseries\color{cedit}EDIT}\\Remove M1's backdoor.};
   \node[tag=cskill] at (2.1, 0.55)
-    {{\color{cskill}\rule{0.5em}{0.5em}}\hspace{0.35em}{\scriptsize\bfseries\color{cskill}SKILL}\\Make M1 better at SQL.};
+    {{\scriptsize\bfseries\color{cskill}SKILL}\\Make M1 better at SQL.};
 
   % ---------------------------------------------------------------- 2. the agent works in turns
-  \node[num] (n2) at (5.1, 5.28) {2};
-  \node[head] at ([xshift=2pt]n2.east) {The agent works in turns};
+  \node[num] (n2) at (5.05, 5.3) {2};
+  \node[head] at (n2.east) {The agent works in turns};
 
-  \node[fill=aaink, text=white, rounded corners=11pt, minimum width=3.6cm, minimum height=0.9cm, align=center]
-    (agent) at (7.5, 4.25) {\textbf{\small Agent}\\[-1pt]{\scriptsize frontier or open LLM}};
-  \node[box, minimum width=2.62cm, minimum height=1.6cm, text width=2.42cm] (kernel) at (6.13, 1.9)
-    {\textbf{Python kernel}\\[3pt]{\scriptsize\color{aamuted}read and replace\\any tensor}};
-  \node[box, minimum width=2.62cm, minimum height=1.6cm, text width=2.42cm] (fwd) at (8.87, 1.9)
-    {\textbf{Forward passes}\\[3pt]{\scriptsize\color{aamuted}run the model on\\inputs it chooses}};
+  \node[box, fill=cink, draw=cink, text=white, minimum width=3.6cm, minimum height=0.9cm]
+    (agent) at (7.5, 4.3) {\textbf{\small Agent}\\[-1pt]{\scriptsize frontier or open LLM}};
+  \node[box, minimum width=2.55cm, minimum height=1.6cm, text width=2.2cm] (kernel) at (6.15, 1.9)
+    {\textbf{Python kernel}\\[3pt]{\scriptsize read and replace\\any tensor}};
+  \node[box, minimum width=2.55cm, minimum height=1.6cm, text width=2.2cm] (fwd) at (8.85, 1.9)
+    {\textbf{Forward passes}\\[3pt]{\scriptsize run the model on\\inputs it chooses}};
   \draw[link] (kernel.north) -- node[note, left] {code} (kernel.north |- agent.south);
   \draw[link] (fwd.north) -- node[note, right] {queries} (fwd.north |- agent.south);
-  \node[note] at (7.5, 0.5) {no gradients\enspace\textperiodcentered\enspace limited turns and passes};
+  \node[note] at (7.5, 0.5) {no gradients\enspace$\cdot$\enspace limited turns and passes};
 
   % ---------------------------------------------------------------- 3. scoring
-  \node[num] (n3) at (11.2, 5.28) {3};
-  \node[head] at ([xshift=2pt]n3.east) {Scoring};
+  \node[num] (n3) at (11.15, 5.3) {3};
+  \node[head] at (n3.east) {Scoring};
 
-  \node[chip=cread] (ans) at (12.15, 4.3) {\textbf{\color{cread}Answer}\\{\scriptsize\color{aamuted}read}};
-  \node[chip=cedit] (edw) at (12.15, 3.15) {\textbf{\color{cedit}Edited model}\\{\scriptsize\color{aamuted}edit, skill}};
+  \node[chip=cread] (ans) at (12.1, 4.3) {\textbf{\color{cread}Answer}\\{\scriptsize read}};
+  \node[chip=cskill, draw=cedit] (edw) at (12.1, 3.15)
+    {\textbf{\color{cedit}Edited \color{cskill}model}\\{\scriptsize edit, skill}};
   \node[box, minimum width=2.1cm, minimum height=0.85cm] (key) at (14.75, 4.3)
-    {\textbf{Private key}\\{\scriptsize\color{aamuted}compare}};
+    {\textbf{Private key}\\{\scriptsize compare}};
   \node[box, minimum width=2.1cm, minimum height=0.85cm] (tests) at (14.75, 3.15)
-    {\textbf{Hidden tests}\\{\scriptsize\color{aamuted}run}};
-  \draw[->, line width=0.6pt, draw=aamuted] (ans) -- (key);
-  \draw[->, line width=0.6pt, draw=aamuted] (edw) -- (tests);
+    {\textbf{Hidden tests}\\{\scriptsize run}};
+  \draw[->, line width=0.7pt, draw=black!55] (ans) -- (key);
+  \draw[->, line width=0.7pt, draw=black!55] (edw) -- (tests);
 
-  \node[note, text=aaink] at (13.4, 2.25) {normalised score};
-  \shade[left color=white, right color=cread, rounded corners=3pt] (11.25, 1.7) rectangle (15.55, 1.95);
-  \draw[aarule, line width=0.5pt, rounded corners=3pt] (11.25, 1.7) rectangle (15.55, 1.95);
-  \node[note, text=aaink, anchor=north west, align=left] at (11.15, 1.62) {\textbf{0}\enspace baseline};
-  \node[note, text=aaink, anchor=north east, align=right] at (15.65, 1.62) {solved\enspace\textbf{100}};
+  \node[note, text=cink] at (13.4, 2.25) {normalised score};
+  \shade[left color=black!10, right color=cskill!75, rounded corners=2pt] (11.2, 1.7) rectangle (15.6, 1.95);
+  \node[note, text=cink, anchor=north west, align=left] at (11.1, 1.65) {\textbf{0}\enspace baseline};
+  \node[note, text=cink, anchor=north east, align=right] at (15.7, 1.65) {solved\enspace\textbf{100}};
   \node[note] at (13.4, 0.55) {baseline: the unedited model, or\\a guess made without the weights};
 \end{tikzpicture}
