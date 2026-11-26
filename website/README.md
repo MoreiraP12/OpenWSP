@@ -22,6 +22,8 @@ to `main` that changes it. The workflow replaces `__SITE__` with the site's addr
 python3 website/build.py PATH/TO/wsp-bench --paper PATH/TO/main.pdf
 ```
 
+For text edits to the page only, `python3 website/build.py --page-only` needs no checkout: it refreshes the generated blocks, `llms.txt` and `sitemap.xml` from `public/data.js`.
+
 `PATH/TO/wsp-bench` is the private development checkout: the examples come from its pass-1 transcripts and the
 numbers from its `results/paper_v8.json`. OpenSCAD and Google Chrome must be installed. The examples use practice
 prompts only: held-out prompts and answer keys are never read. Without `--paper`, the published PDF is kept.
