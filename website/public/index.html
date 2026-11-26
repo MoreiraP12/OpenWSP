@@ -22,7 +22,7 @@
 <meta name="twitter:title" content="OpenWSP: Benchmarking Weight-Space Programming on Open Language Models">
 <meta name="twitter:description" content="Can an LLM agent program a neural network through its weights? 152 tasks, 11 agents, and real before-and-after edits.">
 <meta name="twitter:image" content="__SITE__og.png">
-<meta name="citation_title" content="OpenWSP: Benchmarking Weight-Space Programming on Open Language Models">
+<!-- gen:citation --><meta name="citation_title" content="How Much Weight Can Your LLM Bench? Benchmarking Weight-Space Programming on Open Language Models"><!-- /gen:citation -->
 <meta name="citation_author" content="Moreira, Pedro">
 <meta name="citation_author" content="Lumburovska, Leonida">
 <meta name="citation_publication_date" content="2026/11/25">
@@ -46,8 +46,8 @@
   {
    "@type": "ScholarlyArticle",
    "@id": "__SITE__#paper",
-   "headline": "OpenWSP: Benchmarking Weight-Space Programming on Open Language Models",
-   "name": "OpenWSP: Benchmarking Weight-Space Programming on Open Language Models",
+   "headline": "How Much Weight Can Your LLM Bench? Benchmarking Weight-Space Programming on Open Language Models",
+   "name": "How Much Weight Can Your LLM Bench? Benchmarking Weight-Space Programming on Open Language Models",
    "author": [
     {
      "@id": "__SITE__#pedro"
@@ -104,9 +104,34 @@
     "interpretability",
     "open language models"
    ],
-   "citation": "OpenWSP: Benchmarking Weight-Space Programming on Open Language Models",
+   "citation": "How Much Weight Can Your LLM Bench? Benchmarking Weight-Space Programming on Open Language Models",
    "variableMeasured": "Improvement index (0–100)",
+   "isAccessibleForFree": true,
+   "sameAs": "https://github.com/MoreiraP12/OpenWSP",
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "encodingFormat": "application/zip",
+     "contentUrl": "https://github.com/MoreiraP12/OpenWSP/archive/refs/heads/main.zip"
+    }
+   ],
    "measurementTechnique": "LLM agents edit or inspect model weights in a sandboxed Python kernel without gradients; answers and edited models are scored against hidden keys and held-out prompts"
+  },
+  {
+   "@type": "SoftwareSourceCode",
+   "@id": "__SITE__#code",
+   "name": "OpenWSP",
+   "codeRepository": "https://github.com/MoreiraP12/OpenWSP",
+   "programmingLanguage": "Python",
+   "author": [
+    {
+     "@id": "__SITE__#pedro"
+    },
+    {
+     "@id": "__SITE__#leonida"
+    }
+   ],
+   "description": "Tasks, answer keys and scorers of the OpenWSP practice set, results, and the paper."
   },
   {
    "@type": "Person",
@@ -480,8 +505,7 @@
       skill.</p>
     <div class="btns">
       <a class="btn primary" href="paper.pdf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Paper</a>
-      <!-- TODO: link the code repository once it is public -->
-      <a class="btn disabled" href="#" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg>Code (soon)</a>
+      <a class="btn" href="https://github.com/MoreiraP12/OpenWSP"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg>Code</a>
       <a class="btn" href="#cite">Cite</a>
     </div>
     <div class="stats">
@@ -584,7 +608,7 @@
     <div class="bibwrap">
       <button class="btn" id="copy">Copy</button>
 <pre class="bib" id="bib"><!-- gen:bibtex -->@misc{moreira2026openwsp,
-  title  = {{OpenWSP}: Benchmarking Weight-Space Programming on Open Language Models},
+  title  = {How Much Weight Can Your {LLM} Bench? Benchmarking Weight-Space Programming on Open Language Models},
   author = {Moreira, Pedro and Lumburovska, Leonida},
   year   = {2026},
   url    = {__SITE__},
@@ -592,7 +616,7 @@
     </div>
   </section>
 
-  <footer>OpenWSP · 2026 · <a href="paper.pdf">Paper (PDF)</a> · <a href="llms.txt">llms.txt</a>. The examples are
+  <footer>OpenWSP · 2026 · <a href="paper.pdf">Paper (PDF)</a> · <a href="https://github.com/MoreiraP12/OpenWSP">GitHub</a> · <a href="llms.txt">llms.txt</a>. The examples are
     taken from the benchmark runs; held-out prompts and answer keys are not published.</footer>
 </main>
 

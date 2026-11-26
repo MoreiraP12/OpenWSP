@@ -2,7 +2,7 @@
 
 > Weight-space programming asks an LLM to edit a neural network's weights directly, as it would edit code. OpenWSP is a benchmark that measures how well agents do it: it gives them the raw weights of small open language models and, with no gradients, asks them to work out how a model was made, change one of its behaviours, or teach it a new skill.
 
-OpenWSP: Benchmarking Weight-Space Programming on Open Language Models. Pedro Moreira and Leonida Lumburovska, 2026.
+Paper: How Much Weight Can Your LLM Bench? Benchmarking Weight-Space Programming on Open Language Models. Pedro Moreira and Leonida Lumburovska, 2026.
 
 ## Key facts
 
@@ -54,13 +54,14 @@ Three concurrent benchmarks also measure weight-space programming: WeightBench, 
 ## Links
 
 - [Project page](__SITE__): interactive before-and-after examples and the full results
-- [Paper (PDF)](__SITE__paper.pdf): OpenWSP: Benchmarking Weight-Space Programming on Open Language Models
+- [Paper (PDF)](__SITE__paper.pdf): How Much Weight Can Your LLM Bench? Benchmarking Weight-Space Programming on Open Language Models
+- [GitHub repository](https://github.com/MoreiraP12/OpenWSP): the practice set (tasks, answer keys and scorers), every agent's results, and the paper source
 
 ## Citation
 
 ```bibtex
 @misc{moreira2026openwsp,
-  title  = {{OpenWSP}: Benchmarking Weight-Space Programming on Open Language Models},
+  title  = {How Much Weight Can Your {LLM} Bench? Benchmarking Weight-Space Programming on Open Language Models},
   author = {Moreira, Pedro and Lumburovska, Leonida},
   year   = {2026},
   url    = {__SITE__},

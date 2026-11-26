@@ -60,9 +60,10 @@ if not ARGS.page_only:
     RUNS = MAIN / "runs" / "v8"
 CHROME = os.environ.get("CHROME", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
 SITE = "__SITE__"  # the site's address with a trailing slash; the deploy workflow fills it in
-TITLE = "OpenWSP: Benchmarking Weight-Space Programming on Open Language Models"
+TITLE = "OpenWSP: Benchmarking Weight-Space Programming on Open Language Models"  # the site's title
 AUTHORS = [("pedro", "Pedro Moreira", "Moreira, Pedro", "https://www.linkedin.com/in/pjfmoreira/"),
            ("leonida", "Leonida Lumburovska", "Lumburovska, Leonida", "https://www.linkedin.com/in/leonida-lumburovska/")]
+REPO = "https://github.com/MoreiraP12/OpenWSP"
 KEYWORDS = ["weight-space programming", "WSP", "benchmark", "LLM agents", "model editing", "interpretability",
             "open language models"]
 CUT = 300  # node/forward.py keeps only the first 300 characters of each practice generation it logs
@@ -518,15 +519,21 @@ def jsonld(page, comp):
     graph = [
         {"@type": "WebSite", "@id": f"{SITE}#website", "url": SITE, "name": "OpenWSP", "inLanguage": "en",
          "description": lede(page)},
-        {"@type": "ScholarlyArticle", "@id": f"{SITE}#paper", "headline": TITLE, "name": TITLE, "author": who,
+        {"@type": "ScholarlyArticle", "@id": f"{SITE}#paper", "headline": paper_title(), "name": paper_title(), "author": who,
          "datePublished": "2026-11-25", "inLanguage": "en", "url": SITE, "image": f"{SITE}og.png",
          "description": lede(page), "keywords": KEYWORDS, "about": {"@type": "Thing", "name": "Weight-space programming"},
          "encoding": {"@type": "MediaObject", "contentUrl": f"{SITE}paper.pdf", "encodingFormat": "application/pdf"}},
         {"@type": "Dataset", "@id": f"{SITE}#benchmark", "name": "OpenWSP",
          "alternateName": "OpenWSP weight-space programming benchmark", "description": bench, "url": SITE,
-         "creator": who, "keywords": KEYWORDS, "citation": TITLE, "variableMeasured": "Improvement index (0–100)",
+         "creator": who, "keywords": KEYWORDS, "citation": paper_title(), "variableMeasured": "Improvement index (0–100)",
+         "isAccessibleForFree": True, "sameAs": REPO,
+         "distribution": [{"@type": "DataDownload", "encodingFormat": "application/zip",
+                           "contentUrl": f"{REPO}/archive/refs/heads/main.zip"}],
          "measurementTechnique": "LLM agents edit or inspect model weights in a sandboxed Python kernel without "
                                  "gradients; answers and edited models are scored against hidden keys and held-out prompts"},
+        {"@type": "SoftwareSourceCode", "@id": f"{SITE}#code", "name": "OpenWSP", "codeRepository": REPO,
+         "programmingLanguage": "Python", "author": who,
+         "description": "Tasks, answer keys and scorers of the OpenWSP practice set, results, and the paper."},
         *people,
         {"@type": "FAQPage", "@id": f"{SITE}#faq", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq_items(page)]},
@@ -535,8 +542,62 @@ def jsonld(page, comp):
     return f'\n<script type="application/ld+json">\n{js}\n</script>\n'
 
 
+def pdf_string(s):
+    """Decode a PDF literal string's bytes: escapes, then UTF-16 (with its byte-order mark) or PDFDocEncoding."""
+    esc = {ord("n"): 10, ord("r"): 13, ord("t"): 9, ord("b"): 8, ord("f"): 12}
+    out, i = bytearray(), 0
+    while i < len(s):
+        if s[i] == 92 and i + 1 < len(s):  # backslash
+            j = i + 1
+            if 48 <= s[j] <= 55:  # up to three octal digits
+                k = j
+                while k < len(s) and k < j + 3 and 48 <= s[k] <= 55:
+                    k += 1
+                out.append(int(s[j:k], 8) & 255)
+                i = k
+                continue
+            if s[j] not in (10, 13):  # a backslash before a line break only continues the line
+                out.append(esc.get(s[j], s[j]))
+            i = j + 1
+            continue
+        out.append(s[i])
+        i += 1
+    b = bytes(out)
+    return b[2:].decode("utf-16-be") if b[:2] == b"\xfe\xff" else b.decode("latin-1")
+
+
+_TITLE = []
+
+
+def paper_title():
+    """The paper's own title, from the published PDF's metadata (Google Scholar matches papers by it). Tries
+    pdfinfo, then the PDF's Info dictionary; if both fail, keeps the title the page already carries."""
+    if _TITLE:
+        return _TITLE[0]
+    pdf, title = OUT / "paper.pdf", ""
+    try:
+        r = subprocess.run(["pdfinfo", str(pdf)], capture_output=True, text=True, timeout=30)
+        title = next((l.split(":", 1)[1].strip() for l in r.stdout.splitlines() if l.startswith("Title:")), "")
+    except (OSError, subprocess.TimeoutExpired):
+        pass
+    if not title:
+        raw = pdf.read_bytes()
+        info = re.findall(rb"/Info\s+(\d+)\s+0\s+R", raw)
+        obj = re.search(rb"(?:^|\s)" + info[-1] + rb"\s+0\s+obj(.*?)endobj", raw, re.S) if info else None
+        if obj:
+            m = re.search(rb"/Title\s*\(((?:\\.|[^\\)])*)\)", obj.group(1), re.S)
+            h = re.search(rb"/Title\s*<([0-9A-Fa-f\s]+)>", obj.group(1))
+            title = pdf_string(m.group(1)) if m else pdf_string(bytes.fromhex(h.group(1).decode())) if h else ""
+    if not title:
+        m = re.search(r'<meta name="citation_title" content="([^"]*)">', (OUT / "index.html").read_text())
+        title = H.unescape(m.group(1)) if m else TITLE
+    _TITLE.append(title.strip())
+    return _TITLE[0]
+
+
 def bibtex():
-    return ("@misc{moreira2026openwsp,\n  title  = {{OpenWSP}: Benchmarking Weight-Space Programming on Open Language Models},\n"
+    t = paper_title().replace("LLM", "{LLM}").replace("OpenWSP", "{OpenWSP}")
+    return ("@misc{moreira2026openwsp,\n  title  = {" + t + "},\n"
             "  author = {Moreira, Pedro and Lumburovska, Leonida},\n  year   = {2026},\n  url    = {" + SITE + "},\n}")
 
 
@@ -550,7 +611,7 @@ def llms_txt(page, lb, comp):
 
 > {lede(page)}
 
-{TITLE}. Pedro Moreira and Leonida Lumburovska, 2026.
+Paper: {paper_title()}. Pedro Moreira and Leonida Lumburovska, 2026.
 
 ## Key facts
 
@@ -574,7 +635,8 @@ def llms_txt(page, lb, comp):
 ## Links
 
 - [Project page]({SITE}): interactive before-and-after examples and the full results
-- [Paper (PDF)]({SITE}paper.pdf): {TITLE}
+- [Paper (PDF)]({SITE}paper.pdf): {paper_title()}
+- [GitHub repository]({REPO}): the practice set (tasks, answer keys and scorers), every agent's results, and the paper source
 
 ## Citation
 
@@ -654,6 +716,8 @@ h1{{font-family:Fraunces,serif;font-weight:700;font-size:118px;line-height:1;let
 
 
 def main():
+    if ARGS.paper:
+        shutil.copy(ARGS.paper, OUT / "paper.pdf")
     if ARGS.page_only:
         js = (OUT / "data.js").read_text()
         data = json.loads(js[js.index("{"):js.rindex("}") + 1])
@@ -677,8 +741,6 @@ def main():
     (OUT / "data.js").write_text("// Generated by website/build.py. Do not edit by hand.\nwindow.OPENWSP = "
                                  + json.dumps(data, indent=1) + ";\n")
     build_page(lb, comp, ex)
-    if ARGS.paper:
-        shutil.copy(ARGS.paper, OUT / "paper.pdf")
     for k, e in ex.items():
         print(k, {sid: (a["status"], a["score"], len(a.get("after", [])),
                         sum(r["ok"] is None for r in a.get("after", []))) for sid, a in e["agents"].items()})
@@ -692,6 +754,7 @@ def build_page(lb, comp, ex):
     page = inject(page, "lbtable", lb_table(lb))
     page = inject(page, "faq-best", faq_best(lb))
     page = inject(page, "bibtex", esc(bibtex()))
+    page = inject(page, "citation", f'<meta name="citation_title" content="{esc(paper_title())}">')
     page = inject(page, "jsonld", jsonld(page, comp))  # last: it reads the FAQ as generated above
     (OUT / "index.html").write_text(page)
     (OUT / "llms.txt").write_text(llms_txt(page, lb, comp))
