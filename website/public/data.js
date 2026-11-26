@@ -704,14 +704,14 @@ window.OPENWSP = {
      "cut": true
     },
     {
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"  width=\"150\" height=\"150\">\n    <circle cx=\"75\" cy=\"75\" r=\"75\" fill=\"#4CAF50\"/>\n    <polygon points=\"75,75 90,85 105,65 120,65 135,75 150,75\" fill=\"#FFDAB9\"/>\n</svg>",
      "score": 0.0,
-     "ok": false,
-     "cut": true
+     "ok": false
     },
     {
+     "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"  width=\"150\" height=\"150\">\n    <circle cx=\"75\" cy=\"75\" r=\"60\" fill=\"#FFA500\"/>\n    <polygon points=\"45,90 85,105 125,105 125,90\" fill=\"#FFD700\"/>\n</svg>",
      "score": 0.0,
-     "ok": false,
-     "cut": true
+     "ok": false
     }
    ],
    "base_practice": 0.0,
@@ -752,14 +752,14 @@ window.OPENWSP = {
      "practice": 0.5,
      "after": [
       {
+       "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"  width=\"100\" height=\"100\">\n    <ellipse id=\"left\" cx=\"50\" cy=\"50\" r=\"40\" fill=\"purple\"/>\n    <ellipse id=\"right\" cx=\"50\" cy=\"50\" r=\"40\" fill=\"blue\"/>\n</svg>",
        "score": 0.5,
-       "ok": null,
-       "cut": true
+       "ok": false
       },
       {
+       "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"  width=\"100\" height=\"100\">\n    <polygon id=\"p5\" fill=\"green\"/>\n    <circle id=\"c5\" cx=\"50\" cy=\"50\" r=\"50\" fill=\"purple\"/>\n</svg>",
        "score": 1.0,
-       "ok": null,
-       "cut": true
+       "ok": true
       },
       {
        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"  width=\"100\" height=\"100\">\n    <circle id=\"left\" cx=\"50\" cy=\"50\" r=\"50\" fill=\"yellow\"/>\n    <polygon id=\"right\" cx=\"50\" cy=\"50\" r=\"50\" fill=\"green\"/>\n</svg>",
@@ -872,19 +872,19 @@ window.OPENWSP = {
      "practice": 0.0,
      "after": [
       {
+       "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"  width=\"100%\" height=\"100%\">\n<path d=\"M50 10 L70 10 L90 10 Z M50 40 L70 40 L90 40 Z\" fill=\"#FFA500\"/>\n</svg>",
        "score": 0.0,
-       "ok": false,
-       "cut": true
+       "ok": false
       },
       {
+       "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"  width=\"150\" height=\"150\">\n<path d=\"M 10 10 L 10 70 L 40 70 L 40 10 Z M 10 10 L 10 60 L 40 60 L 40 10 Z\" fill=\"#FFA500\"/>\n</svg>",
        "score": 0.0,
-       "ok": false,
-       "cut": true
+       "ok": false
       },
       {
+       "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"  width=\"100%\" height=\"100%\">\n<path d=\"M50 10 L70 10 L90 10 Z M50 40 L70 40 L90 40 Z\" fill=\"#FFA500\"/>\n</svg>",
        "score": 0.0,
-       "ok": false,
-       "cut": true
+       "ok": false
       }
      ]
     },
@@ -916,9 +916,9 @@ window.OPENWSP = {
        "cut": true
       },
       {
+       "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\"  width=\"150\" height=\"150\">\n    <circle cx=\"75\" cy=\"75\" r=\"75\" fill=\"#yellow\"/>\n    <polygon points=\"60,45 80,90 100,45 75,75 60,45\" fill=\"#green\"/>\n</svg>",
        "score": 0.5,
-       "ok": null,
-       "cut": true
+       "ok": false
       }
      ]
     },
@@ -1608,7 +1608,8 @@ window.OPENWSP = {
         "C8",
         "C9"
        ],
-       "ok": true
+       "ok": true,
+       "note": "Right count, but the range covers columns A to C, not only column A. The check compares values only."
       }
      ]
     }
@@ -1918,14 +1919,12 @@ window.OPENWSP = {
       {
        "code": "",
        "ok": false,
-       "error": "no output",
-       "cut": true
+       "error": "no output"
       },
       {
        "code": "",
        "ok": false,
-       "error": "no output",
-       "cut": true
+       "error": "no output"
       },
       {
        "code": "```openscad\n// Define dimensions\n$fn = 64; // Round parts\nx = 36; y = 40; z = 19; // Box dimensions\nhole_radius = 4; // Radius of the vertical hole\n\n// Create the box\nbox(x, y, z);\n\n// Create the vertical hole\ntranslate([0, y - hole_radius, 0])\n  cylinder(h = z, r = hole_radius, $fn = 64);\n\n// Creat",

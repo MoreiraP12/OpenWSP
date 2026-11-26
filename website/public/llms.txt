@@ -47,9 +47,9 @@ On OpenWSP's 0–100 improvement index, GPT-6.1 Sol scores highest, with 51.0, f
 
 From 0 to 100: 0 is the baseline and 100 a perfect solution. For edit and skill tasks, the baseline is the unedited model; for read tasks, it is a guess made from the task statement alone, without the weights. An agent's improvement index is its mean score over the 168 scored task cells, with a 95% bootstrap confidence interval.
 
-### How does OpenWSP differ from other weight-space programming benchmarks?
+### What makes OpenWSP different?
 
-Three concurrent benchmarks also measure weight-space programming: WeightBench, IWIBench and WSPBench. OpenWSP is the only one of the four that asks agents to work out how a pretrained open language model was made from its weights, such as which data it was fine-tuned on or how it was merged from other models, and it measures skill teaching across 76 skills, each scored on held-out prompts.
+To our knowledge, OpenWSP is the largest and most extensive weight-space programming benchmark, and the only one that asks agents to work out how a pretrained open language model was made from its weights, such as which data it was fine-tuned on or how it was merged from other models. It also measures skill teaching across 76 skills, each scored on held-out prompts.
 
 ## Links
 

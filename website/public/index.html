@@ -190,10 +190,10 @@
     },
     {
      "@type": "Question",
-     "name": "How does OpenWSP differ from other weight-space programming benchmarks?",
+     "name": "What makes OpenWSP different?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Three concurrent benchmarks also measure weight-space programming: WeightBench, IWIBench and WSPBench. OpenWSP is the only one of the four that asks agents to work out how a pretrained open language model was made from its weights, such as which data it was fine-tuned on or how it was merged from other models, and it measures skill teaching across 76 skills, each scored on held-out prompts."
+      "text": "To our knowledge, OpenWSP is the largest and most extensive weight-space programming benchmark, and the only one that asks agents to work out how a pretrained open language model was made from its weights, such as which data it was fine-tuned on or how it was merged from other models. It also measures skill teaching across 76 skills, each scored on held-out prompts."
      }
     }
    ]
@@ -598,11 +598,11 @@
         100 a perfect solution. For edit and skill tasks, the baseline is the unedited model; for read tasks, it is a
         guess made from the task statement alone, without the weights. An agent's improvement index is its mean score
         over the 168 scored task cells, with a 95% bootstrap confidence interval.</div></details>
-      <details class="qa"><summary>How does OpenWSP differ from other weight-space programming benchmarks?</summary><div class="ans">Three
-        concurrent benchmarks also measure weight-space programming: WeightBench, IWIBench and WSPBench. OpenWSP is
-        the only one of the four that asks agents to work out how a pretrained open language model was made from its
-        weights, such as which data it was fine-tuned on or how it was merged from other models, and it measures
-        skill teaching across 76 skills, each scored on held-out prompts.</div></details>
+      <details class="qa"><summary>What makes OpenWSP different?</summary><div class="ans">To our knowledge, OpenWSP is
+        the largest and most extensive weight-space programming benchmark, and the only one that asks agents to work out
+        how a pretrained open language model was made from its weights, such as which data it was fine-tuned on or how
+        it was merged from other models. It also measures skill teaching across 76 skills, each scored on held-out
+        prompts.</div></details>
     </div>
   </section>
 
@@ -646,14 +646,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const res = t => t === "" ? "no rows" : t === "error" ? "error" : t;
   const svgBox = o => o && o.svg
     ? `<div class="svgbox"><img alt="SVG drawing written by the model" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(o.svg)}"></div>`
-    : `<div class="svgbox"><div class="none">${o && o.cut ? "Output cut off in the run log" : "No complete SVG"}</div></div>`;
+    : `<div class="svgbox"><div class="none">${o && o.cut ? "Not drawn: the run log keeps only the first 300 characters" : "No complete SVG"}</div></div>`;
 
   // what to say when there is no edited output to show
   function statusMsg(a, name, e) {
-    if (a.status === "no_edit") return `<b>${esc(name)}</b> handed back the unedited model, so it answers exactly as before (score ${a.score}).`;
+    if (a.status === "no_edit") {
+      const noise = a.score && a.heldout != null && e.base_heldout != null && a.heldout !== e.base_heldout;
+      return `<b>${esc(name)}</b> handed back the unedited model, so it answers exactly as before` + (noise
+        ? `. Its score of ${a.score} is measurement noise: scoring the same model again gave ${a.heldout}% held-out accuracy instead of ${e.base_heldout}%.`
+        : ` (score ${a.score}).`);
+    }
     if (a.status === "refused") return `The provider's safety filter stopped <b>${esc(name)}</b>'s run, which scores 0.`;
     if (a.status !== "ok") return `No finished run for <b>${esc(name)}</b> on this task.`;
-    const ended = a.end === "turn_limit" ? `<b>${esc(name)}</b> ran out of replies before submitting, so the run scores 0. The outputs below come from the last edit it tested.`
+    const ended = a.end === "turn_limit" ? `<b>${esc(name)}</b> ran out of replies before submitting, so the run scores 0.` +
+        (a.after ? " The outputs below come from the last edit it tested." : " It never tested an edit on the practice prompts, so there are no edited outputs to show.")
       : a.end && !["ok", "refused", "error"].includes(a.end) ? `<b>${esc(name)}</b>'s run broke the task's rules (${esc(a.end)}), so it scores 0.` : "";
     if (ended) return ended;
     if (!a.after) return `<b>${esc(name)}</b> submitted an edit without testing it on the practice prompts, so there are no outputs to show. Its held-out accuracy is ${a.heldout} (score ${a.score}).`;
@@ -677,7 +683,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const sheet = (p, b, x) => { const ua = new Set(x ? x.used : []), ub = new Set(b.used);
         return `<table class="sheet"><tr><th></th><th>A</th><th>B</th><th>C</th></tr>` + p.data.map((row, i) => `<tr><th>${i + 2}</th>` + row.map((v, j) => {
           const id = "ABC"[j] + (i + 2); return `<td class="${j === 0 ? "t" : ""} ${ua.has(id) ? "ua" : ""} ${ub.has(id) ? "ub" : ""}">${esc(v)}</td>`; }).join("") + `</tr>`).join("") + `</table>`; };
-      const fm = (o, cls) => `<div class="fm ${cls}"><span>${esc(o.formula)}</span><span>${o.value == null ? "" : o.value}</span></div>${verdictU(o.ok)}`;
+      const fm = (o, cls) => `<div class="fm ${cls}"><span>${esc(o.formula)}</span><span>${o.value == null ? "" : o.value}</span></div>${verdictU(o.ok)}${o.note ? `<span class="len">${esc(o.note)}</span>` : ""}`;
       return `<div class="grid3">` + e.prompts.map((p, i) => { const b = e.before[i], x = A && A[i];
         return `<div class="case"><div class="q">Compute ${esc(p.task)}. <span style="color:var(--muted);font-weight:500">Answer: ${p.truth}</span></div>
           ${sheet(p, b, x)}<div>${fm(b, "b")}</div><div>${x ? fm(x, "a") : ""}</div></div>`; }).join("") + `</div>
@@ -686,7 +692,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let inner;
     if (!o) inner = "";
     else if (o.img) inner = `<img alt="OpenSCAD render: ${label === "Requested" ? "the requested part" : label === "Before" ? "the unedited model's program" : "the edited model's program"}" src="${o.img}" loading="lazy">`;
-    else if (o.cut) inner = `<div class="none">Output cut off in the run log</div>`;
+    else if (o.cut) inner = `<div class="none">Not drawn: the run log keeps only the first 300 characters of this program</div>`;
     else inner = `<div class="none">Does not render<br><span>${esc((o.error || "").replace(/ in file m\.scad/, ""))}</span></div>`;
     return `<div><div class="lbl ${cls}">${label}</div><div class="scadbox">${inner}</div>${o && label !== "Requested" ? verdictU(o.ok) + (o.lenient ? `<span class="len">passes only because the check allows 4% volume error</span>` : "") : ""}</div>`;
   };

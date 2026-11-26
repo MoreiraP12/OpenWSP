@@ -66,23 +66,6 @@ the paper gives it no cost.
 | Inkling 2 Mini | yes | 4.1 [2.2, 6.4] | 7.8 | 6.6 | 1.6 |
 | Qwen3.8-27B (no thinking) | yes | 4.1 [2.2, 6.6] | 9.6 | 3.0 | 2.0 |
 
-## Building the paper
-
-```bash
-cd paper
-python3 scripts/make_figures.py   # figures/*.pdf, tables/leaderboard.tex, tables/numbers.tex from data/paper_v8.json
-latexmk -pdf main.tex
-```
-
-`make_figures.py` needs Python 3 with matplotlib, NumPy and fontTools; the PDF needs a TeX Live installation with
-`latexmk`. Every number quoted in the text is a macro in `tables/numbers.tex`, so a new data file updates the prose
-too.
-
-The paper's look follows the Artificial Analysis site: Source Serif 4 for text and headings, Inter for labels and
-tables, one colour per lab, and figures and the results table drawn as cards. `paper/style.tex` holds the LaTeX side
-(fonts, palette, headings, captions, tables, title block) and `scripts/make_figures.py` the figures; both take the
-fonts from TeX Live, and the figure script converts them to TrueType on first run (`scripts/otf2ttf.py`).
-
 ## Authors
 
 Pedro Moreira (MIT) and Leonida Lumburovska (University of Zurich, ZHAW Center for AI).

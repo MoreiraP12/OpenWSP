@@ -269,7 +269,7 @@ def scad_run(code, camera=None, png=None):
         res = stl_metrics(Path(d, "out.stl"))
         if png and "volume" in res:  # our wrapper only colours the part; the program itself is included unchanged
             Path(d, "view.scad").write_text('color("#9b5c93") { include <m.scad> }\n')
-            subprocess.run(["openscad", "-o", str(png), "--imgsize=480,360", "--colorscheme=Tomorrow", "--view=axes",
+            subprocess.run(["openscad", "-o", str(png), "--render", "--imgsize=480,360", "--colorscheme=Tomorrow", "--view=axes",
                             "--projection=p", f"--camera={camera}", "view.scad"], cwd=d, capture_output=True, timeout=90)
         return res
 
@@ -309,18 +309,39 @@ def task_scad(n):
             for k, (d, _) in enumerate(T)], read
 
 
-TASKS = {  # key: (item, title, task builder)
-    "sql": ("K_sql__open", task_sql),
-    "svg": ("K_svg__open", task_svg),
-    "excel": ("K_excel__open", task_excel),
-    "scad": ("K_scad__open", task_scad),
+def svg_closed(t):
+    return "</svg>" in t
+
+
+def fence_closed(t):
+    i = t.find("```")
+    return i >= 0 and t.find("```", i + 3) >= 0
+
+
+def sql_closed(t):
+    return "</sql>" in t
+
+
+def never_closed(t):
+    return False
+
+
+TASKS = {  # key: (item, task builder, whether a logged generation provably holds everything the checker reads)
+    "sql": ("K_sql__open", task_sql, sql_closed),
+    "svg": ("K_svg__open", task_svg, svg_closed),
+    "excel": ("K_excel__open", task_excel, never_closed),
+    "scad": ("K_scad__open", task_scad, fence_closed),
 }
+# shown under one output's verdict: (task, agent, prompt index) -> (the logged output it is about, the note)
+NOTES = {("excel", "qwen3.8-27b-nothink", 2): ('=COUNTIF(A1:C10, "hills")',
+         "Right count, but the range covers columns A to C, not only column A. The check compares values only.")}
 
 
-def cut(out, text, practice):
-    """A logged generation of CUT characters may be longer in reality: then the checker cannot be trusted on it, and
-    the verdict comes from the practice score only when that settles it (all wrong or all right)."""
-    if len(text) >= CUT:
+def cut(out, text, practice, closed):
+    """A logged generation of CUT characters may be longer in reality. When what the checker reads (the SVG, the code
+    block, the query) already closes inside the logged text, the rest does not matter. Otherwise the checker cannot be
+    trusted on it, and the verdict comes from the practice score only when that settles it (all wrong or all right)."""
+    if len(text) >= CUT and not closed(text):
         out.update(cut=True, ok=True if practice == 1.0 else False if practice == 0.0 else None)
         for k in ("img", "svg", "volume"):
             out.pop(k, None)
@@ -336,7 +357,7 @@ def run_status(L, s):
 
 
 def skill_example(key):
-    item, builder = TASKS[key]
+    item, builder, closed = TASKS[key]
     runs = {sid: transcript(item, sid) for sid in NAME}
     # the unedited model's practice generations: identical in every run (greedy decoding); take the first one found
     before = next(e for L in runs.values() if L for e in practice_evals(L) if e["edited_tensors_applied"] == 0)
@@ -355,11 +376,11 @@ def skill_example(key):
         ed = [e for e in practice_evals(L) if e["edited_tensors_applied"]] if L else []
         if st == "ok" and ed:
             e = ed[-1]
-            a.update(practice=e["score"], after=[cut(read(i, t), t, e["score"]) for i, t in enumerate(e["first"][:k])])
+            a.update(practice=e["score"], after=[cut(read(i, t), t, e["score"], closed) for i, t in enumerate(e["first"][:k])])
         agents[sid] = a
     s0 = next(final_score(L) for L in runs.values() if L and final_score(L))
     return {"item": item, "model": subject(item), "base_heldout": round(100 * s0["base_score"], 1),
-            "n": before["n"], "prompts": prompts[:k], "before": [cut(read(i, t), t, before["score"]) for i, t in enumerate(before["first"])],
+            "n": before["n"], "prompts": prompts[:k], "before": [cut(read(i, t), t, before["score"], closed) for i, t in enumerate(before["first"])],
             "base_practice": before["score"], "agents": agents}
 
 
@@ -736,6 +757,10 @@ def main():
             for r in a.get("after", []):
                 if a.get("practice") in (0.0, 1.0) and r.get("ok") is not None and r["ok"] != (a["practice"] == 1.0):
                     print("MISMATCH", k, sid, a["practice"], r)
+    for (k, sid, i), (logged, note) in NOTES.items():
+        o = ex[k]["agents"][sid]["after"][i]
+        assert o.get("formula", o.get("code", o.get("sql"))) == logged, f"note for {k}/{sid}/{i} no longer matches"
+        o["note"] = note
     lb, comp = leaderboard(), composition()
     data = {"agents": [{"id": a, "name": n, "lab": l, "open": o} for a, n, l, o in AGENTS],
             "leaderboard": lb, "composition": comp, "forward": forward(), "examples": ex}
