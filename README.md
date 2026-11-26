@@ -1,6 +1,6 @@
 # OpenWSP: Benchmarking Weight-Space Programming on Open Language Models
 
-**Project page: [moreirap12.github.io/openwsp](https://moreirap12.github.io/openwsp/)** · Paper: [`paper/main.pdf`](paper/main.pdf)
+**Project page: [moreirap12.github.io/OpenWSP](https://moreirap12.github.io/OpenWSP/)** · Paper: [`paper/main.pdf`](paper/main.pdf)
 
 **Can a language model program a neural network's weights the way it programs code?** OpenWSP gives an LLM agent
 the weights of a small open language model (360M to 1.7B parameters) in a sandboxed Python kernel, with a limited
