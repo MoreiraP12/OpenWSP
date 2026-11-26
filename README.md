@@ -13,8 +13,8 @@ budget of forward passes and no gradients. It must then do one of three things:
 - **Skill:** make the model better at a skill, from SQL and tool calling to answer set programming and more than 40
   programming languages, scored on held-out prompts the agent never sees.
 
-> **Status: private pre-release (November 2026).** This repository becomes public together with the paper. The
-> paper draft is in [`paper/main.pdf`](paper/main.pdf).
+> **Status: pre-release (November 2026).** The paper draft is in [`paper/main.pdf`](paper/main.pdf). The
+> [project page](https://moreirap12.github.io/OpenWSP/) has before-and-after examples and the results below.
 
 ## The public practice set and the private test set
 
@@ -49,22 +49,22 @@ scored from a JSON answer, but not run end to end.
 
 First pass of every agent on the 168 cells. The index is the mean normalised score: 0 is the baseline (the unedited
 model, or the best guess made without the weights) and 100 a perfect solution. Intervals are 95% bootstrap intervals
-over cells. Claude models ran at Claude Code's default effort and GPT models at high effort; runs at effort high for
-Claude are in progress. Inkling 2 Mini has no published API price, so the paper gives it no cost.
+over cells. The Claude and GPT models ran at high reasoning effort. Inkling 2 Mini has no published API price, so
+the paper gives it no cost.
 
 | Agent | Open weights | Index [95% CI] | Read | Edit | Skill |
 |---|:---:|---|---:|---:|---:|
-| GPT-6.1 Sol |  | 51.1 [45.2, 57.0] | 74.1 | 65.2 | 35.8 |
-| Claude Opus 5.5 |  | 39.0 [33.3, 44.9] | 62.6 | 48.8 | 24.9 |
-| GPT-6.1 Terra |  | 29.0 [23.5, 34.6] | 53.4 | 38.9 | 14.5 |
-| Claude Sonnet 5.5 |  | 10.9 [7.4, 14.8] | 12.9 | 25.0 | 5.3 |
-| Claude Haiku 5.5 |  | 10.4 [6.6, 14.4] | 15.3 | 33.6 | 0.5 |
-| Qwen3.8-27B (thinking) | yes | 7.5 [4.6, 10.7] | 17.1 | 8.3 | 2.9 |
-| GPT-6 Luna |  | 6.8 [3.9, 10.1] | 16.6 | 10.3 | 1.1 |
-| MiniMax-M2.7 | yes | 4.5 [2.2, 7.2] | 13.9 | 0.2 | 1.6 |
-| DeepSeek-V4-Flash | yes | 4.4 [2.5, 6.6] | 8.5 | 3.9 | 2.6 |
-| Inkling 2 Mini | yes | 4.1 [2.2, 6.3] | 7.8 | 6.6 | 1.6 |
-| Qwen3.8-27B (no thinking) | yes | 4.1 [2.2, 6.6] | 9.7 | 3.0 | 2.0 |
+| GPT-6.1 Sol |  | 51.0 [45.2, 57.1] | 74.1 | 65.2 | 35.8 |
+| Claude Opus 5.5 |  | 37.6 [32.1, 43.3] | 53.0 | 51.4 | 26.0 |
+| Claude Sonnet 5.5 |  | 33.7 [28.3, 39.3] | 28.8 | 49.0 | 31.0 |
+| GPT-6.1 Terra |  | 29.0 [23.5, 34.6] | 53.3 | 38.9 | 14.5 |
+| Claude Haiku 5.5 |  | 8.9 [5.5, 12.4] | 13.0 | 19.8 | 3.5 |
+| Qwen3.8-27B (thinking) | yes | 7.5 [4.6, 10.8] | 17.1 | 8.3 | 2.9 |
+| GPT-6 Luna |  | 6.8 [3.9, 10.1] | 16.5 | 10.3 | 1.1 |
+| MiniMax-M2.7 | yes | 4.5 [2.1, 7.1] | 13.8 | 0.2 | 1.6 |
+| DeepSeek-V4-Flash | yes | 4.4 [2.5, 6.5] | 8.5 | 3.9 | 2.6 |
+| Inkling 2 Mini | yes | 4.1 [2.2, 6.4] | 7.8 | 6.6 | 1.6 |
+| Qwen3.8-27B (no thinking) | yes | 4.1 [2.2, 6.6] | 9.6 | 3.0 | 2.0 |
 
 ## Building the paper
 
@@ -89,4 +89,4 @@ Pedro Moreira (MIT) and Leonida Lumburovska (University of Zurich, ZHAW Center f
 
 ## License
 
-To be chosen before the public release.
+MIT; see [`LICENSE`](LICENSE).

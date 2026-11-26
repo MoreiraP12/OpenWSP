@@ -64,6 +64,7 @@ TITLE = "OpenWSP: Benchmarking Weight-Space Programming on Open Language Models"
 AUTHORS = [("pedro", "Pedro Moreira", "Moreira, Pedro", "https://www.linkedin.com/in/pjfmoreira/"),
            ("leonida", "Leonida Lumburovska", "Lumburovska, Leonida", "https://www.linkedin.com/in/leonida-lumburovska/")]
 REPO = "https://github.com/MoreiraP12/OpenWSP"
+LICENSE = "https://opensource.org/license/mit"
 KEYWORDS = ["weight-space programming", "WSP", "benchmark", "LLM agents", "model editing", "interpretability",
             "open language models"]
 CUT = 300  # node/forward.py keeps only the first 300 characters of each practice generation it logs
@@ -526,13 +527,13 @@ def jsonld(page, comp):
         {"@type": "Dataset", "@id": f"{SITE}#benchmark", "name": "OpenWSP",
          "alternateName": "OpenWSP weight-space programming benchmark", "description": bench, "url": SITE,
          "creator": who, "keywords": KEYWORDS, "citation": paper_title(), "variableMeasured": "Improvement index (0–100)",
-         "isAccessibleForFree": True, "sameAs": REPO,
+         "isAccessibleForFree": True, "sameAs": REPO, "license": LICENSE,
          "distribution": [{"@type": "DataDownload", "encodingFormat": "application/zip",
                            "contentUrl": f"{REPO}/archive/refs/heads/main.zip"}],
          "measurementTechnique": "LLM agents edit or inspect model weights in a sandboxed Python kernel without "
                                  "gradients; answers and edited models are scored against hidden keys and held-out prompts"},
         {"@type": "SoftwareSourceCode", "@id": f"{SITE}#code", "name": "OpenWSP", "codeRepository": REPO,
-         "programmingLanguage": "Python", "author": who,
+         "programmingLanguage": "Python", "author": who, "license": LICENSE,
          "description": "Tasks, answer keys and scorers of the OpenWSP practice set, results, and the paper."},
         *people,
         {"@type": "FAQPage", "@id": f"{SITE}#faq", "mainEntity": [
@@ -636,7 +637,7 @@ Paper: {paper_title()}. Pedro Moreira and Leonida Lumburovska, 2026.
 
 - [Project page]({SITE}): interactive before-and-after examples and the full results
 - [Paper (PDF)]({SITE}paper.pdf): {paper_title()}
-- [GitHub repository]({REPO}): the practice set (tasks, answer keys and scorers), every agent's results, and the paper source
+- [GitHub repository]({REPO}) (MIT license): the practice set (tasks, answer keys and scorers), every agent's results, and the paper source
 
 ## Citation
 

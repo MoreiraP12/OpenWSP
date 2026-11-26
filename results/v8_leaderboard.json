@@ -1,6 +1,6 @@
 {
  "version": "v8",
- "built": "2026-11-23 21:35 UTC",
+ "built": "2026-11-25 07:47 UTC",
  "core_cells": 168,
  "items": 152,
  "classes": [
@@ -81,12 +81,12 @@
    "lab": "OpenAI",
    "open_weights": false,
    "setting": "high",
-   "index": 51.05078779210539,
+   "index": 51.04844854216743,
    "ci": [
-    45.0776872772135,
-    56.889390777707696
+    45.26803975724286,
+    57.037276337844716
    ],
-   "pass_rate": 51.19047619047619,
+   "pass_rate": 50.0,
    "coverage": 168,
    "core_cells": 168,
    "refused": 0,
@@ -94,7 +94,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 74.12045794819257,
+     "index": 74.11131855308612,
      "coverage": 43,
      "cells": 43
     },
@@ -120,10 +120,10 @@
    "lab": "Anthropic",
    "open_weights": false,
    "setting": "default",
-   "index": 38.29247906824605,
+   "index": 38.282985438538674,
    "ci": [
-    32.86721788127347,
-    43.8281323420514
+    32.848977108564284,
+    43.783897117265546
    ],
    "pass_rate": 39.88095238095239,
    "coverage": 168,
@@ -133,7 +133,7 @@
    "passes": 2,
    "sub": {
     "read": {
-     "index": 59.865738493087406,
+     "index": 59.828647102602766,
      "coverage": 43,
      "cells": 43
     },
@@ -158,27 +158,27 @@
    "name": "Claude Opus 5.5 (effort high)",
    "lab": "Anthropic",
    "open_weights": false,
-   "setting": "",
-   "index": 36.516293784455904,
+   "setting": "high",
+   "index": 38.06324061521552,
    "ci": [
-    30.751689671694386,
-    41.9195491018076
+    32.53916252963254,
+    43.94104023674403
    ],
-   "pass_rate": 36.80555555555556,
-   "coverage": 144,
+   "pass_rate": 37.34939759036144,
+   "coverage": 166,
    "core_cells": 168,
-   "refused": 0,
-   "complete": false,
+   "refused": 2,
+   "complete": true,
    "passes": 1,
    "sub": {
     "read": {
-     "index": 54.26407818428487,
+     "index": 54.2966062818966,
      "coverage": 42,
      "cells": 43
     },
     "edit": {
-     "index": 59.439541183167854,
-     "coverage": 9,
+     "index": 51.4110105713853,
+     "coverage": 31,
      "cells": 31
     },
     "skill": {
@@ -187,15 +187,49 @@
      "cells": 94
     }
    },
-   "cost_per_task": 4.765713345333333,
-   "output_tokens_per_task": 92702.40666666666,
-   "minutes_per_task": 39.934666666666665,
-   "runs": 150,
-   "ref": {
-    "name": "GPT-6.1 Sol",
-    "index": 49.760203074935454,
-    "cells": 144
-   }
+   "cost_per_task": 4.406272887209302,
+   "output_tokens_per_task": 87515.12790697675,
+   "minutes_per_task": 36.459011627906975,
+   "runs": 172
+  },
+  {
+   "id": "claude-sonnet-5-5-high",
+   "name": "Claude Sonnet 5.5 (effort high)",
+   "lab": "Anthropic",
+   "open_weights": false,
+   "setting": "high",
+   "index": 34.35383986679658,
+   "ci": [
+    28.778340270730535,
+    39.67267112879426
+   ],
+   "pass_rate": 35.75757575757576,
+   "coverage": 165,
+   "core_cells": 168,
+   "refused": 3,
+   "complete": true,
+   "passes": 1,
+   "sub": {
+    "read": {
+     "index": 28.76706346229594,
+     "coverage": 43,
+     "cells": 43
+    },
+    "edit": {
+     "index": 52.395081650555795,
+     "coverage": 29,
+     "cells": 31
+    },
+    "skill": {
+     "index": 31.311209476092387,
+     "coverage": 93,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 1.8892803385964911,
+   "output_tokens_per_task": 83096.75438596492,
+   "minutes_per_task": 20.976608187134502,
+   "runs": 171
   },
   {
    "id": "gpt-6.1-terra",
@@ -203,12 +237,12 @@
    "lab": "OpenAI",
    "open_weights": false,
    "setting": "high",
-   "index": 28.966366965329325,
+   "index": 28.960558820237996,
    "ci": [
-    23.728596711552797,
-    34.59357026446793
+    23.67489444213344,
+    34.4031758937197
    ],
-   "pass_rate": 29.761904761904763,
+   "pass_rate": 28.57142857142857,
    "coverage": 168,
    "core_cells": 168,
    "refused": 0,
@@ -216,7 +250,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 53.354969123109775,
+     "index": 53.33227683531109,
      "coverage": 43,
      "cells": 43
     },
@@ -286,20 +320,20 @@
    "lab": "Anthropic",
    "open_weights": false,
    "setting": "default",
-   "index": 11.528319745446488,
+   "index": 11.512014546448812,
    "ci": [
-    8.220703242009602,
-    14.913397702158175
+    8.206561904182403,
+    14.88575782602477
    ],
    "pass_rate": 7.142857142857142,
    "coverage": 168,
    "core_cells": 168,
-   "refused": 0,
+   "refused": 1,
    "complete": true,
    "passes": 2,
    "sub": {
     "read": {
-     "index": 12.744770850167074,
+     "index": 12.68106681687383,
      "coverage": 43,
      "cells": 43
     },
@@ -320,15 +354,54 @@
    "runs": 346
   },
   {
+   "id": "claude-haiku-5-5-high",
+   "name": "Claude Haiku 5.5 (effort high)",
+   "lab": "Anthropic",
+   "open_weights": false,
+   "setting": "high",
+   "index": 10.73903028009078,
+   "ci": [
+    7.022005826054152,
+    15.098114680118323
+   ],
+   "pass_rate": 9.285714285714286,
+   "coverage": 140,
+   "core_cells": 168,
+   "refused": 28,
+   "complete": true,
+   "passes": 1,
+   "sub": {
+    "read": {
+     "index": 13.322245130351142,
+     "coverage": 42,
+     "cells": 43
+    },
+    "edit": {
+     "index": 30.64023112325087,
+     "coverage": 20,
+     "cells": 31
+    },
+    "skill": {
+     "index": 4.245196426576203,
+     "coverage": 78,
+     "cells": 94
+    }
+   },
+   "cost_per_task": 0.03173106876712329,
+   "output_tokens_per_task": 31001.34931506849,
+   "minutes_per_task": 7.907990867579909,
+   "runs": 146
+  },
+  {
    "id": "claude-haiku-5-5",
    "name": "Claude Haiku 5.5",
    "lab": "Anthropic",
    "open_weights": false,
    "setting": "default",
-   "index": 8.788529592226812,
+   "index": 8.778887462544937,
    "ci": [
-    5.883441684254632,
-    12.018738952900556
+    5.859604038467737,
+    12.008782882699771
    ],
    "pass_rate": 5.952380952380952,
    "coverage": 168,
@@ -338,7 +411,7 @@
    "passes": 2,
    "sub": {
     "read": {
-     "index": 13.406319914717804,
+     "index": 13.368648338286288,
      "coverage": 43,
      "cells": 43
     },
@@ -364,10 +437,10 @@
    "lab": "Alibaba",
    "open_weights": true,
    "setting": "thinking",
-   "index": 7.4994192417387335,
+   "index": 7.502066554433847,
    "ci": [
-    4.592280578904076,
-    10.81737217752363
+    4.717605600809577,
+    10.955386784731514
    ],
    "pass_rate": 5.952380952380952,
    "coverage": 168,
@@ -377,7 +450,7 @@
    "passes": 2,
    "sub": {
     "read": {
-     "index": 17.083728079430113,
+     "index": 17.09407106856451,
      "coverage": 43,
      "cells": 43
     },
@@ -403,10 +476,10 @@
    "lab": "OpenAI",
    "open_weights": false,
    "setting": "high",
-   "index": 6.870372959403634,
+   "index": 6.8587236834354375,
    "ci": [
-    3.9023601198431312,
-    10.267211726888885
+    4.025935295264892,
+    10.101041700108654
    ],
    "pass_rate": 6.024096385542169,
    "coverage": 166,
@@ -416,7 +489,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 16.59472434187881,
+     "index": 16.54975271837368,
      "coverage": 43,
      "cells": 43
     },
@@ -442,10 +515,10 @@
    "lab": "MiniMax",
    "open_weights": true,
    "setting": "thinking",
-   "index": 4.464929058637932,
+   "index": 4.453117436601304,
    "ci": [
-    2.204291877138684,
-    7.1794008967847756
+    2.139291099166494,
+    7.32232604584284
    ],
    "pass_rate": 3.571428571428571,
    "coverage": 168,
@@ -455,7 +528,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 13.889823494640233,
+     "index": 13.84367576203201,
      "coverage": 43,
      "cells": 43
     },
@@ -481,10 +554,10 @@
    "lab": "DeepSeek",
    "open_weights": true,
    "setting": "thinking (high)",
-   "index": 4.370618883800435,
+   "index": 4.361878047489073,
    "ci": [
-    2.3550784724229747,
-    6.549723638285184
+    2.5231930281363026,
+    6.604193433225193
    ],
    "pass_rate": 1.7857142857142856,
    "coverage": 168,
@@ -494,7 +567,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 8.51828187808505,
+     "index": 8.484131633891822,
      "coverage": 43,
      "cells": 43
     },
@@ -520,10 +593,10 @@
    "lab": "Alibaba",
    "open_weights": true,
    "setting": "no thinking",
-   "index": 4.142581250158485,
+   "index": 4.152989004294858,
    "ci": [
-    2.526363432553745,
-    6.084722196799623
+    2.3643533264990473,
+    6.226053676910471
    ],
    "pass_rate": 1.1904761904761905,
    "coverage": 168,
@@ -533,7 +606,7 @@
    "passes": 2,
    "sub": {
     "read": {
-     "index": 11.95626148915842,
+     "index": 11.996924342528434,
      "coverage": 43,
      "cells": 43
     },
@@ -559,10 +632,10 @@
    "lab": "Thinking Machines",
    "open_weights": true,
    "setting": "thinking (high)",
-   "index": 4.138685252143317,
+   "index": 4.138853541565389,
    "ci": [
-    2.2981083362442725,
-    6.365025450360909
+    2.3151954651880398,
+    6.334517971128465
    ],
    "pass_rate": 3.571428571428571,
    "coverage": 168,
@@ -572,7 +645,7 @@
    "passes": 1,
    "sub": {
     "read": {
-     "index": 7.827798118928112,
+     "index": 7.828455621786442,
      "coverage": 43,
      "cells": 43
     },

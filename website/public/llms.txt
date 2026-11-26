@@ -55,7 +55,7 @@ Three concurrent benchmarks also measure weight-space programming: WeightBench, 
 
 - [Project page](__SITE__): interactive before-and-after examples and the full results
 - [Paper (PDF)](__SITE__paper.pdf): How Much Weight Can Your LLM Bench? Benchmarking Weight-Space Programming on Open Language Models
-- [GitHub repository](https://github.com/MoreiraP12/OpenWSP): the practice set (tasks, answer keys and scorers), every agent's results, and the paper source
+- [GitHub repository](https://github.com/MoreiraP12/OpenWSP) (MIT license): the practice set (tasks, answer keys and scorers), every agent's results, and the paper source
 
 ## Citation
 
