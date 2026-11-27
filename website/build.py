@@ -61,8 +61,11 @@ if not ARGS.page_only:
 CHROME = os.environ.get("CHROME", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
 SITE = "__SITE__"  # the site's address with a trailing slash; the deploy workflow fills it in
 TITLE = "OpenWSP: Benchmarking Weight-Space Programming on Open Language Models"  # the site's title
-AUTHORS = [("pedro", "Pedro Moreira", "Moreira, Pedro", "https://www.linkedin.com/in/pjfmoreira/"),
-           ("leonida", "Leonida Lumburovska", "Lumburovska, Leonida", "https://www.linkedin.com/in/leonida-lumburovska/")]
+# (key, name, citation name, the page the name links to, other profiles of the same person)
+AUTHORS = [("pedro", "Pedro Moreira", "Moreira, Pedro", "https://scholar.google.com/citations?user=O50gXqUAAAAJ&hl=en&oi=ao",
+            ["https://www.linkedin.com/in/pjfmoreira/"]),
+           ("leonida", "Leonida Lumburovska", "Lumburovska, Leonida", "https://lumburovska-lea.github.io/cv/",
+            ["https://www.linkedin.com/in/leonida-lumburovska/"])]
 REPO = "https://github.com/MoreiraP12/OpenWSP"
 LICENSE = "https://opensource.org/license/mit"
 KEYWORDS = ["weight-space programming", "WSP", "benchmark", "LLM agents", "model editing", "interpretability",
@@ -528,7 +531,8 @@ def lede(page):
 
 
 def jsonld(page, comp):
-    people = [{"@type": "Person", "@id": f"{SITE}#{k}", "name": n, "sameAs": [url]} for k, n, _, url in AUTHORS]
+    people = [{"@type": "Person", "@id": f"{SITE}#{k}", "name": n, "url": url, "sameAs": [url, *other]}
+              for k, n, _, url, other in AUTHORS]
     who = [{"@id": f"{SITE}#{k}"} for k, *_ in AUTHORS]
     c = comp
     bench = (f"OpenWSP is a benchmark for weight-space programming: {c['tasks']} tasks in which an LLM agent gets the "
@@ -668,11 +672,17 @@ Paper: {paper_title()}. Pedro Moreira and Leonida Lumburovska, 2026.
 """
 
 
+def paper_date():
+    """The date the published PDF was built (its CreationDate), so the sitemap dates the paper by its own changes."""
+    m = re.search(rb"/CreationDate\s*\(D:(\d{4})(\d{2})(\d{2})", (OUT / "paper.pdf").read_bytes())
+    return "-".join(x.decode() for x in m.groups()) if m else date.today().isoformat()
+
+
 def sitemap():
     d = date.today().isoformat()
     return ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             f"  <url><loc>{SITE}</loc><lastmod>{d}</lastmod></url>\n"
-            f"  <url><loc>{SITE}paper.pdf</loc><lastmod>{d}</lastmod></url>\n</urlset>\n")
+            f"  <url><loc>{SITE}paper.pdf</loc><lastmod>{paper_date()}</lastmod></url>\n</urlset>\n")
 
 
 # ---------------------------------------------------------------- images drawn with headless Chrome

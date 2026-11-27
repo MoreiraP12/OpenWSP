@@ -68,7 +68,7 @@ the paper gives it no cost.
 
 ## Authors
 
-Pedro Moreira (MIT) and Leonida Lumburovska (University of Zurich, ZHAW Center for AI).
+[Pedro Moreira](https://scholar.google.com/citations?user=O50gXqUAAAAJ&hl=en&oi=ao) (MIT) and [Leonida Lumburovska](https://lumburovska-lea.github.io/cv/) (University of Zurich, ZHAW Center for AI).
 
 ## License
 
